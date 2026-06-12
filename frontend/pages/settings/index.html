@@ -6,41 +6,251 @@
   <title>POS Terminal - Settings</title>
   <link rel="stylesheet" href="../../src/style.css">
 </head>
-<body class="bg-neutral-100 dark:bg-[#16171d] text-neutral-800 dark:text-neutral-100 min-h-screen transition-colors duration-300">
-  
+<body class="bg-neutral-100 dark:bg-dark-bg text-neutral-800 dark:text-neutral-100 min-h-screen transition-colors duration-300">
+
   <div id="app" class="min-h-screen">
     <!-- Sidebar & Top Navbar injected dynamically via main.js -->
     <div id="sidebar-container"></div>
 
     <!-- Main Content Area -->
     <div class="p-4 sm:ml-64 mt-14">
-      <div class="p-6 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 rounded-none shadow-sm max-w-xl">
-        <h1 class="text-2xl font-extrabold text-neutral-900 dark:text-white mb-2 uppercase tracking-wide">Settings</h1>
-        <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-6">Manage POS Terminal preferences, local caching, and devices.</p>
-        
-        <div class="space-y-4">
-          <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200/50 dark:border-neutral-800/50 rounded-none flex items-center justify-between">
-            <div>
-              <h3 class="font-bold text-sm text-neutral-900 dark:text-white">Local Storage Cache</h3>
-              <p class="text-xs text-neutral-500 dark:text-neutral-400">Clear cached cookies and localized settings</p>
+      <div class="p-4 border border-neutral-200 dark:border-neutral-800 border-dashed rounded-none">
+
+        <!-- Header -->
+        <div class="mb-6">
+          <h1 class="text-xl font-black text-neutral-900 dark:text-white tracking-tight">Settings</h1>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400">Manage terminal preferences, store configuration, and device connections.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- LEFT COLUMN -->
+          <div class="flex flex-col gap-6">
+
+            <!-- Store Information -->
+            <div class="bg-white dark:bg-dark-bg border border-neutral-200 dark:border-neutral-800 p-6">
+              <div class="flex items-center gap-2.5 mb-5">
+                <div class="w-8 h-8 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3l1-4h16l1 4M5 21V10.85M19 21V10.85"/>
+                  </svg>
+                </div>
+                <h2 class="text-sm font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider">Store Information</h2>
+              </div>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-xs font-bold text-neutral-600 dark:text-neutral-400 mb-1.5">Store Name</label>
+                  <input type="text" value="Jorgy General Store" class="w-full px-3 py-2 text-xs bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-neutral-600 dark:text-neutral-400 mb-1.5">Address</label>
+                  <input type="text" value="Brgy. Sample, Cebu City" class="w-full px-3 py-2 text-xs bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-neutral-600 dark:text-neutral-400 mb-1.5">Contact Number</label>
+                    <input type="text" value="+63 912 345 6789" class="w-full px-3 py-2 text-xs bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-neutral-600 dark:text-neutral-400 mb-1.5">TIN / Tax ID</label>
+                    <input type="text" placeholder="000-000-000-000" class="w-full px-3 py-2 text-xs bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-neutral-600 dark:text-neutral-400 mb-1.5">Receipt Footer Message</label>
+                  <textarea rows="2" placeholder="Thank you for shopping with us!" class="w-full px-3 py-2 text-xs bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition resize-none"></textarea>
+                </div>
+                <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition cursor-pointer">Save Store Info</button>
+              </div>
             </div>
-            <button class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-none transition cursor-pointer">Clear Cache</button>
+
+            <!-- Tax & Pricing -->
+            <div class="bg-white dark:bg-dark-bg border border-neutral-200 dark:border-neutral-800 p-6">
+              <div class="flex items-center gap-2.5 mb-5">
+                <div class="w-8 h-8 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 17.345a4.76 4.76 0 0 0 2.558 1.618c2.274.589 4.512-.446 4.999-2.31.487-1.866-1.273-3.9-3.546-4.49-2.273-.59-4.034-2.623-3.547-4.488.486-1.865 2.724-2.899 4.999-2.31.982.236 1.87.793 2.521 1.488M12 3v3m0 15v-3"/>
+                  </svg>
+                </div>
+                <h2 class="text-sm font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider">Tax & Pricing</h2>
+              </div>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800">
+                  <div>
+                    <div class="text-xs font-bold text-neutral-900 dark:text-white">Enable VAT (12%)</div>
+                    <div class="text-[11px] text-neutral-500">Apply value-added tax on all sales</div>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer" checked>
+                    <div class="w-9 h-5 bg-neutral-200 dark:bg-neutral-700 peer-checked:bg-emerald-500 transition-colors after:content-[''] after:absolute after:top-0.5 after:inset-s-0.5 after:bg-white after:border after:border-neutral-300 after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+                  </label>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800">
+                  <div>
+                    <div class="text-xs font-bold text-neutral-900 dark:text-white">Senior / PWD Discount</div>
+                    <div class="text-[11px] text-neutral-500">Allow 20% discount for senior/PWD customers</div>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer" checked>
+                    <div class="w-9 h-5 bg-neutral-200 dark:bg-neutral-700 peer-checked:bg-emerald-500 transition-colors after:content-[''] after:absolute after:top-0.5 after:inset-s-0.5 after:bg-white after:border after:border-neutral-300 after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+                  </label>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-neutral-600 dark:text-neutral-400 mb-1.5">Low Stock Threshold (qty)</label>
+                  <input type="number" value="5" min="1" class="w-full px-3 py-2 text-xs bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-neutral-600 dark:text-neutral-400 mb-1.5">Currency</label>
+                  <select class="w-full px-3 py-2 text-xs bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                    <option value="PHP" selected>PHP — Philippine Peso (₱)</option>
+                    <option value="USD">USD — US Dollar ($)</option>
+                  </select>
+                </div>
+                <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition cursor-pointer">Save Tax Settings</button>
+              </div>
+            </div>
+
           </div>
 
-          <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200/50 dark:border-neutral-800/50 rounded-none flex items-center justify-between">
-            <div>
-              <h3 class="font-bold text-sm text-neutral-900 dark:text-white">Printer Connection</h3>
-              <p class="text-xs text-neutral-500 dark:text-neutral-400">Bluetooth / USB POS receipt printer status</p>
+          <!-- RIGHT COLUMN -->
+          <div class="flex flex-col gap-6">
+
+            <!-- Devices & Peripherals -->
+            <div class="bg-white dark:bg-dark-bg border border-neutral-200 dark:border-neutral-800 p-6">
+              <div class="flex items-center gap-2.5 mb-5">
+                <div class="w-8 h-8 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+                  </svg>
+                </div>
+                <h2 class="text-sm font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider">Devices & Peripherals</h2>
+              </div>
+              <div class="space-y-3">
+
+                <!-- Receipt Printer -->
+                <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-neutral-500 dark:text-neutral-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M8 5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2M8 5h8m-5 5h2m-2 4h2"/>
+                    </svg>
+                    <div>
+                      <div class="text-xs font-bold text-neutral-900 dark:text-white">Receipt Printer</div>
+                      <div class="text-[11px] text-neutral-500">Bluetooth / USB thermal printer</div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-[11px] font-bold text-red-500">Disconnected</span>
+                    <button class="px-3 py-1.5 border border-neutral-300 dark:border-neutral-700 text-xs font-bold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer">Connect</button>
+                  </div>
+                </div>
+
+                <!-- Barcode Scanner -->
+                <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-neutral-500 dark:text-neutral-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1v16H4zm4 0h1v16H8zm3 0h2v16h-2zm4 0h1v16h-1zm3 0h1v16h-1zM3 20h18M3 4h18"/>
+                    </svg>
+                    <div>
+                      <div class="text-xs font-bold text-neutral-900 dark:text-white">Barcode Scanner</div>
+                      <div class="text-[11px] text-neutral-500">USB HID input device</div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-[11px] font-bold text-emerald-500">Connected</span>
+                    <button class="px-3 py-1.5 border border-neutral-300 dark:border-neutral-700 text-xs font-bold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer">Test</button>
+                  </div>
+                </div>
+
+                <!-- Cash Drawer -->
+                <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-neutral-500 dark:text-neutral-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M6 14h2m3 0h6M4 6h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z"/>
+                    </svg>
+                    <div>
+                      <div class="text-xs font-bold text-neutral-900 dark:text-white">Cash Drawer</div>
+                      <div class="text-[11px] text-neutral-500">Trigger drawer on cash payment</div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-[11px] font-bold text-red-500">Disconnected</span>
+                    <button class="px-3 py-1.5 border border-neutral-300 dark:border-neutral-700 text-xs font-bold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer">Connect</button>
+                  </div>
+                </div>
+
+              </div>
             </div>
-            <span class="text-xs font-bold text-neutral-400">Disconnected</span>
+
+            <!-- Appearance -->
+            <div class="bg-white dark:bg-dark-bg border border-neutral-200 dark:border-neutral-800 p-6">
+              <div class="flex items-center gap-2.5 mb-5">
+                <div class="w-8 h-8 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3c-1 0-4.5 5.5-4.5 9a4.5 4.5 0 0 0 9 0C16.5 8.5 13 3 12 3Z"/>
+                  </svg>
+                </div>
+                <h2 class="text-sm font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider">Appearance</h2>
+              </div>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-xs font-bold text-neutral-600 dark:text-neutral-400 mb-2">Theme Mode</label>
+                  <div class="grid grid-cols-3 gap-2">
+                    <button class="py-2 text-xs font-bold border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 cursor-pointer transition">Light</button>
+                    <button class="py-2 text-xs font-bold border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:border-emerald-500 cursor-pointer transition">Dark</button>
+                    <button class="py-2 text-xs font-bold border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:border-emerald-500 cursor-pointer transition">System</button>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800">
+                  <div>
+                    <div class="text-xs font-bold text-neutral-900 dark:text-white">Compact Mode</div>
+                    <div class="text-[11px] text-neutral-500">Reduce padding for smaller screens</div>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer">
+                    <div class="w-9 h-5 bg-neutral-200 dark:bg-neutral-700 peer-checked:bg-emerald-500 transition-colors after:content-[''] after:absolute after:top-0.5 after:inset-s-0.5 after:bg-white after:border after:border-neutral-300 after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Data & Cache -->
+            <div class="bg-white dark:bg-dark-bg border border-neutral-200 dark:border-neutral-800 p-6">
+              <div class="flex items-center gap-2.5 mb-5">
+                <div class="w-8 h-8 bg-red-50 dark:bg-red-950/30 text-red-500 dark:text-red-400 flex items-center justify-center">
+                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M7 6V4h10v2M9 11v6m6-6v6M5 6l1 14h12L19 6"/>
+                  </svg>
+                </div>
+                <h2 class="text-sm font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider">Data & Cache</h2>
+              </div>
+              <div class="space-y-3">
+                <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+                  <div>
+                    <div class="text-xs font-bold text-neutral-900 dark:text-white">Local Storage Cache</div>
+                    <div class="text-[11px] text-neutral-500">Clear cached cookies and localized settings</div>
+                  </div>
+                  <button class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition cursor-pointer">Clear Cache</button>
+                </div>
+                <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+                  <div>
+                    <div class="text-xs font-bold text-neutral-900 dark:text-white">Export Sales Report</div>
+                    <div class="text-[11px] text-neutral-500">Download all transactions as CSV</div>
+                  </div>
+                  <button class="px-3 py-1.5 border border-neutral-300 dark:border-neutral-700 text-xs font-bold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer">Export CSV</button>
+                </div>
+                <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-red-200 dark:border-red-900/40 flex items-center justify-between">
+                  <div>
+                    <div class="text-xs font-bold text-red-600 dark:text-red-400">Reset Terminal</div>
+                    <div class="text-[11px] text-neutral-500">Wipe all data and restore defaults</div>
+                  </div>
+                  <button class="px-3 py-1.5 border border-red-400 dark:border-red-700 text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition cursor-pointer">Reset</button>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <div class="mt-8 pt-4 border-t border-neutral-200 dark:border-neutral-800">
-          <a href="/pages/dashboard/" class="inline-flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 transition cursor-pointer">
-            &larr; Return to Dashboard
-          </a>
-        </div>
       </div>
     </div>
   </div>

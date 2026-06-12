@@ -1,6 +1,8 @@
 import './style.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { initTheme, toggleTheme } from './modules/theme-toggle.js';
+import { initSidebar } from './modules/sidebar.js';
+import { initDrawer } from './modules/drawer.js';
 import './modules/auth.js';
 
 // Dynamic Sidebar HTML Injection
@@ -26,6 +28,7 @@ async function injectSidebar() {
       });
 
       initTheme();
+      initSidebar(); // Initialize sidebar active states
     }
   } catch (error) {
     console.error('Failed to inject sidebar component:', error);
@@ -34,4 +37,5 @@ async function injectSidebar() {
 
 document.addEventListener('DOMContentLoaded', () => {
   injectSidebar();
+  initDrawer();
 });
