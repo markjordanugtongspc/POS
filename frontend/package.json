@@ -1,5 +1,5 @@
 {
-  "name": "my-project",
+  "name": "pos-system",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",
+    "apexcharts": "^3.46.0",
     "flowbite": "^4.0.2",
+    "sweetalert2": "^11.26.25",
     "tailwindcss": "^4.3.0"
   }
 }
