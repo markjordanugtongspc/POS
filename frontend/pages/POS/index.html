@@ -26,7 +26,7 @@
           <h1 class="text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight">Choose Categories</h1>
           
           <!-- Search Bar -->
-          <div class="relative w-full md:w-72">
+          <div class="relative w-full md:w-96">
             <input type="text" class="w-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-sm rounded-xl focus:ring-emerald-500 focus:border-emerald-500 block pl-4 py-2.5 placeholder-neutral-400 dark:placeholder-neutral-500 transition-colors shadow-sm" placeholder="Search Menu...">
             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <svg class="w-4 h-4 text-neutral-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -467,8 +467,8 @@
               <!-- Cash Radio Option -->
               <label class="flex items-center gap-2 cursor-pointer group">
                 <input type="radio" name="payment_method" id="pay-cash" checked onclick="document.getElementById('ecash-providers').classList.add('hidden')" class="peer hidden" />
-                <div class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center transition-all shrink-0">
-                  <div class="w-1.5 h-1.5 rounded-full bg-white scale-0 peer-checked:scale-100 transition-transform"></div>
+                <div class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 flex items-center justify-center transition-all shrink-0 bg-white dark:bg-neutral-900 peer-checked:[&>div]:scale-100">
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 scale-0 transition-transform"></div>
                 </div>
                 <span class="text-sm font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Cash</span>
               </label>
@@ -476,8 +476,8 @@
               <!-- Card Radio Option -->
               <label class="flex items-center gap-2 cursor-pointer group">
                 <input type="radio" name="payment_method" id="pay-card" onclick="document.getElementById('ecash-providers').classList.add('hidden')" class="peer hidden" />
-                <div class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center transition-all shrink-0">
-                  <div class="w-1.5 h-1.5 rounded-full bg-white scale-0 peer-checked:scale-100 transition-transform"></div>
+                <div class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 flex items-center justify-center transition-all shrink-0 bg-white dark:bg-neutral-900 peer-checked:[&>div]:scale-100">
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 scale-0 transition-transform"></div>
                 </div>
                 <span class="text-sm font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Card</span>
               </label>
@@ -485,8 +485,8 @@
               <!-- E-Cash Radio Option -->
               <label class="flex items-center gap-2 cursor-pointer group">
                 <input type="radio" name="payment_method" id="pay-ecash" onclick="document.getElementById('ecash-providers').classList.remove('hidden')" class="peer hidden" />
-                <div class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center transition-all shrink-0">
-                  <div class="w-1.5 h-1.5 rounded-full bg-white scale-0 peer-checked:scale-100 transition-transform"></div>
+                <div class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 flex items-center justify-center transition-all shrink-0 bg-white dark:bg-neutral-900 peer-checked:[&>div]:scale-100">
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 scale-0 transition-transform"></div>
                 </div>
                 <span class="text-sm font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">E-Cash</span>
               </label>

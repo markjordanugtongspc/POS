@@ -1,10 +1,7 @@
 // ==========================================
-// TOP: SIDEBAR ACTIVE STATE MODULE
-// This module handles the global active state highlighting for the sidebar links.
-// It checks the current URL path and applies primary color, bold text, and background
-// to the matching sidebar link to indicate the active page.
+// TOP: initSidebar
+// Handles active state highlighting for sidebar links based on current URL path.
 // ==========================================
-
 export function initSidebar() {
   const sidebarContainer = document.getElementById('top-bar-sidebar');
   if (!sidebarContainer) return;
@@ -19,7 +16,7 @@ export function initSidebar() {
     if (!href || href === '#') return;
 
     // Check if current path matches the link's href
-    if (currentPath === href || currentPath.startsWith(href) && href !== '/') {
+    if (currentPath === href || (currentPath.startsWith(href) && href !== '/')) {
       // Add active classes for the rectangle background, bold text, and primary color
       link.classList.remove('text-neutral-600', 'dark:text-neutral-300');
       link.classList.add(
@@ -36,10 +33,44 @@ export function initSidebar() {
         icon.classList.remove('text-neutral-400', 'dark:text-neutral-500');
         icon.classList.add('text-emerald-600', 'dark:text-emerald-400');
       }
+
+      // If this link is inside a dropdown, automatically expand the parent dropdown and style the connector line active
+      const parentDropdown = link.closest('ul');
+      if (parentDropdown && parentDropdown.id === 'dropdown-users') {
+        parentDropdown.classList.remove('hidden');
+        link.classList.remove('before:bg-neutral-200', 'dark:before:bg-neutral-800');
+        link.classList.add('before:bg-emerald-500', 'dark:before:bg-emerald-400');
+      }
     }
   });
+
+  // Call dropdown init to bind click events
+  initSidebarDropdowns();
 }
+// ==========================================
+// END: initSidebar
+// ==========================================
 
 // ==========================================
-// END: SIDEBAR ACTIVE STATE MODULE
+// TOP: initSidebarDropdowns
+// Binds click handlers to dropdown toggle buttons to show/hide their menus.
+// ==========================================
+function initSidebarDropdowns() {
+  const toggles = document.querySelectorAll('[data-collapse-toggle]');
+  
+  toggles.forEach(toggle => {
+    const targetId = toggle.getAttribute('data-collapse-toggle');
+    const targetMenu = document.getElementById(targetId);
+    
+    if (!targetMenu) return;
+
+    // Handle toggle click to show/hide dropdown menu
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      targetMenu.classList.toggle('hidden');
+    });
+  });
+}
+// ==========================================
+// END: initSidebarDropdowns
 // ==========================================
