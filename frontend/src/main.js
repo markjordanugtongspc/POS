@@ -1,4 +1,5 @@
 import './style.css';
+import 'flowbite';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { initTheme, toggleTheme } from './modules/theme-toggle.js';
 import { initSidebar } from './modules/sidebar.js';

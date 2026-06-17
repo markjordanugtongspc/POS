@@ -258,8 +258,8 @@
       </div> <!-- End Left Column -->
 
       <!-- Right Column: Cart Placeholder Area -->
-      <!-- Fixed width on XL screens, 100% width overlaid on smaller if needed later. For now, visible alongside on very large screens. -->
-      <div class="hidden xl:flex flex-col w-96 shrink-0 h-full bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 rounded-none p-6 shadow-sm relative overflow-visible">
+      <!-- Fixed width on LG/XL screens, hidden on smaller devices (handled by drawer instead). -->
+      <div class="hidden lg:flex flex-col w-80 xl:w-96 shrink-0 h-full bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 rounded-none p-6 shadow-sm relative overflow-visible">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-extrabold text-neutral-900 dark:text-white tracking-tight">Cart Details</h2>
           <span class="text-xs font-bold text-neutral-500">IV#13256234</span>
@@ -528,8 +528,8 @@
     </div>
   </div>
 
-  <!-- Mobile Cart Toggle Button (Visible only on mobile/portrait screens, hidden on xl) -->
-  <div class="fixed right-0 top-1/2 -translate-y-1/2 z-40 xl:hidden">
+  <!-- Mobile Cart Toggle Button (Visible only on mobile/portrait screens, hidden on lg) -->
+  <div class="fixed right-0 top-1/2 -translate-y-1/2 z-40 lg:hidden">
     <button type="button" data-drawer-target="cart-drawer" data-drawer-show="cart-drawer" data-drawer-placement="right" aria-controls="cart-drawer" class="relative w-9 py-5 bg-emerald-600/30 hover:bg-emerald-600 active:bg-emerald-700 text-emerald-800 dark:text-emerald-300 hover:text-white font-black uppercase text-[10px] tracking-widest shadow-2xl cursor-pointer -skew-y-12 rounded-l-lg border-l border-y border-emerald-500/20 active:scale-95 transition-all flex flex-col items-center justify-center gap-2 opacity-75 active:opacity-100 hover:opacity-100 focus:opacity-100 focus:outline-none">
       <div class="skew-y-12 flex flex-col items-center gap-2">
         <svg class="w-4 h-4 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

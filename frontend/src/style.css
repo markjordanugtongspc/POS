@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
+@import "../node_modules/flowbite-datepicker/dist/css/datepicker.min.css";
 
 @theme {
   --color-primary: var(--color-emerald-500);
@@ -68,3 +69,14 @@ html, body {
   scrollbar-width: none;  /* Firefox */
 }
 
+/* Flowbite Datepicker Overrides */
+.datepicker {
+  z-index: 1000 !important; /* Ensure datepicker is above everything */
+}
+.datepicker-footer {
+  margin-top: 0.5rem;
+  padding-bottom: 0.25rem;
+}
+.datepicker-footer .datepicker-controls {
+  gap: 0.5rem;
+}
