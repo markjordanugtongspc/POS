@@ -3,7 +3,8 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import { initTheme, toggleTheme } from './modules/theme-toggle.js';
 import { initSidebar } from './modules/sidebar.js';
 import { initDrawer } from './modules/drawer.js';
-import { initDashboardPagination } from './modules/dashboard.js';
+import { initDashboardPagination, initLiveClock } from './modules/dashboard.js';
+import { initTransactions } from './modules/transactions.js';
 import './modules/auth.js';
 
 // Dynamic Sidebar HTML Injection
@@ -40,4 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
   injectSidebar();
   initDrawer();
   initDashboardPagination();
+  initLiveClock();
+  initTransactions();
 });

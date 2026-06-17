@@ -75,3 +75,53 @@ export function initDashboardPagination() {
 /* =========================================
    END COMMENT: DASHBOARD PAGINATION FUNCTION
    ========================================= */
+
+/* =========================================
+   START COMMENT: DASHBOARD LIVE CLOCK FUNCTION
+   ========================================= */
+export function initLiveClock() {
+  const clockText = document.getElementById('live-clock-text');
+  if (!clockText) return;
+
+  function updateClock() {
+    // Format date and time for ASIA/MANILA GMT +08
+    const options = {
+      timeZone: 'Asia/Manila',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    };
+    
+    const formatter = new Intl.DateTimeFormat('en-US', options);
+    const parts = formatter.formatToParts(new Date());
+    
+    // Construct the string e.g. "Jun 11, 2026 10:30:05 AM"
+    let dateStr = '';
+    let timeStr = '';
+    let ampmStr = '';
+    
+    parts.forEach(part => {
+      if (part.type === 'month') dateStr += part.value;
+      if (part.type === 'day') dateStr += ' ' + part.value;
+      if (part.type === 'literal' && part.value === ', ') dateStr += ', ';
+      if (part.type === 'year') dateStr += part.value;
+      
+      if (part.type === 'hour') timeStr += part.value;
+      if (part.type === 'literal' && part.value === ':') timeStr += ':';
+      if (part.type === 'minute') timeStr += part.value;
+      if (part.type === 'second') timeStr += ':' + part.value;
+      if (part.type === 'dayPeriod') ampmStr = part.value;
+    });
+
+    clockText.textContent = `${dateStr} ${timeStr} ${ampmStr}`;
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
+}
+/* =========================================
+   END COMMENT: DASHBOARD LIVE CLOCK FUNCTION
+   ========================================= */
