@@ -3,6 +3,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import { initTheme, toggleTheme } from './modules/theme-toggle.js';
 import { initSidebar } from './modules/sidebar.js';
 import { initDrawer } from './modules/drawer.js';
+import { initDashboardPagination } from './modules/dashboard.js';
 import './modules/auth.js';
 
 // Dynamic Sidebar HTML Injection
@@ -38,4 +39,5 @@ async function injectSidebar() {
 document.addEventListener('DOMContentLoaded', () => {
   injectSidebar();
   initDrawer();
+  initDashboardPagination();
 });

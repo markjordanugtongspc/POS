@@ -217,12 +217,10 @@
                 class="flex flex-col items-center justify-center p-3 rounded-2xl hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition group cursor-pointer">
                 <div
                   class="w-14 h-14 flex items-center justify-center bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition rounded-2xl">
-                  <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M10 6.025A7.5 7.5 0 1 0 17.975 14H10V6.025Z" />
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M13.5 3c-.169 0-.334.014-.5.025V11h7.975c.011-.166.025-.331.025-.5A7.5 7.5 0 0 0 13.5 3Z" />
+                   <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M4 4C2.895 4 2 4.895 2 6v16l2-2V12h22v14H7.828l-2 2H28V12V6c0-1.105-.895-2-2-2H4zM5 7a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm4 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm3 0h14v2H12V7zm10 7a2 2 0 0 0-1.457 3.127l-3.121 2.08A2 2 0 0 0 16 18a2 2 0 0 0-1.325.504l-2.718-.906A2 2 0 0 0 10 16a2 2 0 0 0-1.93 2.516l-5.777 5.777a1 1 0 0 0 1.414 1.414l5.777-5.777A2 2 0 0 0 10 20a2 2 0 0 0 1.324-.504l2.719.906A2 2 0 0 0 16 22a2 2 0 0 0 1.457-3.127l3.121-2.08A2 2 0 1 0 22 14z" />
                   </svg>
                 </div>
                 <span
@@ -394,23 +392,25 @@
 
         </div> <!-- Close grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 -->
 
-        <!-- Bottom Two-Column Grid: Low Stock + User Directory -->
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
-
         <!-- Low Stock Items Table Section -->
-        <div
-          class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-colors">
+        <div id="dashboard-page-1"
+          class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 mb-6 transition-colors">
           <div class="flex justify-between items-center mb-4">
             <div>
               <h2 class="text-sm font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider">Low Stock
                 Alert</h2>
               <p class="text-xs text-neutral-500 mt-1">Products running low or out of stock.</p>
             </div>
-            <span
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-950/30 text-xs font-semibold text-amber-600 dark:text-amber-400">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-              Attention Required
-            </span>
+            <div class="flex items-center gap-2">
+              <button disabled type="button"
+                class="dashboard-prev-btn inline-flex items-center justify-center text-xs font-bold px-3 py-1.5 rounded-full transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50">
+                Previous
+              </button>
+              <button type="button"
+                class="dashboard-next-btn inline-flex items-center justify-center text-xs font-bold px-3 py-1.5 rounded-full transition cursor-pointer bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/50">
+                Next
+              </button>
+            </div>
           </div>
 
           <div class="relative overflow-x-auto rounded-xl border border-neutral-200 dark:border-neutral-800">
@@ -564,18 +564,30 @@
         </div>
 
         <!-- User Management Table Section -->
-        <div
-          class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-colors">
+        <div id="dashboard-page-2"
+          class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 mb-6 transition-colors hidden">
           <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mb-6">
-            <div>
-              <h2 class="text-sm font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider">User
-                Directory</h2>
-              <p class="text-xs text-neutral-500 mt-1">Manage platform operators and permissions.</p>
+            <div class="flex items-start sm:items-center justify-between gap-4">
+              <div>
+                <h2 class="text-sm font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider">User
+                  Directory</h2>
+                <p class="text-xs text-neutral-500 mt-1">Manage platform operators and permissions.</p>
+              </div>
+              <div class="flex md:hidden items-center gap-2 shrink-0">
+                <button disabled type="button"
+                  class="dashboard-prev-btn inline-flex items-center justify-center text-xs font-bold px-3 py-1.5 rounded-full transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50">
+                  Prev
+                </button>
+                <button type="button"
+                  class="dashboard-next-btn inline-flex items-center justify-center text-xs font-bold px-3 py-1.5 rounded-full transition cursor-pointer bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/50">
+                  Next
+                </button>
+              </div>
             </div>
 
-            <div class="flex items-center flex-wrap gap-3">
+            <div class="flex items-center gap-3 w-full sm:w-auto">
               <!-- Action Dropdown Container -->
-              <div class="relative">
+              <div class="relative shrink-0">
                 <button onclick="document.getElementById('action-dropdown').classList.toggle('hidden')"
                   class="inline-flex items-center justify-center text-xs font-bold text-neutral-700 dark:text-neutral-300 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 px-3 py-2 rounded-xl focus:outline-none transition cursor-pointer"
                   type="button">
@@ -611,7 +623,7 @@
               </div>
 
               <!-- Search bar -->
-              <div class="relative w-full sm:w-64">
+              <div class="relative flex-1 sm:flex-none sm:w-64">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                   <svg class="w-4 h-4 text-neutral-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     fill="none" viewBox="0 0 24 24">
@@ -622,6 +634,17 @@
                 <input type="text"
                   class="block w-full ps-9 pe-3 py-2 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 text-xs rounded-xl focus:ring-emerald-500 focus:border-emerald-500 placeholder:text-neutral-400"
                   placeholder="Search users...">
+              </div>
+
+              <div class="hidden md:flex items-center gap-2 shrink-0">
+                <button disabled type="button"
+                  class="dashboard-prev-btn inline-flex items-center justify-center text-xs font-bold px-3 py-1.5 rounded-full transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50">
+                  Previous
+                </button>
+                <button type="button"
+                  class="dashboard-next-btn inline-flex items-center justify-center text-xs font-bold px-3 py-1.5 rounded-full transition cursor-pointer bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/50">
+                  Next
+                </button>
               </div>
             </div>
           </div>
@@ -859,8 +882,6 @@
             </table>
           </div>
         </div>
-
-        </div> <!-- Close Bottom Two-Column Grid -->
       </div>
     </div>
   </div>

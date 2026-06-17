@@ -46,6 +46,7 @@ export function initSidebar() {
 
   // Call dropdown init to bind click events
   initSidebarDropdowns();
+  initSidebarDrawer();
 }
 // ==========================================
 // END: initSidebar
@@ -73,4 +74,32 @@ function initSidebarDropdowns() {
 }
 // ==========================================
 // END: initSidebarDropdowns
+// ==========================================
+
+// ==========================================
+// TOP: initSidebarDrawer
+// Binds click handlers to toggle the mobile drawer
+// ==========================================
+function initSidebarDrawer() {
+  const toggleBtn = document.querySelector('[data-drawer-toggle="top-bar-sidebar"]');
+  const sidebar = document.getElementById('top-bar-sidebar');
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sidebar.classList.toggle('-translate-x-full');
+    });
+
+    // Optional: close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+      if (!sidebar.classList.contains('-translate-x-full') && 
+          !sidebar.contains(e.target) && 
+          !toggleBtn.contains(e.target) &&
+          window.innerWidth < 640) { // sm breakpoint
+        sidebar.classList.add('-translate-x-full');
+      }
+    });
+  }
+}
+// ==========================================
+// END: initSidebarDrawer
 // ==========================================
