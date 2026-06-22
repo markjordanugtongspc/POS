@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const screenPin = document.getElementById('auth-pin');
   const screenPassword = document.getElementById('auth-password');
 
+  // Guard: If not on login/auth page, do not initialize
+  if (!screenSelect || !screenPin || !screenPassword) {
+    return;
+  }
+
   const btnSelectPin = document.getElementById('btn-select-pin');
   const btnSelectPass = document.getElementById('btn-select-pass');
   const btnBackPin = document.getElementById('btn-back-to-select-pin');

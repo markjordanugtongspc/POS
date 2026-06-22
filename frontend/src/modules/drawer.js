@@ -16,8 +16,11 @@ export function initDrawer() {
     drawer.classList.remove('translate-x-full');
     drawer.classList.add('translate-x-0');
     if (backdrop) {
-      backdrop.classList.remove('hidden', 'opacity-0');
-      backdrop.classList.add('block', 'opacity-100');
+      backdrop.classList.remove('hidden');
+      // Force reflow
+      backdrop.offsetHeight;
+      backdrop.classList.remove('opacity-0');
+      backdrop.classList.add('opacity-100');
     }
   };
 
@@ -25,8 +28,11 @@ export function initDrawer() {
     drawer.classList.remove('translate-x-0');
     drawer.classList.add('translate-x-full');
     if (backdrop) {
-      backdrop.classList.remove('block', 'opacity-100');
-      backdrop.classList.add('hidden', 'opacity-0');
+      backdrop.classList.remove('opacity-100');
+      backdrop.classList.add('opacity-0');
+      setTimeout(() => {
+        backdrop.classList.add('hidden');
+      }, 300);
     }
   };
 
