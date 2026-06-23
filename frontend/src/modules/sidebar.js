@@ -15,8 +15,12 @@ export function initSidebar() {
     // Skip empty or placeholder links
     if (!href || href === '#') return;
 
+    // Normalize paths by stripping index.html, trailing slashes, search params, and hashes
+    const cleanPath = currentPath.replace('index.html', '').replace(/\/$/, '');
+    const cleanHref = href.split('?')[0].split('#')[0].replace('index.html', '').replace(/\/$/, '');
+
     // Check if current path matches the link's href
-    if (currentPath === href || (currentPath.startsWith(href) && href !== '/')) {
+    if (cleanPath === cleanHref || (cleanPath.startsWith(cleanHref) && cleanHref !== '')) {
       // Add active classes for the rectangle background, bold text, and primary color
       link.classList.remove('text-neutral-600', 'dark:text-neutral-300');
       link.classList.add(

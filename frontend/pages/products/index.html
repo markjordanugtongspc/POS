@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jorgy POS - Product List</title>
+  <!-- Link to the main style.css for Tailwind CSS -->
+  <link rel="stylesheet" href="../../src/style.css">
+</head>
+
+<body
+  class="bg-neutral-100 dark:bg-[#16171d] text-neutral-800 dark:text-neutral-100 min-h-screen transition-colors duration-300">
+  <div id="app" class="min-h-screen">
+    <!-- Sidebar & Top Navbar injected dynamically via main.js -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="p-4 sm:ml-64 mt-14 h-[calc(100vh-3.5rem)] flex flex-col gap-6 overflow-y-auto custom-scrollbar">
+
+      <!-- Header Section -->
+      <div class="flex flex-col gap-3 shrink-0 mt-2">
+        <!-- Breadcrumb Container -->
+        <nav id="product-breadcrumb-nav" class="hidden flex" aria-label="Breadcrumb">
+          <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+            <li class="inline-flex items-center">
+              <a href="#" id="breadcrumb-home-link" class="cursor-pointer inline-flex items-center text-sm font-medium text-neutral-500 hover:text-emerald-500 dark:text-neutral-400 dark:hover:text-emerald-400">
+                <svg class="w-4 h-4 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/></svg>
+                Home
+              </a>
+            </li>
+            <li>
+              <div class="flex items-center space-x-1.5">
+                <svg class="w-3.5 h-3.5 rtl:rotate-180 text-neutral-450" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/></svg>
+                <a href="#" id="breadcrumb-products-link" class="cursor-pointer inline-flex items-center text-sm font-medium text-neutral-500 hover:text-emerald-500 dark:text-neutral-400 dark:hover:text-emerald-400">Products</a>
+              </div>
+            </li>
+            <li aria-current="page">
+              <div class="flex items-center space-x-1.5">
+                <svg class="w-3.5 h-3.5 rtl:rotate-180 text-neutral-450" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/></svg>
+                <span id="breadcrumb-current-page" class="inline-flex items-center text-sm font-medium text-neutral-400 dark:text-neutral-505 select-none">Product Details</span>
+              </div>
+            </li>
+          </ol>
+        </nav>
+
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h1 id="product-header-title" class="text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight">Product List</h1>
+            <p id="product-header-desc" class="text-sm font-medium text-neutral-500 dark:text-neutral-400 mt-1">Manage your products</p>
+          </div>
+          <!-- Right side actions -->
+          <div id="product-header-actions" class="flex items-center gap-3 w-full md:w-auto">
+            <!-- Add Product Button -->
+            <button type="button" id="btn-add-product"
+              class="cursor-pointer w-full md:w-auto px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-extrabold text-sm rounded-none shadow-md transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 dark:focus:ring-offset-[#16171d]">
+              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14m-7-7v14"/>
+              </svg>
+              Add Product
+            </button>
+
+            <!-- Export Products Button -->
+            <button type="button" id="btn-export-products"
+              class="cursor-pointer w-full md:w-auto px-4 py-2.5 bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-extrabold text-sm rounded-none shadow-md transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 dark:focus:ring-offset-[#16171d]">
+              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4"/>
+              </svg>
+              Export Products
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wrapper for main list components to toggle visibility -->
+      <div id="product-list-view" class="flex flex-col gap-6">
+
+      <!-- Controls Row: Search & Filters -->
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 bg-white dark:bg-[#1f2029] border border-neutral-200 dark:border-neutral-800 p-6 rounded-none shadow-sm shrink-0">
+        <!-- Search bar -->
+        <div class="relative w-full lg:w-96 shrink-0">
+          <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+            <svg class="w-4 h-4 text-neutral-400 dark:text-neutral-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+            </svg>
+          </div>
+          <input type="text" id="search-products"
+            class="block w-full ps-10 pe-3 py-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-950 dark:text-white text-sm rounded-none focus:ring-emerald-500 focus:border-emerald-500 placeholder-neutral-400 dark:placeholder-neutral-500 transition-colors shadow-xs"
+            placeholder="Search products by Name or SKU...">
+        </div>
+
+        <!-- Category & Brand Filter Interface -->
+        <div class="flex-1 flex items-center justify-end w-full gap-4">
+          
+          <!-- Primary Filter Trigger Buttons -->
+          <div id="filter-trigger-buttons" class="flex items-center gap-3 transition-all duration-300">
+            <!-- Category Trigger -->
+            <button type="button" id="btn-filter-category-trigger"
+              class="cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-black text-white bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 active:scale-95 transition-all duration-300 shadow-sm rounded-none">
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581a1.125 1.125 0 0 0 1.591 0l4.318-4.318a1.125 1.125 0 0 0 0-1.591l-9.581-9.581a1.125 1.125 0 0 0-1.591-.659ZM6 7.5h.008v.008H6V7.5Z"></path>
+              </svg>
+              <span>Category Filter</span>
+            </button>
+
+            <!-- Brand Trigger -->
+            <button type="button" id="btn-filter-brand-trigger"
+              class="cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-black text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 active:scale-95 transition-all duration-300 shadow-sm rounded-none">
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-.778.099-1.533.284-2.253"></path>
+              </svg>
+              <span>Brand Filter</span>
+            </button>
+          </div>
+
+          <!-- Category Inline Selection Container -->
+          <div id="category-inline-choices" class="hidden opacity-0 -translate-x-4 transition-all duration-300 flex items-center justify-end gap-3">
+            <div class="flex items-center gap-2 flex-wrap">
+              <!-- Back button -->
+              <button type="button" id="btn-category-back" title="Back"
+                class="cursor-pointer inline-flex items-center justify-center w-8 h-8 text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-850 hover:bg-neutral-200 dark:hover:bg-neutral-750 transition rounded-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"></path>
+                </svg>
+              </button>
+              
+              <!-- Magnifying Glass Search Button -->
+              <button type="button" id="btn-category-search-toggle" title="Search Category"
+                class="cursor-pointer inline-flex items-center justify-center w-8 h-8 text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-850 hover:bg-neutral-200 dark:hover:bg-neutral-750 transition rounded-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.637 10.637Z"></path>
+                </svg>
+              </button>
+
+              <!-- Small Search Input (hidden by default) -->
+              <input type="text" id="category-search-input" placeholder="Search..."
+                class="hidden w-28 px-2 py-1 text-xs bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-none focus:ring-emerald-500 focus:border-emerald-500 dark:text-white font-bold transition-all duration-300">
+
+              <span class="text-xs font-black text-neutral-500 dark:text-neutral-400 uppercase tracking-wider select-none shrink-0 ml-2">Category:</span>
+
+              <!-- Buttons Container -->
+              <div class="flex items-center gap-1.5 flex-wrap" id="category-buttons-container"></div>
+            </div>
+
+            <!-- Clear button on the far right -->
+            <button type="button" id="btn-category-clear"
+              class="cursor-pointer px-3 py-1.5 text-xs font-black text-red-600 dark:text-red-400 bg-red-50/80 dark:bg-red-950/20 hover:bg-red-100 dark:hover:bg-red-900/30 border border-red-200 dark:border-red-800 transition rounded-none">
+              Clear
+            </button>
+          </div>
+
+          <!-- Brand Inline Selection Container -->
+          <div id="brand-inline-choices" class="hidden opacity-0 -translate-x-4 transition-all duration-300 flex items-center justify-end gap-3">
+            <div class="flex items-center gap-2 flex-wrap">
+              <!-- Back button -->
+              <button type="button" id="btn-brand-back" title="Back"
+                class="cursor-pointer inline-flex items-center justify-center w-8 h-8 text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-850 hover:bg-neutral-200 dark:hover:bg-neutral-750 transition rounded-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"></path>
+                </svg>
+              </button>
+              
+              <!-- Magnifying Glass Search Button -->
+              <button type="button" id="btn-brand-search-toggle" title="Search Brand"
+                class="cursor-pointer inline-flex items-center justify-center w-8 h-8 text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-850 hover:bg-neutral-200 dark:hover:bg-neutral-750 transition rounded-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.637 10.637Z"></path>
+                </svg>
+              </button>
+
+              <!-- Small Search Input (hidden by default) -->
+              <input type="text" id="brand-search-input" placeholder="Search..."
+                class="hidden w-28 px-2 py-1 text-xs bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-none focus:ring-emerald-500 focus:border-emerald-500 dark:text-white font-bold transition-all duration-300">
+
+              <span class="text-xs font-black text-neutral-500 dark:text-neutral-400 uppercase tracking-wider select-none shrink-0 ml-2">Brand:</span>
+
+              <!-- Buttons Container -->
+              <div class="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap scrollbar-none cursor-grab select-none max-w-[280px]" id="brand-buttons-container"></div>
+            </div>
+
+            <!-- Clear button on the far right -->
+            <button type="button" id="btn-brand-clear"
+              class="cursor-pointer px-3 py-1.5 text-xs font-black text-red-600 dark:text-red-400 bg-red-50/80 dark:bg-red-950/20 hover:bg-red-100 dark:hover:bg-red-900/30 border border-red-200 dark:border-red-800 transition rounded-none">
+              Clear
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Table Section -->
+      <div class="relative bg-white dark:bg-[#1f2029] rounded-none border border-neutral-200 dark:border-neutral-800 shadow-sm">
+        
+        <!-- Scrollable Table Body Wrapper (Horizontal only) -->
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-sm text-left text-neutral-500 dark:text-neutral-400">
+            <thead class="text-xs text-neutral-700 dark:text-neutral-300 uppercase bg-neutral-50 dark:bg-neutral-900/60 border-b border-neutral-200 dark:border-neutral-800 sticky top-0 z-10 select-none">
+              <tr>
+                <th scope="col" class="p-4 w-12">
+                  <div class="flex items-center">
+                    <input id="check-all-products" type="checkbox"
+                      class="cursor-pointer w-4 h-4 border border-neutral-300 dark:border-neutral-700 rounded bg-white dark:bg-neutral-900 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-offset-neutral-900 text-emerald-600">
+                    <label for="check-all-products" class="sr-only">Select all products</label>
+                  </div>
+                </th>
+                <th scope="col" class="px-6 py-4 font-bold cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800/80 transition-colors" data-sort="sku">
+                  <div class="flex items-center gap-1">
+                    SKU
+                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                  </div>
+                </th>
+                <th scope="col" class="px-6 py-4 font-bold cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800/80 bg-neutral-100/50 dark:bg-neutral-900/60 transition-colors" data-sort="name">
+                  <div class="flex items-center gap-1">
+                    Product Name
+                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                  </div>
+                </th>
+                <th scope="col" class="px-6 py-4 font-bold cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800/80 transition-colors" data-sort="category">
+                  <div class="flex items-center gap-1">
+                    Category
+                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                  </div>
+                </th>
+                <th scope="col" class="px-6 py-4 font-bold cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800/80 bg-neutral-100/50 dark:bg-neutral-900/60 transition-colors" data-sort="brand">
+                  <div class="flex items-center gap-1">
+                    Brand
+                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                  </div>
+                </th>
+                <th scope="col" class="px-6 py-4 font-bold cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800/80 transition-colors" data-sort="price">
+                  <div class="flex items-center gap-1">
+                    Price
+                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                  </div>
+                </th>
+                <th scope="col" class="px-6 py-4 font-bold cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800/80 transition-colors" data-sort="qty">
+                  <div class="flex items-center gap-1">
+                    Qty
+                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                  </div>
+                </th>
+                <th scope="col" class="px-6 py-4 font-bold cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800/80 bg-neutral-100/50 dark:bg-neutral-900/60 transition-colors" data-sort="createdBy">
+                  <div class="flex items-center gap-1">
+                    Created By
+                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                  </div>
+                </th>
+                <th scope="col" class="px-6 py-4 font-bold text-center">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody id="products-table-body" class="divide-y divide-neutral-100 dark:divide-neutral-800/60 font-sans text-neutral-800 dark:text-neutral-200">
+              <!-- Dynamically populated via products.js (skeleton state or actual data rows) -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Footer / Pagination Area -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 bg-neutral-50 dark:bg-neutral-900/60 p-4 border-t border-neutral-200 dark:border-neutral-800 shrink-0">
+          <!-- Page size picker and range indicator -->
+          <div class="flex items-center gap-3 text-xs font-extrabold text-neutral-500 dark:text-neutral-400">
+            <span>Show</span>
+            <select id="entries-per-page" class="cursor-pointer bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg pl-3 pr-8 py-1.5 focus:ring-emerald-500 focus:border-emerald-500 text-neutral-800 dark:text-white font-extrabold transition-colors">
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <span>Entries</span>
+            <span class="mx-2 text-neutral-350 dark:text-neutral-700">|</span>
+            <span id="pagination-status">Showing 0-0 of 0 entries</span>
+          </div>
+
+          <!-- Pagination numbers -->
+          <nav aria-label="Page navigation">
+            <ul class="inline-flex -space-x-px text-sm font-extrabold" id="products-pagination">
+              <!-- Pagination links injected dynamically -->
+            </ul>
+          </nav>
+        </div>
+
+      </div> <!-- End of Table Section -->
+    </div> <!-- End of #product-list-view -->
+
+      <!-- Product Details Container (hidden by default) -->
+      <div id="product-details-container" class="hidden bg-white dark:bg-[#1f2029] border border-neutral-200 dark:border-neutral-800 p-6 rounded-none shadow-sm flex flex-col md:flex-row gap-8">
+        
+        <!-- Left Side: Details Table (2/3 width) -->
+        <div class="w-full md:w-2/3 flex flex-col gap-6">
+
+          <!-- Details Table -->
+          <div class="overflow-x-auto w-full">
+            <table class="w-full text-sm text-left border border-neutral-200 dark:border-neutral-800 rounded-none text-neutral-800 dark:text-neutral-200 border-collapse">
+              <tbody>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold w-1/3 text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Product</td>
+                  <td id="detail-tbl-name" class="px-6 py-3 font-bold text-neutral-900 dark:text-white"></td>
+                </tr>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Category</td>
+                  <td id="detail-tbl-category" class="px-6 py-3 font-semibold text-neutral-900 dark:text-white"></td>
+                </tr>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Sub Category</td>
+                  <td class="px-6 py-3 font-semibold text-neutral-900 dark:text-white">None</td>
+                </tr>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Brand</td>
+                  <td id="detail-tbl-brand" class="px-6 py-3 font-semibold text-neutral-900 dark:text-white"></td>
+                </tr>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Unit</td>
+                  <td class="px-6 py-3 font-semibold text-neutral-900 dark:text-white">Piece</td>
+                </tr>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">SKU</td>
+                  <td id="detail-tbl-sku" class="px-6 py-3 font-bold text-neutral-900 dark:text-white"></td>
+                </tr>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Minimum Qty</td>
+                  <td class="px-6 py-3 font-semibold text-neutral-900 dark:text-white">5</td>
+                </tr>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Quantity</td>
+                  <td id="detail-tbl-qty" class="px-6 py-3 font-bold"></td>
+                </tr>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Tax</td>
+                  <td class="px-6 py-3 font-semibold text-neutral-900 dark:text-white">0.00 %</td>
+                </tr>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold text-neutral-550 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Discount Type</td>
+                  <td class="px-6 py-3 font-semibold text-neutral-900 dark:text-white">Percentage</td>
+                </tr>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold text-neutral-550 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Price</td>
+                  <td id="detail-tbl-price" class="px-6 py-3 font-bold text-neutral-950 dark:text-white"></td>
+                </tr>
+                <tr class="border-b border-neutral-200 dark:border-neutral-800">
+                  <td class="px-6 py-3 font-bold text-neutral-550 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Status</td>
+                  <td id="detail-tbl-status" class="px-6 py-3 font-semibold text-neutral-900 dark:text-white"></td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-3 font-bold text-neutral-550 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/40 border-r border-neutral-200 dark:border-neutral-800 select-none">Description</td>
+                  <td id="detail-tbl-desc" class="px-6 py-3 font-semibold text-neutral-900 dark:text-white"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right Side: Product Image & Details (1/3 width) -->
+        <div class="w-full md:w-1/3 flex flex-col items-center justify-start border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 p-6 rounded-none">
+          <div class="w-full aspect-video md:aspect-square overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 flex items-center justify-center">
+            <img id="detail-product-image" src="" alt="Product Image" class="w-full h-full object-contain p-2">
+          </div>
+          <span id="detail-product-filename" class="text-xs font-bold text-neutral-800 dark:text-neutral-200 mt-4 text-center"></span>
+          <span id="detail-product-filesize" class="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 mt-0.5 text-center"></span>
+
+          <!-- Navigation Arrow Triggers -->
+          <div class="flex items-center gap-4 mt-6">
+            <button type="button" id="btn-detail-prev" class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-350 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"></path>
+              </svg>
+            </button>
+            <button type="button" id="btn-detail-next" class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-350 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden Version Metadata for auto-increments -->
+      <div class="hidden text-neutral-400 text-[10px] select-none pointer-events-none" aria-hidden="true">
+        v<!-- VERSION_START -->7.9-alpha<!-- VERSION_END -->
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="../../src/main.js"></script>
+</body>
+
+</html>

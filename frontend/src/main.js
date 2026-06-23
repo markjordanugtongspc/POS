@@ -6,6 +6,7 @@ import { initSidebar } from './modules/sidebar.js';
 import { initDrawer } from './modules/drawer.js';
 import { initDashboardPagination, initLiveClock } from './modules/dashboard.js';
 import { initTransactions } from './modules/transactions.js';
+import { initProductsPage } from './modules/products.js';
 import './modules/auth.js';
 
 // Dynamic Sidebar HTML Injection
@@ -44,4 +45,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initDashboardPagination();
   initLiveClock();
   initTransactions();
+  initProductsPage();
 });
