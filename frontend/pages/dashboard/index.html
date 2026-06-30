@@ -59,7 +59,8 @@
                   </div>
                   <span class="text-sm font-bold text-neutral-600 dark:text-neutral-300">Sales today</span>
                 </div>
-                <div class="text-3xl font-extrabold text-[#111827] dark:text-white leading-none">₱9,442.00</div>
+                <div class="dashboard-skeleton-data h-8 bg-neutral-200 dark:bg-neutral-800 rounded-full w-32 animate-pulse"></div>
+                <div class="dashboard-actual-data hidden text-3xl font-extrabold text-[#111827] dark:text-white leading-none">₱9,442.00</div>
               </div>
 
               <div class="flex items-center gap-3 text-[10px] font-bold text-neutral-500 mt-6">
@@ -80,11 +81,18 @@
             <div class="absolute top-6 right-6 bottom-6 flex flex-col items-end justify-between pointer-events-none">
 
               <!-- Badge -->
+              <div class="dashboard-skeleton-data h-4 bg-neutral-200 dark:bg-neutral-800 rounded-full w-12 mt-1.5 pointer-events-auto animate-pulse"></div>
               <span
-                class="inline-block mt-1.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 rounded-full w-max pointer-events-auto">+12.5%</span>
+                class="dashboard-actual-data hidden inline-block mt-1.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 rounded-full w-max pointer-events-auto">+12.5%</span>
 
               <!-- Peak Time Mini Bar Chart -->
-              <div class="flex items-end gap-2 h-16 pointer-events-auto">
+              <div class="dashboard-skeleton-data flex items-baseline gap-2 h-16 mt-2 pointer-events-auto animate-pulse w-full justify-end max-w-[120px]">
+                <div class="w-4 bg-neutral-200 dark:bg-neutral-800 rounded-t-sm h-6"></div>
+                <div class="w-4 bg-neutral-200 dark:bg-neutral-800 rounded-t-sm h-10"></div>
+                <div class="w-4 bg-neutral-200 dark:bg-neutral-800 rounded-t-sm h-16"></div>
+                <div class="w-4 bg-neutral-200 dark:bg-neutral-800 rounded-t-sm h-8"></div>
+              </div>
+              <div class="dashboard-actual-data hidden flex items-end gap-2 h-16 pointer-events-auto">
                 <!-- 6AM - 11AM -->
                 <div class="flex flex-col items-center gap-1 group cursor-pointer">
                   <div
@@ -246,7 +254,8 @@
                 </svg>
               </div>
               <div>
-                <div class="text-xl font-extrabold text-[#111827] dark:text-white mb-1">₱30,000</div>
+                <div class="dashboard-skeleton-data h-6 bg-neutral-200 dark:bg-neutral-800 rounded-full w-24 mb-1 animate-pulse"></div>
+                <div class="dashboard-actual-data hidden text-xl font-extrabold text-[#111827] dark:text-white mb-1">₱30,000</div>
                 <div class="text-xs font-bold text-neutral-500 dark:text-neutral-400">This Month</div>
               </div>
             </div>
@@ -263,7 +272,8 @@
                 </svg>
               </div>
               <div>
-                <div class="text-xl font-extrabold text-[#111827] dark:text-white mb-1">₱350,000</div>
+                <div class="dashboard-skeleton-data h-6 bg-neutral-200 dark:bg-neutral-800 rounded-full w-24 mb-1 animate-pulse"></div>
+                <div class="dashboard-actual-data hidden text-xl font-extrabold text-[#111827] dark:text-white mb-1">₱350,000</div>
                 <div class="text-xs font-bold text-neutral-500 dark:text-neutral-400">This Year</div>
               </div>
             </div>
@@ -280,7 +290,8 @@
                 </svg>
               </div>
               <div>
-                <div class="text-2xl font-extrabold text-[#111827] dark:text-white mb-1">13</div>
+                <div class="dashboard-skeleton-data h-7 bg-neutral-200 dark:bg-neutral-800 rounded-full w-12 mb-1 animate-pulse"></div>
+                <div class="dashboard-actual-data hidden text-2xl font-extrabold text-[#111827] dark:text-white mb-1">13</div>
                 <div class="text-xs font-bold text-neutral-500 dark:text-neutral-400">Low Stocks Items</div>
               </div>
             </div>
@@ -297,7 +308,8 @@
                 </svg>
               </div>
               <div>
-                <div class="text-2xl font-extrabold text-[#111827] dark:text-white mb-1">09</div>
+                <div class="dashboard-skeleton-data h-7 bg-neutral-200 dark:bg-neutral-800 rounded-full w-12 mb-1 animate-pulse"></div>
+                <div class="dashboard-actual-data hidden text-2xl font-extrabold text-[#111827] dark:text-white mb-1">09</div>
                 <div class="text-xs font-bold text-neutral-500 dark:text-neutral-400">Out of Stock</div>
               </div>
             </div>
@@ -413,7 +425,45 @@
           </div>
 
           <div class="relative overflow-x-auto rounded-xl border border-neutral-200 dark:border-neutral-800">
-            <table class="w-full text-sm text-left text-neutral-500 dark:text-neutral-400">
+            <div role="status" class="dashboard-skeleton-data max-w-full p-4 border-0 divide-y divide-neutral-200 dark:divide-neutral-700 rounded-none shadow-xs animate-pulse md:p-6 w-full">
+                <div class="flex items-center justify-between pb-4">
+                    <div>
+                        <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mb-2.5"></div>
+                        <div class="w-32 h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+                    </div>
+                    <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-12"></div>
+                </div>
+                <div class="flex items-center justify-between py-4">
+                    <div>
+                        <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mb-2.5"></div>
+                        <div class="w-32 h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+                    </div>
+                    <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-12"></div>
+                </div>
+                <div class="flex items-center justify-between py-4">
+                    <div>
+                        <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mb-2.5"></div>
+                        <div class="w-32 h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+                    </div>
+                    <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-12"></div>
+                </div>
+                <div class="flex items-center justify-between py-4">
+                    <div>
+                        <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mb-2.5"></div>
+                        <div class="w-32 h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+                    </div>
+                    <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-12"></div>
+                </div>
+                <div class="flex items-center justify-between py-4">
+                    <div>
+                        <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mb-2.5"></div>
+                        <div class="w-32 h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+                    </div>
+                    <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-12"></div>
+                </div>
+                <span class="sr-only">Loading...</span>
+            </div>
+            <table class="dashboard-actual-data hidden w-full text-sm text-left text-neutral-500 dark:text-neutral-400">
               <thead
                 class="text-xs text-neutral-700 dark:text-neutral-300 bg-neutral-50 dark:bg-neutral-900/50 border-b border-neutral-200 dark:border-neutral-800 uppercase font-bold">
                 <tr>
@@ -649,7 +699,45 @@
           </div>
 
           <div class="relative overflow-x-auto rounded-xl border border-neutral-200 dark:border-neutral-800">
-            <table class="w-full text-sm text-left text-neutral-500 dark:text-neutral-400">
+            <div role="status" class="dashboard-skeleton-data max-w-full p-4 border-0 divide-y divide-neutral-200 dark:divide-neutral-700 rounded-none shadow-xs animate-pulse md:p-6 w-full">
+                <div class="flex items-center justify-between pb-4">
+                    <div>
+                        <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mb-2.5"></div>
+                        <div class="w-32 h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+                    </div>
+                    <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-12"></div>
+                </div>
+                <div class="flex items-center justify-between py-4">
+                    <div>
+                        <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mb-2.5"></div>
+                        <div class="w-32 h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+                    </div>
+                    <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-12"></div>
+                </div>
+                <div class="flex items-center justify-between py-4">
+                    <div>
+                        <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mb-2.5"></div>
+                        <div class="w-32 h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+                    </div>
+                    <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-12"></div>
+                </div>
+                <div class="flex items-center justify-between py-4">
+                    <div>
+                        <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mb-2.5"></div>
+                        <div class="w-32 h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+                    </div>
+                    <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-12"></div>
+                </div>
+                <div class="flex items-center justify-between py-4">
+                    <div>
+                        <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mb-2.5"></div>
+                        <div class="w-32 h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+                    </div>
+                    <div class="h-2.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-12"></div>
+                </div>
+                <span class="sr-only">Loading...</span>
+            </div>
+            <table class="dashboard-actual-data hidden w-full text-sm text-left text-neutral-500 dark:text-neutral-400">
               <thead
                 class="text-xs text-neutral-700 dark:text-neutral-300 bg-neutral-50 dark:bg-neutral-900/50 border-b border-neutral-200 dark:border-neutral-800 uppercase font-bold">
                 <tr>

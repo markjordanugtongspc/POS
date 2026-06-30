@@ -125,3 +125,21 @@ export function initLiveClock() {
 /* =========================================
    END COMMENT: DASHBOARD LIVE CLOCK FUNCTION
    ========================================= */
+
+/* =========================================
+   START COMMENT: DASHBOARD SKELETON LOADER
+   ========================================= */
+export function initDashboardSkeletons() {
+  const skeletons = document.querySelectorAll('.dashboard-skeleton-data');
+  const actuals = document.querySelectorAll('.dashboard-actual-data');
+  
+  if (skeletons.length > 0 && actuals.length > 0) {
+    setTimeout(() => {
+      skeletons.forEach(el => el.remove());
+      actuals.forEach(el => el.classList.remove('hidden'));
+    }, 1200); // Simulate network delay
+  }
+}
+/* =========================================
+   END COMMENT: DASHBOARD SKELETON LOADER
+   ========================================= */

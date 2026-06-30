@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Terminal - Manage Users</title>
+  <link rel="stylesheet" href="../../src/style.css">
+</head>
+
+<body
+  class="bg-neutral-100 dark:bg-dark-bg text-neutral-800 dark:text-neutral-100 min-h-screen transition-colors duration-300">
+
+  <div id="app" class="min-h-screen">
+    <!-- Sidebar & Top Navbar injected dynamically via main.js -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="p-4 sm:ml-64 mt-14">
+      <div class="p-4 border border-neutral-200 dark:border-neutral-800 border-dashed rounded-none">
+        
+        <!-- The active component (owner/cashiers/inventorym) will be injected here -->
+        <div id="users-content-container">
+          <!-- Default empty state before JS load -->
+          <div class="flex items-center justify-center h-64">
+            <div class="text-center">
+              <svg class="w-10 h-10 mx-auto mb-4 text-neutral-400 dark:text-neutral-500 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <p class="text-sm font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-widest">Loading component...</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../../src/main.js"></script>
+</body>
+
+</html>

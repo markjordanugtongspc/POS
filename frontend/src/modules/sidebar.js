@@ -20,7 +20,22 @@ export function initSidebar() {
     const cleanHref = href.split('?')[0].split('#')[0].replace('index.html', '').replace(/\/$/, '');
 
     // Check if current path matches the link's href
-    if (cleanPath === cleanHref || (cleanPath.startsWith(cleanHref) && cleanHref !== '')) {
+    let isActive = false;
+    
+    if (href.includes('#')) {
+      const hrefHash = href.substring(href.indexOf('#'));
+      const currentHash = window.location.hash || '#owner'; // Default hash for users page
+      
+      if (cleanPath === cleanHref && currentHash === hrefHash) {
+        isActive = true;
+      }
+    } else {
+      if (cleanPath === cleanHref || (cleanPath.startsWith(cleanHref) && cleanHref !== '')) {
+        isActive = true;
+      }
+    }
+
+    if (isActive) {
       // Add active classes for the rectangle background, bold text, and primary color
       link.classList.remove('text-neutral-600', 'dark:text-neutral-300');
       link.classList.add(
@@ -40,11 +55,23 @@ export function initSidebar() {
 
       // If this link is inside a dropdown, automatically expand the parent dropdown and style the connector line active
       const parentDropdown = link.closest('ul');
-      if (parentDropdown && parentDropdown.id === 'dropdown-users') {
+      if (parentDropdown && parentDropdown.id.startsWith('dropdown-')) {
         parentDropdown.classList.remove('hidden');
         link.classList.remove('before:bg-neutral-200', 'dark:before:bg-neutral-800');
         link.classList.add('before:bg-emerald-500', 'dark:before:bg-emerald-400');
       }
+    } else if (href.includes('#') && cleanPath === cleanHref) {
+      // For hash links that share the path but have a different hash, make sure they are NOT active
+      link.classList.add('text-neutral-600', 'dark:text-neutral-300');
+      link.classList.remove(
+        'bg-emerald-50',
+        'dark:bg-emerald-900/30',
+        'text-emerald-700',
+        'dark:text-emerald-400',
+        'font-extrabold'
+      );
+      link.classList.add('before:bg-neutral-200', 'dark:before:bg-neutral-800');
+      link.classList.remove('before:bg-emerald-500', 'dark:before:bg-emerald-400');
     }
   });
 

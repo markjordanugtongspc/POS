@@ -4,11 +4,12 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import { initTheme, toggleTheme } from './modules/theme-toggle.js';
 import { initSidebar } from './modules/sidebar.js';
 import { initDrawer } from './modules/drawer.js';
-import { initDashboardPagination, initLiveClock } from './modules/dashboard.js';
+import { initDashboardPagination, initLiveClock, initDashboardSkeletons } from './modules/dashboard.js';
 import { initTransactions } from './modules/transactions.js';
 import { initProductsPage } from './modules/products.js';
 import { initInbox } from './modules/inbox.js';
 import { initTicket } from './modules/ticket.js';
+import { initUsers } from './modules/users.js';
 import './modules/auth.js';
 
 // Dynamic Sidebar HTML Injection
@@ -48,8 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.querySelector('[data-drawer-target="cart-drawer"]')) {
     initDrawer();
   }
+
+  // Initialize dynamic users SPA routing if on the Users page
+  if (document.getElementById('users-content-container')) {
+    initUsers();
+  }
+
   
   initDashboardPagination();
+  initDashboardSkeletons();
   initLiveClock();
   initTransactions();
   initProductsPage();
