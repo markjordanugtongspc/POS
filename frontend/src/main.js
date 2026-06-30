@@ -7,6 +7,8 @@ import { initDrawer } from './modules/drawer.js';
 import { initDashboardPagination, initLiveClock } from './modules/dashboard.js';
 import { initTransactions } from './modules/transactions.js';
 import { initProductsPage } from './modules/products.js';
+import { initInbox } from './modules/inbox.js';
+import { initTicket } from './modules/ticket.js';
 import './modules/auth.js';
 
 // Dynamic Sidebar HTML Injection
@@ -41,9 +43,16 @@ async function injectSidebar() {
 
 document.addEventListener('DOMContentLoaded', () => {
   injectSidebar();
-  initDrawer();
+  
+  // Only inject cart drawer if the page uses it (e.g. POS page)
+  if (document.querySelector('[data-drawer-target="cart-drawer"]')) {
+    initDrawer();
+  }
+  
   initDashboardPagination();
   initLiveClock();
   initTransactions();
   initProductsPage();
+  initInbox();
+  initTicket();
 });

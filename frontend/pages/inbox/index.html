@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Terminal - Inbox</title>
+  <link rel="stylesheet" href="../../src/style.css">
+</head>
+
+<body
+  class="bg-neutral-100 dark:bg-dark-bg text-neutral-800 dark:text-neutral-100 min-h-screen transition-colors duration-300">
+
+  <div id="app" class="min-h-screen">
+    <!-- Sidebar & Top Navbar injected dynamically via main.js -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="p-4 sm:ml-64 mt-14">
+      <div class="p-4 border border-neutral-200 dark:border-neutral-800 border-dashed rounded-none">
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <div>
+            <h1 class="text-xl font-black text-neutral-900 dark:text-white tracking-tight">All Inbox</h1>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400">View and manage your notifications.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <!-- Mark all as read -->
+            <button id="mark-all-read-btn" class="cursor-pointer px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition flex items-center gap-2 rounded-none">
+              <svg class="w-4 h-4 animate-fade-in" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
+              </svg>
+              Mark all as read
+            </button>
+            <!-- Delete All -->
+            <button id="delete-all-btn" class="cursor-pointer px-4 py-2 text-xs font-bold text-white bg-red-600 hover:bg-red-700 transition flex items-center gap-2 rounded-none">
+              <svg class="w-4 h-4 animate-fade-in" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+              </svg>
+              Delete All
+            </button>
+          </div>
+        </div>
+
+        <!-- Notifications List -->
+        <div id="notifications-container" class="space-y-4">
+          <!-- Dynamically populated or skeleton loader here -->
+        </div>
+
+        <!-- Scroll anchor for infinite scroll loading -->
+        <div id="infinite-scroll-trigger" class="h-10 flex items-center justify-center mt-4">
+          <!-- Dynamic loading indicator/spinner or hidden -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../../src/main.js"></script>
+</body>
+
+</html>
