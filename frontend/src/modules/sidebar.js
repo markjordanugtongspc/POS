@@ -8,6 +8,27 @@ export function initSidebar() {
 
   const sidebarLinks = sidebarContainer.querySelectorAll('ul li a');
   const currentPath = window.location.pathname;
+  const cleanPath = currentPath.replace('index.html', '').replace(/\/$/, '');
+  const linkMatches = Array.from(sidebarLinks)
+    .filter(link => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#') return false;
+
+      const cleanHref = href.split('?')[0].split('#')[0].replace('index.html', '').replace(/\/$/, '');
+      if (href.includes('#')) {
+        const hrefHash = href.substring(href.indexOf('#'));
+        const currentHash = window.location.hash || '#owner';
+        return cleanPath === cleanHref && currentHash === hrefHash;
+      }
+
+      return cleanPath === cleanHref || (cleanPath.startsWith(`${cleanHref}/`) && cleanHref !== '');
+    })
+    .sort((a, b) => {
+      const aHref = a.getAttribute('href').split('?')[0].split('#')[0].length;
+      const bHref = b.getAttribute('href').split('?')[0].split('#')[0].length;
+      return bHref - aHref;
+    });
+  const activeLink = linkMatches[0];
 
   sidebarLinks.forEach(link => {
     const href = link.getAttribute('href');
@@ -15,25 +36,8 @@ export function initSidebar() {
     // Skip empty or placeholder links
     if (!href || href === '#') return;
 
-    // Normalize paths by stripping index.html, trailing slashes, search params, and hashes
-    const cleanPath = currentPath.replace('index.html', '').replace(/\/$/, '');
     const cleanHref = href.split('?')[0].split('#')[0].replace('index.html', '').replace(/\/$/, '');
-
-    // Check if current path matches the link's href
-    let isActive = false;
-    
-    if (href.includes('#')) {
-      const hrefHash = href.substring(href.indexOf('#'));
-      const currentHash = window.location.hash || '#owner'; // Default hash for users page
-      
-      if (cleanPath === cleanHref && currentHash === hrefHash) {
-        isActive = true;
-      }
-    } else {
-      if (cleanPath === cleanHref || (cleanPath.startsWith(cleanHref) && cleanHref !== '')) {
-        isActive = true;
-      }
-    }
+    let isActive = link === activeLink;
 
     if (isActive) {
       // Add active classes for the rectangle background, bold text, and primary color

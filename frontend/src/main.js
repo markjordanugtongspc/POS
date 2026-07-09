@@ -10,6 +10,7 @@ import { initProductsPage } from './modules/products.js';
 import { initInbox } from './modules/inbox.js';
 import { initTicket } from './modules/ticket.js';
 import { initUsers } from './modules/users.js';
+import { initKnowledgePages } from './modules/docs.js';
 import './modules/auth.js';
 
 // Dynamic Sidebar HTML Injection
@@ -63,4 +64,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initProductsPage();
   initInbox();
   initTicket();
+  initKnowledgePages();
 });

@@ -11,6 +11,10 @@ export function initTheme() {
     document.documentElement.classList.remove('dark');
     localStorage.setItem('theme', 'light');
   }
+
+  document.dispatchEvent(new CustomEvent('jorgy:theme-change', {
+    detail: { theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light' }
+  }));
 }
 
 export function toggleTheme() {
@@ -23,6 +27,10 @@ export function toggleTheme() {
     document.documentElement.classList.add('dark');
     localStorage.setItem('theme', 'dark');
   }
+
+  document.dispatchEvent(new CustomEvent('jorgy:theme-change', {
+    detail: { theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light' }
+  }));
 }
 
 // Automatically setup listeners when document is parsed

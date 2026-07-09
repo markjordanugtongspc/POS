@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jorgy POS - Owner's Manual</title>
+  <link rel="stylesheet" href="../../src/style.css">
+</head>
+
+<body class="bg-neutral-100 dark:bg-dark-bg text-neutral-800 dark:text-neutral-100 min-h-screen transition-colors duration-300">
+  <div id="app" class="min-h-screen">
+    <div id="sidebar-container"></div>
+
+    <main id="owners-manual-page" class="p-4 sm:ml-64 mt-14">
+      <div id="manual-reading-progress" class="fixed top-[57px] left-0 sm:left-64 z-40 h-1 bg-emerald-500 transition-all duration-150" style="width: 0%"></div>
+
+      <div class="p-4 border border-neutral-200 dark:border-neutral-800 border-dashed rounded-none">
+        <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
+          <div class="xl:col-span-8 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 p-6 lg:p-8">
+            <div class="flex flex-col md:flex-row md:items-start justify-between gap-5">
+              <div>
+                <div class="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900 px-3 py-1 mb-4">
+                  Owner Knowledge Base
+                </div>
+                <h1 class="text-3xl md:text-4xl font-black text-neutral-950 dark:text-white tracking-tight leading-tight">Jorgy POS Owner's Manual</h1>
+                <p class="mt-3 text-sm md:text-base text-neutral-500 dark:text-neutral-400 max-w-3xl">A living operating book for owners, managers, and cashiers. Use it to train staff, recover from terminal issues, understand workflows, and keep your store procedures consistent.</p>
+              </div>
+              <div class="grid grid-cols-3 gap-2 shrink-0 w-full md:w-auto">
+                <div class="border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50 p-3 text-center">
+                  <div class="text-xl font-black text-neutral-950 dark:text-white">8</div>
+                  <div class="text-[10px] font-bold uppercase text-neutral-400">Chapters</div>
+                </div>
+                <div class="border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50 p-3 text-center">
+                  <div class="text-xl font-black text-neutral-950 dark:text-white">24</div>
+                  <div class="text-[10px] font-bold uppercase text-neutral-400">Checks</div>
+                </div>
+                <div class="border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50 p-3 text-center">
+                  <div class="text-xl font-black text-emerald-600 dark:text-emerald-400">Live</div>
+                  <div class="text-[10px] font-bold uppercase text-neutral-400">Guide</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-7 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3">
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg class="w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"></path>
+                  </svg>
+                </div>
+                <input id="manual-search" type="search" class="w-full pl-10 pr-3 py-3 bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 text-sm font-bold text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500" placeholder="Search receipt, inventory, cashier, backups, refunds...">
+              </div>
+              <div class="flex items-center gap-2">
+                <button id="manual-expand-all" type="button" class="px-4 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 text-xs font-black hover:bg-emerald-600 dark:hover:bg-emerald-400 transition cursor-pointer">Expand all</button>
+                <button id="manual-collapse-all" type="button" class="px-4 py-3 border border-neutral-200 dark:border-neutral-800 text-xs font-black text-neutral-700 dark:text-neutral-300 hover:border-emerald-500 hover:text-emerald-600 transition cursor-pointer">Collapse</button>
+              </div>
+            </div>
+          </div>
+
+          <aside class="xl:col-span-4 bg-white dark:bg-dark-bg text-neutral-900 dark:text-white border border-neutral-200 dark:border-neutral-800 p-6 flex flex-col justify-between min-h-72">
+            <div>
+              <div class="text-xs font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3">Daily Owner Rhythm</div>
+              <ol class="space-y-4">
+                <li class="flex gap-3">
+                  <span class="w-7 h-7 shrink-0 bg-emerald-500 text-white flex items-center justify-center text-xs font-black">1</span>
+                  <div>
+                    <div class="text-sm font-black">Open terminal checks</div>
+                    <p class="text-xs text-neutral-500 dark:text-neutral-400">Confirm printer, scanner, cash drawer, network, and beginning cash.</p>
+                  </div>
+                </li>
+                <li class="flex gap-3">
+                  <span class="w-7 h-7 shrink-0 bg-emerald-500 text-white flex items-center justify-center text-xs font-black">2</span>
+                  <div>
+                    <div class="text-sm font-black">Watch exceptions</div>
+                    <p class="text-xs text-neutral-500 dark:text-neutral-400">Low stock, pending sync, voids, discounts, and unread support tickets.</p>
+                  </div>
+                </li>
+                <li class="flex gap-3">
+                  <span class="w-7 h-7 shrink-0 bg-emerald-500 text-white flex items-center justify-center text-xs font-black">3</span>
+                  <div>
+                    <div class="text-sm font-black">Close with evidence</div>
+                    <p class="text-xs text-neutral-500 dark:text-neutral-400">Export sales, count cash, review E-cash, and record closing notes.</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+            <div class="mt-6 border-t border-neutral-200 dark:border-neutral-800 pt-4 text-xs font-black text-neutral-500 dark:text-neutral-400">
+              Theme mode: <span data-doc-theme-label class="text-emerald-600 dark:text-emerald-400">Light</span>
+            </div>
+          </aside>
+        </section>
+
+        <section class="flex flex-wrap gap-2 mb-6">
+          <button data-manual-topic="all" type="button" class="px-4 py-2 border text-xs font-black transition cursor-pointer">All</button>
+          <button data-manual-topic="opening" type="button" class="px-4 py-2 border text-xs font-black transition cursor-pointer">Opening</button>
+          <button data-manual-topic="sales" type="button" class="px-4 py-2 border text-xs font-black transition cursor-pointer">Sales</button>
+          <button data-manual-topic="inventory" type="button" class="px-4 py-2 border text-xs font-black transition cursor-pointer">Inventory</button>
+          <button data-manual-topic="people" type="button" class="px-4 py-2 border text-xs font-black transition cursor-pointer">People</button>
+          <button data-manual-topic="reports" type="button" class="px-4 py-2 border text-xs font-black transition cursor-pointer">Reports</button>
+          <button data-manual-topic="troubleshooting" type="button" class="px-4 py-2 border text-xs font-black transition cursor-pointer">Troubleshooting</button>
+        </section>
+
+        <section class="grid grid-cols-1 xl:grid-cols-[18rem_1fr] gap-6">
+          <aside class="hidden xl:block sticky top-24 self-start bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 p-5">
+            <div class="text-xs font-black uppercase tracking-wider text-neutral-400 mb-4">Book Index</div>
+            <nav class="space-y-2 text-sm font-bold">
+              <a href="#chapter-opening" class="block text-neutral-500 dark:text-neutral-400 hover:text-emerald-600">Opening Procedure</a>
+              <a href="#chapter-sales" class="block text-neutral-500 dark:text-neutral-400 hover:text-emerald-600">Sales Workflow</a>
+              <a href="#chapter-inventory" class="block text-neutral-500 dark:text-neutral-400 hover:text-emerald-600">Inventory Control</a>
+              <a href="#chapter-people" class="block text-neutral-500 dark:text-neutral-400 hover:text-emerald-600">Users & Roles</a>
+              <a href="#chapter-reports" class="block text-neutral-500 dark:text-neutral-400 hover:text-emerald-600">Reports</a>
+              <a href="#chapter-troubleshooting" class="block text-neutral-500 dark:text-neutral-400 hover:text-emerald-600">Troubleshooting</a>
+            </nav>
+            <div class="mt-6 p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900">
+              <div class="text-xs font-black text-emerald-700 dark:text-emerald-300">Owner Rule</div>
+              <p class="text-xs text-emerald-700/80 dark:text-emerald-300/80 mt-1">Every override, void, and manual discount should have a reason before end-of-day closing.</p>
+            </div>
+          </aside>
+
+          <div class="space-y-4">
+            <div id="manual-empty-state" class="hidden bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 p-10 text-center">
+              <div class="text-sm font-black text-neutral-900 dark:text-white">No manual articles found</div>
+              <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Try a broader search or switch to All topics.</p>
+            </div>
+
+            <article id="chapter-opening" data-manual-article="opening" class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800">
+              <header class="p-5 flex items-start justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <div class="text-[11px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Chapter 01</div>
+                  <h2 class="text-xl font-black text-neutral-950 dark:text-white mt-1">Opening Procedure</h2>
+                  <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">Prepare the store terminal before the first sale.</p>
+                </div>
+                <div class="flex gap-2">
+                  <button data-copy-manual type="button" class="px-3 py-2 text-[11px] font-black border border-neutral-200 dark:border-neutral-800 hover:text-emerald-600 cursor-pointer">Copy</button>
+                  <button data-manual-toggle type="button" class="px-3 py-2 text-[11px] font-black bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 cursor-pointer">Toggle</button>
+                </div>
+              </header>
+              <div data-manual-panel class="p-5 grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="lg:col-span-2 space-y-3 text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                  <p>Begin with a clean terminal state. Sign in with the assigned account, confirm the date and time, and verify the drawer balance before selling.</p>
+                  <ul class="space-y-2">
+                    <li><strong class="text-neutral-950 dark:text-white">Device check:</strong> connect receipt printer, barcode scanner, and cash drawer.</li>
+                    <li><strong class="text-neutral-950 dark:text-white">Money check:</strong> count beginning cash and record the amount in the shift note.</li>
+                    <li><strong class="text-neutral-950 dark:text-white">Sync check:</strong> confirm no offline logs are pending before opening.</li>
+                  </ul>
+                </div>
+                <div class="bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 p-4">
+                  <div class="text-xs font-black uppercase text-neutral-400">Opening Checklist</div>
+                  <div class="mt-3 space-y-2 text-xs font-bold text-neutral-600 dark:text-neutral-300">
+                    <label class="flex items-center gap-2"><input type="checkbox" class="text-emerald-600"> Printer test printed</label>
+                    <label class="flex items-center gap-2"><input type="checkbox" class="text-emerald-600"> Scanner test scanned</label>
+                    <label class="flex items-center gap-2"><input type="checkbox" class="text-emerald-600"> Cash counted</label>
+                    <label class="flex items-center gap-2"><input type="checkbox" class="text-emerald-600"> Network online</label>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article id="chapter-sales" data-manual-article="sales" class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800">
+              <header class="p-5 flex items-start justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <div class="text-[11px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Chapter 02</div>
+                  <h2 class="text-xl font-black text-neutral-950 dark:text-white mt-1">Sales Workflow</h2>
+                  <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">The correct checkout flow for cash, card, and E-cash.</p>
+                </div>
+                <div class="flex gap-2">
+                  <button data-copy-manual type="button" class="px-3 py-2 text-[11px] font-black border border-neutral-200 dark:border-neutral-800 hover:text-emerald-600 cursor-pointer">Copy</button>
+                  <button data-manual-toggle type="button" class="px-3 py-2 text-[11px] font-black bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 cursor-pointer">Toggle</button>
+                </div>
+              </header>
+              <div data-manual-panel class="p-5">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                  <div class="p-4 border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50">
+                    <div class="text-sm font-black text-neutral-950 dark:text-white">Scan</div>
+                    <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Scan barcode or tap product card. Check quantity before payment.</p>
+                  </div>
+                  <div class="p-4 border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50">
+                    <div class="text-sm font-black text-neutral-950 dark:text-white">Review</div>
+                    <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Confirm subtotal, VAT, discount, and stock warnings.</p>
+                  </div>
+                  <div class="p-4 border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50">
+                    <div class="text-sm font-black text-neutral-950 dark:text-white">Pay</div>
+                    <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Select Cash, Card, QR PH, GCash, GoTyme, or Maya.</p>
+                  </div>
+                  <div class="p-4 border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50">
+                    <div class="text-sm font-black text-neutral-950 dark:text-white">Receipt</div>
+                    <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Print, reprint, or record failed receipt in support notes.</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article id="chapter-inventory" data-manual-article="inventory" class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800">
+              <header class="p-5 flex items-start justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <div class="text-[11px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Chapter 03</div>
+                  <h2 class="text-xl font-black text-neutral-950 dark:text-white mt-1">Inventory Control</h2>
+                  <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">How stock should move from receiving to checkout.</p>
+                </div>
+                <div class="flex gap-2">
+                  <button data-copy-manual type="button" class="px-3 py-2 text-[11px] font-black border border-neutral-200 dark:border-neutral-800 hover:text-emerald-600 cursor-pointer">Copy</button>
+                  <button data-manual-toggle type="button" class="px-3 py-2 text-[11px] font-black bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 cursor-pointer">Toggle</button>
+                </div>
+              </header>
+              <div data-manual-panel class="p-5 grid grid-cols-1 lg:grid-cols-2 gap-5">
+                <div class="space-y-3 text-sm text-neutral-600 dark:text-neutral-300">
+                  <p>Use Products for item setup, SKU control, category grouping, and low-stock review. Never create duplicate SKUs for the same sellable item.</p>
+                  <p>When receiving deliveries, update quantity first, then price. If cost changes, record the reason in the product notes before saving.</p>
+                </div>
+                <div class="overflow-x-auto border border-neutral-200 dark:border-neutral-800">
+                  <table class="w-full text-xs">
+                    <thead class="bg-neutral-900 text-white">
+                      <tr><th class="p-3 text-left">Event</th><th class="p-3 text-left">Owner Action</th></tr>
+                    </thead>
+                    <tbody class="divide-y divide-neutral-200 dark:divide-neutral-800">
+                      <tr><td class="p-3 font-bold">Low stock</td><td class="p-3 text-neutral-500">Review supplier and reorder before threshold reaches zero.</td></tr>
+                      <tr><td class="p-3 font-bold">Out of stock</td><td class="p-3 text-neutral-500">Disable item from sale or mark unavailable.</td></tr>
+                      <tr><td class="p-3 font-bold">Price change</td><td class="p-3 text-neutral-500">Update product and verify checkout price.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </article>
+
+            <article id="chapter-people" data-manual-article="people" class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800">
+              <header class="p-5 flex items-start justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <div class="text-[11px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Chapter 04</div>
+                  <h2 class="text-xl font-black text-neutral-950 dark:text-white mt-1">Users & Roles</h2>
+                  <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">Assign the right permissions before the rush starts.</p>
+                </div>
+                <button data-manual-toggle type="button" class="px-3 py-2 text-[11px] font-black bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 cursor-pointer">Toggle</button>
+              </header>
+              <div data-manual-panel class="p-5 grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="p-4 border border-neutral-200 dark:border-neutral-800">
+                  <div class="text-sm font-black text-neutral-950 dark:text-white">Owner</div>
+                  <p class="text-xs text-neutral-500 mt-1">Full access to settings, exports, users, reset controls, and financial summaries.</p>
+                </div>
+                <div class="p-4 border border-neutral-200 dark:border-neutral-800">
+                  <div class="text-sm font-black text-neutral-950 dark:text-white">Inventory Manager</div>
+                  <p class="text-xs text-neutral-500 mt-1">Product, stock, supplier, and low-stock workflow ownership.</p>
+                </div>
+                <div class="p-4 border border-neutral-200 dark:border-neutral-800">
+                  <div class="text-sm font-black text-neutral-950 dark:text-white">Cashier</div>
+                  <p class="text-xs text-neutral-500 mt-1">Sales, receipts, customer checkout, and assigned drawer activity.</p>
+                </div>
+              </div>
+            </article>
+
+            <article id="chapter-reports" data-manual-article="reports" class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800">
+              <header class="p-5 flex items-start justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <div class="text-[11px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Chapter 05</div>
+                  <h2 class="text-xl font-black text-neutral-950 dark:text-white mt-1">Reports & Closing</h2>
+                  <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">Daily evidence for sales, stock, and exceptions.</p>
+                </div>
+                <button data-manual-toggle type="button" class="px-3 py-2 text-[11px] font-black bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 cursor-pointer">Toggle</button>
+              </header>
+              <div data-manual-panel class="p-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+                  <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800"><div class="text-xs text-neutral-400 font-black uppercase">Sales</div><div class="text-lg font-black">Daily totals</div></div>
+                  <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800"><div class="text-xs text-neutral-400 font-black uppercase">Payment</div><div class="text-lg font-black">Cash vs E-cash</div></div>
+                  <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800"><div class="text-xs text-neutral-400 font-black uppercase">Stock</div><div class="text-lg font-black">Low stock list</div></div>
+                  <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800"><div class="text-xs text-neutral-400 font-black uppercase">Audit</div><div class="text-lg font-black">Voids & discounts</div></div>
+                </div>
+              </div>
+            </article>
+
+            <article id="chapter-troubleshooting" data-manual-article="troubleshooting" class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800">
+              <header class="p-5 flex items-start justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <div class="text-[11px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Chapter 06</div>
+                  <h2 class="text-xl font-black text-neutral-950 dark:text-white mt-1">Troubleshooting Matrix</h2>
+                  <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">Fast first-response steps before opening a support ticket.</p>
+                </div>
+                <button data-manual-toggle type="button" class="px-3 py-2 text-[11px] font-black bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 cursor-pointer">Toggle</button>
+              </header>
+              <div data-manual-panel class="p-5 overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead class="bg-neutral-900 text-white text-xs uppercase">
+                    <tr><th class="p-3 text-left">Problem</th><th class="p-3 text-left">Check first</th><th class="p-3 text-left">Escalate when</th></tr>
+                  </thead>
+                  <tbody class="divide-y divide-neutral-200 dark:divide-neutral-800">
+                    <tr><td class="p-3 font-black">Blank receipt</td><td class="p-3 text-neutral-500">Flip thermal paper, run test print.</td><td class="p-3 text-neutral-500">Test print fails twice.</td></tr>
+                    <tr><td class="p-3 font-black">Double scan</td><td class="p-3 text-neutral-500">Check scanner suffix and keyboard mode.</td><td class="p-3 text-neutral-500">Duplicate logs continue.</td></tr>
+                    <tr><td class="p-3 font-black">Offline sales</td><td class="p-3 text-neutral-500">Reconnect network and wait for sync.</td><td class="p-3 text-neutral-500">Sync exceeds 15 minutes.</td></tr>
+                    <tr><td class="p-3 font-black">Wrong stock</td><td class="p-3 text-neutral-500">Audit last transaction and product adjustment.</td><td class="p-3 text-neutral-500">Stock mismatch affects multiple items.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="../../src/main.js"></script>
+</body>
+
+</html>
