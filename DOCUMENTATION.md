@@ -1,4 +1,4 @@
-﻿<style>
+<style>
 body { font-size: 15px; line-height: 1.5; font-family: "Segoe UI", sans-serif; }
 h1 { font-size: 2em; margin-bottom: 0.5em; }
 h2 { font-size: 1.5em; margin-top: 1.5em; margin-bottom: 0.4em; }
@@ -28,7 +28,7 @@ p, li, td { font-size: 15px; line-height: 1.5; }
 
 **Date:** June 23, 2026
 
-**Version:** 10.2-alpha
+**Version:** Alpha v0.1.7
 
 &nbsp;
 
@@ -593,4 +593,4 @@ No server rental. No subscription. The store owner does not pay anything to keep
 
 *Document prepared by Mark Jordan Ugtong — June 23, 2026*
 
-*Jorgy POS System — Version 10.2-alpha*
+*Jorgy POS System — Version Alpha v0.1.7*

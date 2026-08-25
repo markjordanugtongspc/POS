@@ -52,8 +52,10 @@
 
       <!-- Bottom Section: Version Info -->
       <div
-        class="relative z-20 hidden md:flex items-center justify-between text-xs text-emerald-200/90 dark:text-neutral-300">
-        <div>v<!-- VERSION_START -->13.8-alpha<!-- VERSION_END --></div>
+        class="relative z-20 hidden md:flex items-center justify-between text-xs text-white">
+        <div>
+          <span class="text-white font-normal"><!-- VERSION_STAGE -->Alpha<!-- VERSION_STAGE_END --></span> <span class="text-white font-normal cursor-pointer transition-all duration-200 hover:font-bold hover:underline underline-offset-2"><!-- VERSION_NUMBER -->v0.1.7<!-- VERSION_NUMBER_END --></span>
+        </div>
       </div>
 
       <!-- Custom CSS Wave-like shapes on the right edge of the left grid -->
@@ -80,28 +82,6 @@
           POS</span>
       </div>
 
-      <!-- Dark Mode Toggle Button -->
-      <button id="theme-toggle"
-        class="absolute top-6 right-6 text-neutral-500 dark:text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition cursor-pointer"
-        aria-label="Toggle Theme">
-
-        <!-- Moon Icon (shows in light mode) -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 dark:hidden" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-
-        <!-- Sun Icon (shows in dark mode) -->
-        <svg
-          class="w-6 h-6 hidden dark:block text-gray-800 dark:text-white hover:text-emerald-500 dark:hover:text-emerald-400 transition"
-          aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-          viewBox="0 0 24 24">
-          <path fill-rule="evenodd"
-            d="M13 3a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0V3ZM6.343 4.929A1 1 0 0 0 4.93 6.343l1.414 1.414a1 1 0 0 0 1.414-1.414L6.343 4.929Zm12.728 1.414a1 1 0 0 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 1.414 1.414l1.414-1.414ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm-9 4a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2H3Zm16 0a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2ZM7.757 17.657a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414Zm9.9-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM13 19a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Z"
-            clip-rule="evenodd" />
-        </svg>
-      </button>
       <div class="w-full max-w-md space-y-8">
 
         <!-- SCREEN 1: SELECTION MENU -->
@@ -114,10 +94,10 @@
           <div class="space-y-4">
             <!-- PIN login option card -->
             <button id="btn-select-pin"
-              class="w-full flex items-center justify-between p-5 bg-white dark:bg-neutral-800 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20 border-2 border-transparent hover:border-emerald-500 rounded-none transition shadow-sm hover:shadow-md cursor-pointer group text-left">
+              class="w-full flex items-center justify-between p-5 bg-white dark:bg-neutral-800 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 border border-neutral-100 dark:border-neutral-800/80 hover:border-emerald-500 rounded-none transition-all duration-200 shadow-[-4px_4px_12px_rgba(0,0,0,0.06),0_4px_10px_rgba(0,0,0,0.05)] hover:shadow-[-6px_6px_16px_rgba(0,0,0,0.08),0_6px_14px_rgba(0,0,0,0.08)] cursor-pointer group text-left">
               <div class="flex items-center space-x-4">
                 <div
-                  class="p-3 rounded-none bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
+                  class="p-3.5 rounded-none bg-emerald-100/80 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 group-hover:scale-105 transition-transform shadow-xs">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -139,10 +119,10 @@
 
             <!-- Password login option card -->
             <button id="btn-select-pass"
-              class="w-full flex items-center justify-between p-5 bg-white dark:bg-neutral-800 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20 border-2 border-transparent hover:border-emerald-500 rounded-none transition shadow-sm hover:shadow-md cursor-pointer group text-left">
+              class="w-full flex items-center justify-between p-5 bg-white dark:bg-neutral-800 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 border border-neutral-100 dark:border-neutral-800/80 hover:border-emerald-500 rounded-none transition-all duration-200 shadow-[-4px_4px_12px_rgba(0,0,0,0.06),0_4px_10px_rgba(0,0,0,0.05)] hover:shadow-[-6px_6px_16px_rgba(0,0,0,0.08),0_6px_14px_rgba(0,0,0,0.08)] cursor-pointer group text-left">
               <div class="flex items-center space-x-4">
                 <div
-                  class="p-3 rounded-none bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
+                  class="p-3.5 rounded-none bg-emerald-100/80 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 group-hover:scale-105 transition-transform shadow-xs">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"

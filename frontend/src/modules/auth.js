@@ -25,7 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let enteredPin = '';
   const CORRECT_PIN = '1234';
 
-  // --- SCREEN SWITCHING LOGIC ---
+  // ==========================================
+  // START: showScreen
+  // Switches the active authentication view between Selection, PIN keypad, and Password form.
+  // ==========================================
   function showScreen(targetScreen) {
     // Hide all screens
     screenSelect.classList.add('hidden');
@@ -38,12 +41,73 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reset inputs
     resetPin();
   }
+  // ==========================================
+  // END: showScreen
+  // ==========================================
 
-  // --- COOKIE AND STATE INITIALIZATION ---
+  // ==========================================
+  // START: setLoginUrlParam
+  // Updates browser URL query parameters without reloading the page (?login=pin or ?login=password).
+  // ==========================================
+  function setLoginUrlParam(mode) {
+    const url = new URL(window.location.href);
+    if (mode) {
+      url.searchParams.set('login', mode);
+    } else {
+      url.searchParams.delete('login');
+    }
+    window.history.pushState({}, '', url.pathname + (url.search ? url.search : ''));
+  }
+  // ==========================================
+  // END: setLoginUrlParam
+  // ==========================================
+
+  // ==========================================
+  // START: applyLoginScreenFromUrl
+  // Reads the current URL search parameters and routes to the appropriate authentication screen.
+  // ==========================================
+  function applyLoginScreenFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const loginMode = params.get('login');
+
+    if (loginMode === 'pin') {
+      showScreen(screenPin);
+    } else if (loginMode === 'password' || loginMode === 'pass') {
+      showScreen(screenPassword);
+    } else {
+      showScreen(screenSelect);
+    }
+  }
+  // ==========================================
+  // END: applyLoginScreenFromUrl
+  // ==========================================
+
+  // --- COOKIE AND USER DETAILS INITIALIZATION ---
   const pinUserHeader = document.getElementById('pin-user-header');
   const pinGenericHeader = document.getElementById('pin-generic-header');
   const usernameField = document.getElementById('username');
   const saveUsernameCheckbox = document.getElementById('save-username');
+
+  // ==========================================
+  // START: updateUsernameLabel
+  // Dynamically updates username label to USERNAME or EMAIL based on input content.
+  // ==========================================
+  function updateUsernameLabel() {
+    const usernameLabel = document.querySelector('label[for="username"]');
+    if (!usernameLabel || !usernameField) return;
+
+    const val = usernameField.value.trim();
+    if (!val) {
+      usernameLabel.textContent = 'Username or Email';
+    } else if (val.includes('@')) {
+      usernameLabel.textContent = 'Email';
+    } else {
+      usernameLabel.textContent = 'Username';
+    }
+  }
+  // ==========================================
+  // END: updateUsernameLabel
+  // ==========================================
 
   // Load saved username if present
   const savedUsername = getCookie('saved_username');
@@ -52,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (saveUsernameCheckbox) {
       saveUsernameCheckbox.checked = true;
     }
+    updateUsernameLabel();
   }
 
   // Toggle user-specific vs generic PIN headers based on login history cookie
@@ -76,15 +141,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Auto-route based on stored login method preference
-  const preferredLoginMethod = getCookie('login_method');
-  if (preferredLoginMethod === 'pin') {
-    showScreen(screenPin);
-  } else if (preferredLoginMethod === 'password') {
-    showScreen(screenPassword);
-  }
+  // Apply initial route from URL parameters (defaulting to auth-select if no ?login= param)
+  applyLoginScreenFromUrl();
 
-  // --- PIN CODE LOGIC ---
+  // Listen for browser back / forward navigation
+  window.addEventListener('popstate', applyLoginScreenFromUrl);
+
+  // ==========================================
+  // START: updatePinDots
+  // Updates visual dot states reflecting how many PIN digits have been entered.
+  // ==========================================
   function updatePinDots() {
     pinDots.forEach((dot, index) => {
       if (index < enteredPin.length) {
@@ -96,24 +162,61 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+  // ==========================================
+  // END: updatePinDots
+  // ==========================================
 
+  // ==========================================
+  // START: resetPin
+  // Clears the entered PIN buffer and resets visual indicators.
+  // ==========================================
   function resetPin() {
     enteredPin = '';
     updatePinDots();
   }
+  // ==========================================
+  // END: resetPin
+  // ==========================================
 
+  // ==========================================
+  // START: handlePinSubmit
+  // Validates entered 4-digit PIN against stored passcode and redirects on success.
+  // ==========================================
   async function handlePinSubmit() {
     if (enteredPin === CORRECT_PIN) {
-      setCookie('login_method', 'pin', 30);
       setCookie('has_logged_in', 'true', 30);
       await showSuccess('Access Granted', 'Welcome back, Mark Jordan!');
-      window.location.href = '/pages/dashboard/';
+      window.location.href = '/pages/users/client/dashboard/';
     } else {
       await showError('Access Denied', 'Invalid PIN passcode. Please try again.');
       resetPin();
     }
   }
+  // ==========================================
+  // END: handlePinSubmit
+  // ==========================================
 
+  // ==========================================
+  // START: triggerKeypadVisual
+  // Triggers active and hover visual effect on keypad buttons during keyboard entry.
+  // ==========================================
+  function triggerKeypadVisual(val) {
+    const btn = document.querySelector(`.keypad-btn[data-val="${val}"]`);
+    if (!btn) return;
+
+    btn.classList.add('bg-neutral-200', 'dark:bg-neutral-700', 'scale-95', 'ring-2', 'ring-emerald-500/50');
+    setTimeout(() => {
+      btn.classList.remove('bg-neutral-200', 'dark:bg-neutral-700', 'scale-95', 'ring-2', 'ring-emerald-500/50');
+    }, 150);
+  }
+  // ==========================================
+  // END: triggerKeypadVisual
+  // ==========================================
+
+  // ==========================================
+  // START: handleKeypadPress
+  // Processes PIN digits, deletions, and clear commands from keypad clicks or keyboard.
+  // ==========================================
   function handleKeypadPress(val) {
     if (val === 'C') {
       resetPin();
@@ -135,17 +238,68 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
+  // ==========================================
+  // END: handleKeypadPress
+  // ==========================================
 
+  // ==========================================
+  // START: handleGlobalKeyDown
+  // Intercepts desktop keyboard inputs for PIN keypad interaction (0-9, Backspace, C/Escape).
+  // ==========================================
+  function handleGlobalKeyDown(e) {
+    // Only capture keystrokes when the PIN screen is visible
+    if (screenPin.classList.contains('hidden')) return;
+
+    // Ignore if focus is in an input or textarea
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+
+    if (e.key >= '0' && e.key <= '9') {
+      e.preventDefault();
+      triggerKeypadVisual(e.key);
+      handleKeypadPress(e.key);
+    } else if (e.key === 'Backspace') {
+      e.preventDefault();
+      triggerKeypadVisual('back');
+      handleKeypadPress('back');
+    } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C' || e.key === 'Delete') {
+      e.preventDefault();
+      triggerKeypadVisual('C');
+      handleKeypadPress('C');
+    }
+  }
+  // ==========================================
+  // END: handleGlobalKeyDown
+  // ==========================================
 
   // --- EVENT LISTENERS ---
 
-  // Navigation
-  btnSelectPin.addEventListener('click', () => showScreen(screenPin));
-  btnSelectPass.addEventListener('click', () => showScreen(screenPassword));
-  btnBackPin.addEventListener('click', () => showScreen(screenSelect));
-  btnBackPass.addEventListener('click', () => showScreen(screenSelect));
+  // Desktop keyboard entry for PIN
+  document.addEventListener('keydown', handleGlobalKeyDown);
 
-  // Keypad
+  // Dynamic Username/Email input listener
+  if (usernameField) {
+    usernameField.addEventListener('input', updateUsernameLabel);
+  }
+
+  // Navigation with URL Parameters
+  btnSelectPin.addEventListener('click', () => {
+    setLoginUrlParam('pin');
+    showScreen(screenPin);
+  });
+  btnSelectPass.addEventListener('click', () => {
+    setLoginUrlParam('password');
+    showScreen(screenPassword);
+  });
+  btnBackPin.addEventListener('click', () => {
+    setLoginUrlParam(null);
+    showScreen(screenSelect);
+  });
+  btnBackPass.addEventListener('click', () => {
+    setLoginUrlParam(null);
+    showScreen(screenSelect);
+  });
+
+  // Keypad Click Listeners
   keypadButtons.forEach(button => {
     button.addEventListener('click', () => {
       const val = button.getAttribute('data-val');
@@ -163,7 +317,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (usernameInput && passwordInput) {
       // Simulate database match
       if (usernameInput.toLowerCase() === 'mark.jordan' && passwordInput === 'password') {
-        setCookie('login_method', 'password', 30);
         setCookie('has_logged_in', 'true', 30);
         if (saveUsernameCheckbox && saveUsernameCheckbox.checked) {
           setCookie('saved_username', usernameInput, 30);
@@ -171,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
           eraseCookie('saved_username');
         }
         await showSuccess('Access Granted', `Welcome back, ${usernameInput}!`);
-        window.location.href = '/pages/dashboard/';
+        window.location.href = '/pages/users/client/dashboard/';
       } else {
         await showError('Authentication Failed', 'Invalid username or password.');
       }

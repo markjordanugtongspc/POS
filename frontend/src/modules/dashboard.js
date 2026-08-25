@@ -122,24 +122,31 @@ export function initLiveClock() {
   updateClock();
   setInterval(updateClock, 1000);
 }
-/* =========================================
-   END COMMENT: DASHBOARD LIVE CLOCK FUNCTION
-   ========================================= */
+import { animateElementNumber } from './animations.js';
 
 /* =========================================
-   START COMMENT: DASHBOARD SKELETON LOADER
+   START COMMENT: DASHBOARD TABLE SKELETON LOADER
+   Handles realistic skeleton loading on Low Stock Alert table
+   and triggers counting animation for quantities and prices upon reveal.
    ========================================= */
-export function initDashboardSkeletons() {
-  const skeletons = document.querySelectorAll('.dashboard-skeleton-data');
-  const actuals = document.querySelectorAll('.dashboard-actual-data');
-  
-  if (skeletons.length > 0 && actuals.length > 0) {
-    setTimeout(() => {
-      skeletons.forEach(el => el.remove());
-      actuals.forEach(el => el.classList.remove('hidden'));
-    }, 1200); // Simulate network delay
-  }
+export function initDashboardTableSkeleton() {
+  const skeletonBody = document.getElementById('low-stock-skeleton-body');
+  const actualBody = document.getElementById('low-stock-actual-body');
+
+  if (!skeletonBody || !actualBody) return;
+
+  setTimeout(() => {
+    skeletonBody.remove();
+    actualBody.classList.remove('hidden');
+
+    // Trigger counting animation on all data-counter spans within actual body
+    const counters = actualBody.querySelectorAll('[data-counter]');
+    counters.forEach(counter => {
+      animateElementNumber(counter);
+    });
+  }, 1000); // 1-second simulated network load
 }
 /* =========================================
-   END COMMENT: DASHBOARD SKELETON LOADER
+   END COMMENT: DASHBOARD TABLE SKELETON LOADER
    ========================================= */
+

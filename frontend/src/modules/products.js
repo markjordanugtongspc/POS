@@ -680,7 +680,7 @@ export function initProductsPage() {
   if (breadcrumbHomeLink) {
     breadcrumbHomeLink.addEventListener('click', (e) => {
       e.preventDefault();
-      window.location.href = '../../pages/dashboard/index.html';
+      window.location.href = '/pages/users/client/dashboard/';
     });
   }
 

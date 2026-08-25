@@ -112,28 +112,51 @@ function initSidebarDropdowns() {
 // ==========================================
 
 // ==========================================
-// TOP: initSidebarDrawer
-// Binds click handlers to toggle the mobile drawer
+// START: initSidebarDrawer
+// Binds click handlers to toggle the mobile sidebar drawer from the right side of the screen and adjust tab protrusion.
 // ==========================================
 function initSidebarDrawer() {
-  const toggleBtn = document.querySelector('[data-drawer-toggle="top-bar-sidebar"]');
+  const toggleBtns = document.querySelectorAll('[data-drawer-toggle="top-bar-sidebar"]');
   const sidebar = document.getElementById('top-bar-sidebar');
-  if (toggleBtn && sidebar) {
-    toggleBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      sidebar.classList.toggle('-translate-x-full');
-    });
+  if (!sidebar) return;
 
-    // Optional: close sidebar when clicking outside on mobile
-    document.addEventListener('click', (e) => {
-      if (!sidebar.classList.contains('-translate-x-full') && 
-          !sidebar.contains(e.target) && 
-          !toggleBtn.contains(e.target) &&
-          window.innerWidth < 640) { // sm breakpoint
-        sidebar.classList.add('-translate-x-full');
-      }
+  const tabBtn = sidebar.querySelector('#sidebar-drawer-toggle-tab') || sidebar.querySelector('button[data-drawer-toggle="top-bar-sidebar"]');
+
+  const updateTabPosition = (isOpen) => {
+    if (!tabBtn) return;
+    if (isOpen) {
+      // 50/50 centered overlap when drawer is open
+      tabBtn.classList.remove('-left-8', 'w-11', 'rounded-l-xl');
+      tabBtn.classList.add('-left-5', 'w-10', 'rounded-full');
+    } else {
+      // 70% protruding handle tab when drawer is hiding offscreen
+      tabBtn.classList.remove('-left-5', 'w-10', 'rounded-full');
+      tabBtn.classList.add('-left-8', 'w-11', 'rounded-l-xl');
+    }
+  };
+
+  toggleBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isCurrentlyClosed = sidebar.classList.contains('translate-x-full');
+      sidebar.classList.toggle('translate-x-full');
+      updateTabPosition(isCurrentlyClosed);
     });
-  }
+  });
+
+  // Close sidebar when clicking outside on mobile
+  document.addEventListener('click', (e) => {
+    if (!sidebar.classList.contains('translate-x-full') && 
+        !sidebar.contains(e.target) && 
+        !Array.from(toggleBtns).some(btn => btn.contains(e.target)) &&
+        window.innerWidth < 640) { // sm breakpoint
+      sidebar.classList.add('translate-x-full');
+      updateTabPosition(false);
+    }
+  });
+
+  // Initialize correct state on page load
+  updateTabPosition(!sidebar.classList.contains('translate-x-full'));
 }
 // ==========================================
 // END: initSidebarDrawer
