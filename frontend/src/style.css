@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 @import "../node_modules/flowbite-datepicker/dist/css/datepicker.min.css";
 @import "tailwindcss";
 
@@ -6,8 +6,11 @@
   --color-primary: var(--color-emerald-500);
   --color-dark-bg: #16171d;
   --font-sans: 'Urbanist', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-num: 'JetBrains Mono', 'Urbanist', monospace;
   
   --animate-fade-in: fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-scanner-laser: scanner-laser 2.2s ease-in-out infinite;
 
   @keyframes fade-in {
     from {
@@ -19,6 +22,21 @@
       transform: translateY(0) scale(1);
     }
   }
+
+  @keyframes scanner-laser {
+    0% {
+      top: 5%;
+      opacity: 0.85;
+    }
+    50% {
+      top: 92%;
+      opacity: 1;
+    }
+    100% {
+      top: 5%;
+      opacity: 0.85;
+    }
+  }
 }
 
 /* Configure selector-based dark mode for Tailwind v4 */
@@ -26,10 +44,46 @@
 
 html, body {
   font-family: 'Urbanist', system-ui, -apple-system, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Tabular & specialized numerical font styling */
+[data-counter],
+.font-num,
+.font-mono,
+.live-clock-time,
+.apexcharts-yaxis-label,
+.apexcharts-xaxis-label,
+.currency-num,
+#transactions-tbody td:nth-child(1),
+#transactions-tbody td:nth-child(5),
+#products-table-body td:nth-child(2),
+#products-table-body td:nth-child(6),
+#products-table-body td:nth-child(7),
+#cart-drawer .font-extrabold:has(> span),
+#cart-items-list span:not(.font-sans),
+#receipt-items-tbody td:nth-child(2),
+#receipt-items-tbody td:nth-child(3),
+#receipt-items-tbody td:nth-child(4) {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum", "zero", "ss01";
 }
 
 .animate-fade-in {
   animation: var(--animate-fade-in);
+}
+
+.animate-scanner-laser {
+  animation: var(--animate-scanner-laser);
+}
+
+/* Large-chunk dashed border utility */
+.border-dashed-chunk {
+  background-image: repeating-linear-gradient(to right, currentColor 0, currentColor 10px, transparent 10px, transparent 16px);
+  background-position: top;
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
 }
 
 /* Custom Scrollbar Styling */

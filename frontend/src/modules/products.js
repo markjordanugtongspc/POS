@@ -1,75 +1,48 @@
 // products.js - Products page management module
 import { showSuccess, showError, confirmDeleteProduct, showAddProductModal, showEditProductModal } from './modals.js';
+import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchCategories, uploadProductImage, getProductImageUrl } from '../../../backend/api/products.api.js';
+import { subscribeToProducts } from '../../../backend/api/realtime.api.js';
+import { getPendingAction, clearPendingAction } from './client-storage.js';
+import { subscriptionManager } from './permissions.js';
 import Swal from 'sweetalert2';
 
 // --- START initProductsPage ---
-export function initProductsPage() {
+export async function initProductsPage() {
   const tableBody = document.getElementById('products-table-body');
   if (!tableBody) return; // Exit if not on the products page
 
-  // Sample Products Data
-  let products = [
-    { sku: "SKU001", name: "Milo 24g", category: "Beverage", brand: "Nestle", price: 12.00, qty: 5, createdBy: "Mark Jordan" },
-    { sku: "SKU002", name: "Lucky Me Canton", category: "Noodles", brand: "Lucky Me", price: 18.00, qty: 0, createdBy: "Mark Jordan" },
-    { sku: "SKU003", name: "Nescafe Classic Pack", category: "Beverage", brand: "Nescafe", price: 14.00, qty: 15, createdBy: "Mark Jordan" },
-    { sku: "SKU004", name: "Surf Cherry Blossom", category: "Household", brand: "Unilever", price: 15.00, qty: 2, createdBy: "Mark Jordan" },
-    { sku: "SKU005", name: "Premium Rice 1kg", category: "Grocery", brand: "Harvester", price: 40.00, qty: 150, createdBy: "Mark Jordan" },
-    { sku: "SKU006", name: "Coca-Cola 1.5L", category: "Beverage", brand: "Coca-Cola", price: 65.00, qty: 48, createdBy: "Mark Jordan" },
-    { sku: "SKU007", name: "Pringles Sour Cream 110g", category: "Snacks", brand: "Pringles", price: 85.00, qty: 25, createdBy: "Mark Jordan" },
-    { sku: "SKU008", name: "SafeGuard White 130g", category: "Household", brand: "Procter & Gamble", price: 42.00, qty: 60, createdBy: "Admin" },
-    { sku: "SKU009", name: "Colgate Great Flavor 150g", category: "Household", brand: "Colgate", price: 95.00, qty: 30, createdBy: "Admin" },
-    { sku: "SKU010", name: "Knorr Liquid Seasoning 250ml", category: "Grocery", brand: "Unilever", price: 72.00, qty: 40, createdBy: "Mark Jordan" },
-    { sku: "SKU011", name: "Kopiko Brown 3-in-1", category: "Beverage", brand: "Kopiko", price: 10.00, qty: 200, createdBy: "Admin" },
-    { sku: "SKU012", name: "SkyFlakes Crackers", category: "Snacks", brand: "M.Y. San", price: 7.00, qty: 120, createdBy: "Mark Jordan" },
-    { sku: "SKU013", name: "Selecta Ice Cream 1.3L", category: "Snacks", brand: "Selecta", price: 250.00, qty: 12, createdBy: "Mark Jordan" },
-    { sku: "SKU014", name: "Century Tuna Hot & Spicy", category: "Grocery", brand: "Century Pacific", price: 38.00, qty: 85, createdBy: "Mark Jordan" },
-    { sku: "SKU015", name: "San Miguel Pale Pilsen", category: "Beverage", brand: "San Miguel", price: 55.00, qty: 72, createdBy: "Admin" },
-    { sku: "SKU016", name: "Ariel Sunrise Fresh 70g", category: "Household", brand: "Procter & Gamble", price: 16.00, qty: 90, createdBy: "Admin" },
-    { sku: "SKU017", name: "Nissin Cup Noodles Seafood", category: "Noodles", brand: "Nissin", price: 22.00, qty: 110, createdBy: "Mark Jordan" },
-    { sku: "SKU018", name: "Argentina Corned Beef 150g", category: "Grocery", brand: "Century Pacific", price: 40.00, qty: 95, createdBy: "Admin" },
-    { sku: "SKU019", name: "Sunlight Liquid Soap 500ml", category: "Household", brand: "Unilever", price: 68.00, qty: 35, createdBy: "Mark Jordan" },
-    { sku: "SKU020", name: "Hunts Tomato Sauce 250g", category: "Grocery", brand: "Hunts", price: 28.00, qty: 55, createdBy: "Admin" },
-    { sku: "SKU021", name: "Pepsi Max 500ml", category: "Beverage", brand: "Pepsi", price: 25.00, qty: 65, createdBy: "Mark Jordan" },
-    { sku: "SKU022", name: "Fita Crackers 10s", category: "Snacks", brand: "M.Y. San", price: 55.00, qty: 40, createdBy: "Admin" },
-    { sku: "SKU023", name: "Joy Dishwashing Liquid 250ml", category: "Household", brand: "Procter & Gamble", price: 58.00, qty: 50, createdBy: "Mark Jordan" },
-    { sku: "SKU024", name: "Silver Swan Soy Sauce 1L", category: "Grocery", brand: "NutriAsia", price: 45.00, qty: 30, createdBy: "Admin" },
-    { sku: "SKU025", name: "UFC Banana Ketchup 320g", category: "Grocery", brand: "NutriAsia", price: 26.00, qty: 80, createdBy: "Mark Jordan" },
-    { sku: "SKU026", name: "Datu Puti Vinegar 200ml", category: "Grocery", brand: "NutriAsia", price: 18.00, qty: 100, createdBy: "Mark Jordan" },
-    { sku: "SKU027", name: "Datu Puti Soy Sauce 200ml", category: "Grocery", brand: "NutriAsia", price: 18.00, qty: 120, createdBy: "Mark Jordan" },
-    { sku: "SKU028", name: "Bear Brand Powdered Milk 150g", category: "Beverage", brand: "Nestle", price: 55.00, qty: 45, createdBy: "Admin" },
-    { sku: "SKU029", name: "Tang Orange Juice Powder", category: "Beverage", brand: "Mondelez", price: 20.00, qty: 150, createdBy: "Admin" },
-    { sku: "SKU030", name: "Nido Fortified 370g", category: "Beverage", brand: "Nestle", price: 180.00, qty: 25, createdBy: "Mark Jordan" },
-    { sku: "SKU031", name: "Oishi Prawn Crackers 60g", category: "Snacks", brand: "Oishi", price: 16.00, qty: 60, createdBy: "Mark Jordan" },
-    { sku: "SKU032", name: "Piattos Cheese 85g", category: "Snacks", brand: "Jack 'n Jill", price: 34.00, qty: 80, createdBy: "Admin" },
-    { sku: "SKU033", name: "Nova Country Cheddar 78g", category: "Snacks", brand: "Jack 'n Jill", price: 34.00, qty: 70, createdBy: "Mark Jordan" },
-    { sku: "SKU034", name: "Chippy Barbecue 110g", category: "Snacks", brand: "Jack 'n Jill", price: 32.00, qty: 90, createdBy: "Admin" },
-    { sku: "SKU035", name: "Fudgee Barr Chocolate 10s", category: "Snacks", brand: "Rebisco", price: 75.00, qty: 30, createdBy: "Mark Jordan" },
-    { sku: "SKU036", name: "Rebisco Crackers 10s", category: "Snacks", brand: "Rebisco", price: 55.00, qty: 40, createdBy: "Admin" },
-    { sku: "SKU037", name: "Hansel Mocha Sandwich 10s", category: "Snacks", brand: "Rebisco", price: 60.00, qty: 50, createdBy: "Mark Jordan" },
-    { sku: "SKU038", name: "Sunsilk Pink Shampoo 180ml", category: "Household", brand: "Unilever", price: 120.00, qty: 25, createdBy: "Mark Jordan" },
-    { sku: "SKU039", name: "Creamsilk Green Conditioner 180ml", category: "Household", brand: "Unilever", price: 125.00, qty: 20, createdBy: "Admin" },
-    { sku: "SKU040", name: "Downy Sunrise Fresh 38ml", category: "Household", brand: "Procter & Gamble", price: 12.00, qty: 200, createdBy: "Admin" },
-    { sku: "SKU041", name: "Breeze Detergent Powder 70g", category: "Household", brand: "Unilever", price: 18.00, qty: 150, createdBy: "Mark Jordan" },
-    { sku: "SKU042", name: "Tide Bar 125g", category: "Household", brand: "Procter & Gamble", price: 15.00, qty: 180, createdBy: "Admin" },
-    { sku: "SKU043", name: "Zonrox Bleach Regular 250ml", category: "Household", brand: "Green Cross", price: 22.00, qty: 60, createdBy: "Mark Jordan" },
-    { sku: "SKU044", name: "Green Cross Alcohol 250ml", category: "Household", brand: "Green Cross", price: 50.00, qty: 80, createdBy: "Admin" },
-    { sku: "SKU045", name: "Safeguard Pink 130g", category: "Household", brand: "Procter & Gamble", price: 42.00, qty: 55, createdBy: "Mark Jordan" },
-    { sku: "SKU046", name: "Pancit Canton Sweet & Spicy", category: "Noodles", brand: "Lucky Me", price: 18.00, qty: 140, createdBy: "Admin" },
-    { sku: "SKU047", name: "Pancit Canton Chilimansi", category: "Noodles", brand: "Lucky Me", price: 18.00, qty: 160, createdBy: "Mark Jordan" },
-    { sku: "SKU048", name: "Lucky Me Beef Mami", category: "Noodles", brand: "Lucky Me", price: 15.00, qty: 220, createdBy: "Mark Jordan" },
-    { sku: "SKU049", name: "Lucky Me Chicken Mami", category: "Noodles", brand: "Lucky Me", price: 15.00, qty: 190, createdBy: "Admin" },
-    { sku: "SKU050", name: "Payless Pancit Canton Extra Hot", category: "Noodles", brand: "Universal Robina", price: 16.00, qty: 100, createdBy: "Mark Jordan" },
-    { sku: "SKU051", name: "San Miguel Pale Pilsen 320ml", category: "Beverage", brand: "San Miguel", price: 48.00, qty: 96, createdBy: "Admin" },
-    { sku: "SKU052", name: "Red Horse Extra Strong 500ml", category: "Beverage", brand: "San Miguel", price: 75.00, qty: 120, createdBy: "Mark Jordan" },
-    { sku: "SKU053", name: "Gatorade Blue Bolt 500ml", category: "Beverage", brand: "PepsiCo", price: 38.00, qty: 64, createdBy: "Admin" },
-    { sku: "SKU054", name: "C2 Green Tea Apple 500ml", category: "Beverage", brand: "Universal Robina", price: 20.00, qty: 150, createdBy: "Mark Jordan" },
-    { sku: "SKU055", name: "Absolute Distilled Water 1L", category: "Beverage", brand: "Asia Brewery", price: 25.00, qty: 80, createdBy: "Admin" },
-    { sku: "SKU056", name: "Fitbar Chocolate 22g", category: "Snacks", brand: "Kalbe", price: 24.00, qty: 110, createdBy: "Mark Jordan" },
-    { sku: "SKU057", name: "Argentina Meat Loaf 150g", category: "Grocery", brand: "Century Pacific", price: 32.00, qty: 90, createdBy: "Admin" },
-    { sku: "SKU058", name: "555 Sardines in Tomato Sauce", category: "Grocery", brand: "Century Pacific", price: 22.00, qty: 120, createdBy: "Mark Jordan" },
-    { sku: "SKU059", name: "Spam Regular 340g", category: "Grocery", brand: "Hormel", price: 220.00, qty: 30, createdBy: "Admin" },
-    { sku: "SKU060", name: "Libby's Vienna Sausage 130g", category: "Grocery", brand: "Libby's", price: 48.00, qty: 75, createdBy: "Mark Jordan" }
-  ];
+  // Dynamic Products Data from Backend Supabase API
+  let products = [];
+
+  // Render initial loading skeleton in table
+  tableBody.innerHTML = Array(5).fill(0).map(() => `
+    <tr class="animate-pulse">
+      <td class="w-4 p-4"><div class="h-4 w-4 bg-neutral-200 dark:bg-neutral-800"></div></td>
+      <td class="px-4 py-3"><div class="h-4 w-16 bg-neutral-200 dark:bg-neutral-800"></div></td>
+      <td class="px-4 py-3"><div class="h-4 w-32 bg-neutral-200 dark:bg-neutral-800"></div></td>
+      <td class="px-4 py-3"><div class="h-4 w-20 bg-neutral-200 dark:bg-neutral-800"></div></td>
+      <td class="px-4 py-3"><div class="h-4 w-16 bg-neutral-200 dark:bg-neutral-800"></div></td>
+      <td class="px-4 py-3"><div class="h-4 w-12 bg-neutral-200 dark:bg-neutral-800"></div></td>
+      <td class="px-4 py-3"><div class="h-4 w-8 bg-neutral-200 dark:bg-neutral-800"></div></td>
+      <td class="px-4 py-3"><div class="h-4 w-20 bg-neutral-200 dark:bg-neutral-800"></div></td>
+      <td class="px-4 py-3"><div class="h-4 w-16 bg-neutral-200 dark:bg-neutral-800"></div></td>
+    </tr>
+  `).join('');
+
+  // Fetch live products
+  const productRes = await fetchProducts();
+  if (productRes.success && productRes.data.length > 0) {
+    products = productRes.data;
+  } else {
+    // If backend table is empty yet, fallback to starter product seeds
+    products = [
+      { id: 1, sku: "SKU001", name: "Milo 24g", category: "Beverage", brand: "Nestle", price: 12.00, qty: 5, createdBy: "Mark Jordan" },
+      { id: 2, sku: "SKU002", name: "Lucky Me Canton", category: "Noodles", brand: "Lucky Me", price: 18.00, qty: 0, createdBy: "Mark Jordan" },
+      { id: 3, sku: "SKU003", name: "Nescafe Classic Pack", category: "Beverage", brand: "Nescafe", price: 14.00, qty: 15, createdBy: "Mark Jordan" },
+      { id: 4, sku: "SKU004", name: "Surf Cherry Blossom", category: "Household", brand: "Unilever", price: 15.00, qty: 2, createdBy: "Mark Jordan" },
+      { id: 5, sku: "SKU005", name: "Premium Rice 1kg", category: "Grocery", brand: "Harvester", price: 40.00, qty: 150, createdBy: "Mark Jordan" }
+    ];
+  }
 
   // Selected row tracking
   let selectedSkus = new Set();
@@ -248,7 +221,7 @@ export function initProductsPage() {
             <td class="px-6 py-4 font-semibold text-neutral-800 dark:text-neutral-200 hover:text-emerald-500 bg-neutral-50/80 dark:bg-neutral-800/30 transition-colors">
               <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900">
-                  <img src="https://placehold.co/100x100/transparent/9ca3af.png?text=${encodeURIComponent(p.name.split(' ')[0])}" alt="${p.name}" class="w-full h-full object-cover">
+                  <img src="${(p.image_path ? getProductImageUrl(p.image_path) : null) || `https://placehold.co/100x100/transparent/9ca3af.png?text=${encodeURIComponent(p.name.split(' ')[0])}`}" alt="${p.name}" class="w-full h-full object-cover">
                 </div>
                 <span class="truncate max-w-[150px]">${p.name}</span>
               </div>
@@ -337,10 +310,33 @@ export function initProductsPage() {
         el.addEventListener('click', () => {
           const p = products.find(prod => prod.sku === el.dataset.sku);
           if (p) {
-            showEditProductModal(p, (updated) => {
+            showEditProductModal(p, async (updated) => {
+              let imagePath = p.image_path;
+              if (updated.imageFile) {
+                const uploadRes = await uploadProductImage(updated.imageFile, updated.sku);
+                if (uploadRes.success) {
+                  imagePath = uploadRes.imagePath;
+                }
+              }
+
+              if (p.id) {
+                await updateProduct(p.id, {
+                  name: updated.name,
+                  selling_price: updated.price,
+                  buying_price: updated.costPrice,
+                  qty: updated.qty,
+                  ean_13_barcode: updated.barcodeEan13,
+                  image_path: imagePath
+                });
+              }
+
               const idx = products.findIndex(prod => prod.sku === p.sku);
               if (idx !== -1) {
-                products[idx] = updated;
+                products[idx] = {
+                  ...products[idx],
+                  ...updated,
+                  image_path: imagePath
+                };
                 showSuccess('Success', `Product ${updated.name} updated successfully!`);
                 renderTableWithSkeleton(400);
               }
@@ -552,7 +548,10 @@ export function initProductsPage() {
 
       // Populate data
       const imgEl = document.getElementById('detail-product-image');
-      if (imgEl) imgEl.src = `https://placehold.co/400x400/transparent/9ca3af.png?text=${encodeURIComponent(p.name.split(' ')[0])}`;
+      if (imgEl) {
+        const resolvedUrl = p.image_path ? getProductImageUrl(p.image_path) : null;
+        imgEl.src = resolvedUrl || `https://placehold.co/400x400/transparent/9ca3af.png?text=${encodeURIComponent(p.name.split(' ')[0])}`;
+      }
       
       const nameTitleEl = document.getElementById('detail-product-name-title');
       if (nameTitleEl) nameTitleEl.textContent = p.name;
@@ -702,18 +701,75 @@ export function initProductsPage() {
   const btnAddProduct = document.getElementById('btn-add-product');
   if (btnAddProduct) {
     btnAddProduct.addEventListener('click', () => {
-      showAddProductModal((newProduct) => {
+      const nextSkuNum = products.length + 1;
+      const nextSku = 'SKU' + String(nextSkuNum).padStart(3, '0');
+
+      showAddProductModal(async (newProduct) => {
         // Validate uniqueness of SKU
         const exists = products.some(p => p.sku.toLowerCase() === newProduct.sku.toLowerCase());
         if (exists) {
           showError('Duplicate SKU', `A product with SKU "${newProduct.sku}" already exists!`);
-        } else {
-          products.unshift(newProduct);
+          return;
+        }
+
+        let imagePath = null;
+        if (newProduct.imageFile) {
+          const uploadRes = await uploadProductImage(newProduct.imageFile, newProduct.sku);
+          if (uploadRes.success) {
+            imagePath = uploadRes.imagePath;
+          }
+        }
+
+        const saveRes = await createProduct({
+          storeId: 1,
+          sku: newProduct.sku,
+          barcodeEan13: newProduct.barcodeEan13,
+          productName: newProduct.name,
+          brand: newProduct.brand,
+          price: newProduct.price,
+          costPrice: newProduct.costPrice,
+          stockQuantity: newProduct.qty,
+          imagePath: imagePath
+        });
+
+        if (saveRes.success) {
+          products.unshift({
+            id: saveRes.data?.id || Date.now(),
+            sku: newProduct.sku,
+            name: newProduct.name,
+            category: newProduct.category,
+            brand: newProduct.brand,
+            price: newProduct.price,
+            cost_price: newProduct.costPrice,
+            qty: newProduct.qty,
+            image_path: imagePath,
+            createdBy: 'Mark Jordan'
+          });
+
           showSuccess('Success', `Product ${newProduct.name} added successfully!`);
           renderTableWithSkeleton(500);
+        } else {
+          showError('Error', saveRes.error || 'Failed to save product to database');
         }
-      });
+      }, nextSku);
     });
+  }
+
+  // Cross-page Pending Action or URL Query Trigger
+  const urlParams = new URLSearchParams(window.location.search);
+  const pendingAction = getPendingAction();
+  if (urlParams.get('action') === 'add-product' || pendingAction?.action === 'add-product') {
+    clearPendingAction();
+    if (urlParams.has('action')) {
+      urlParams.delete('action');
+      const cleanUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '') + window.location.hash;
+      window.history.replaceState({}, '', cleanUrl);
+    }
+    setTimeout(() => {
+      if (btnAddProduct) {
+        btnAddProduct.click();
+      }
+    }, 400);
   }
 
   const btnExportProducts = document.getElementById('btn-export-products');
@@ -906,5 +962,14 @@ export function initProductsPage() {
   bindFilterEvents();
   populateFilters();
   handleRouting();
+
+  // Attach Realtime live listener for products
+  subscribeToProducts(async () => {
+    const res = await fetchProducts();
+    if (res.success && res.data) {
+      products = res.data;
+      renderTableWithSkeleton(300);
+    }
+  });
 }
 // --- END initProductsPage ---

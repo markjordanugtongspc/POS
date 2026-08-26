@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Switch to Merchant POS</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body
+  class="bg-neutral-100 dark:bg-[#121318] text-neutral-800 dark:text-neutral-100 min-h-screen transition-colors duration-300">
+
+  <div id="app" class="min-h-screen">
+    <!-- Sidebar dynamically injected via main.js -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="p-4 sm:ml-64 mt-14">
+      <div class="p-4 sm:p-6 border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#16171d] shadow-xs">
+
+        <!-- Header -->
+        <div
+          class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b border-neutral-200 dark:border-neutral-800">
+          <div>
+            <div class="flex items-center gap-2">
+              <span
+                class="inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span> Admin Inspector
+              </span>
+            </div>
+            <h1 class="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white tracking-tight mt-1">Merchant
+              Store Inspector Portal</h1>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400">Select any registered subscriber merchant to
+              inspect their live client POS dashboard, inventory, and sales.</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span
+              class="px-2.5 py-1 text-xs font-mono font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+              Total Merchants: <strong id="portal-total-stores">--</strong>
+            </span>
+          </div>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 mb-6">
+          <div class="sm:col-span-6 relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none text-neutral-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+            </div>
+            <input type="text" id="portal-store-search"
+              class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white text-xs block w-full ps-9 p-2.5 font-bold focus:ring-1 focus:ring-rose-500 outline-none"
+              placeholder="Search store name, merchant owner, or store ID...">
+          </div>
+
+          <div class="sm:col-span-3">
+            <select id="portal-tier-filter"
+              class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white text-xs block w-full p-2.5 font-bold focus:ring-1 focus:ring-rose-500 outline-none cursor-pointer">
+              <option value="All">All Plan Tiers</option>
+              <option value="pro">Pro Plan</option>
+              <option value="starter">Starter Plan</option>
+              <option value="free">Free Trial</option>
+            </select>
+          </div>
+
+          <div class="sm:col-span-3">
+            <select id="portal-status-filter"
+              class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white text-xs block w-full p-2.5 font-bold focus:ring-1 focus:ring-rose-500 outline-none cursor-pointer">
+              <option value="All">All Payment Statuses</option>
+              <option value="paid">Paid Subscribers</option>
+              <option value="unpaid">Unpaid / Trial</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Medium Size Subscriber Cards Grid (Anti-UI Slop Grounded) -->
+        <div id="portal-stores-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Dynamically populated store cards -->
+          <div class="p-8 text-center text-xs text-neutral-400 font-bold col-span-full">
+            Loading merchant stores...
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

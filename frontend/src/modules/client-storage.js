@@ -83,3 +83,42 @@ export function removeLocal(key) {
     console.error('Error removing from localStorage', e);
   }
 }
+
+// ==========================================
+// START: Pending Action Cache Functions
+// Stores cross-page navigation triggers (e.g. Add Product shortcut, Highlight target)
+// ==========================================
+/**
+ * Sets a pending cross-page action trigger
+ * @param {string} actionName 
+ * @param {any} metadata 
+ */
+export function setPendingAction(actionName, metadata = null) {
+  setLocal('pending_client_action', { action: actionName, metadata, timestamp: Date.now() });
+}
+
+/**
+ * Gets the current pending cross-page action trigger if not expired
+ * @returns {Object|null}
+ */
+export function getPendingAction() {
+  const pending = getLocal('pending_client_action');
+  if (!pending) return null;
+  // Expire after 10 seconds to prevent stale triggers
+  if (Date.now() - pending.timestamp > 10000) {
+    clearPendingAction();
+    return null;
+  }
+  return pending;
+}
+
+/**
+ * Clears the pending cross-page action trigger
+ */
+export function clearPendingAction() {
+  removeLocal('pending_client_action');
+}
+// ==========================================
+// END: Pending Action Cache Functions
+// ==========================================
+

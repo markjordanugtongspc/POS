@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="light">
 
 <head>
@@ -38,7 +38,7 @@
               <span class="text-[10px] sm:text-xs font-extrabold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Gross Sales</span>
             </div>
             <div>
-              <div id="gross-sales-value" class="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white leading-none">₱0.00</div>
+              <div id="gross-sales-value" class="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white leading-none" data-counter data-target="0" data-prefix="₱" data-decimals="2">₱0.00</div>
               <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-2 flex items-center gap-1">
                 <span>+12.4%</span>
                 <span class="text-neutral-400 dark:text-neutral-500 font-normal">from last week</span>
@@ -55,7 +55,7 @@
               <span class="text-[10px] sm:text-xs font-extrabold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Total Discounts</span>
             </div>
             <div>
-              <div id="total-discounts-value" class="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white leading-none">₱0.00</div>
+              <div id="total-discounts-value" class="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white leading-none" data-counter data-target="0" data-prefix="₱" data-decimals="2">₱0.00</div>
               <p class="text-[10px] text-red-600 dark:text-red-400 font-bold mt-2 flex items-center gap-1">
                 <span>3.5%</span>
                 <span class="text-neutral-400 dark:text-neutral-500 font-normal">avg discount rate</span>
@@ -72,7 +72,7 @@
               <span class="text-[10px] sm:text-xs font-extrabold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Net Sales</span>
             </div>
             <div>
-              <div id="net-sales-value" class="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white leading-none">₱0.00</div>
+              <div id="net-sales-value" class="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white leading-none" data-counter data-target="0" data-prefix="₱" data-decimals="2">₱0.00</div>
               <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-2 flex items-center gap-1">
                 <span>96.5%</span>
                 <span class="text-neutral-400 dark:text-neutral-500 font-normal">conversion rate</span>
@@ -89,7 +89,7 @@
               <span class="text-[10px] sm:text-xs font-extrabold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Transactions Count</span>
             </div>
             <div>
-              <div id="transactions-count-value" class="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white leading-none">0</div>
+              <div id="transactions-count-value" class="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white leading-none" data-counter data-target="0" data-decimals="0">0</div>
               <p class="text-[10px] text-blue-600 dark:text-blue-400 font-bold mt-2 flex items-center gap-1">
                 <span>Active</span>
                 <span class="text-neutral-400 dark:text-neutral-500 font-normal">orders listed</span>
@@ -387,7 +387,145 @@
                   <th scope="col" class="px-6 py-4">Action Buttons</th>
                 </tr>
               </thead>
-              <tbody id="transactions-tbody" class="divide-y divide-neutral-200 dark:divide-neutral-800 font-semibold">
+              <!-- Skeleton Loading TBODY (Flowbite animated skeleton pulse) -->
+              <tbody id="transactions-skeleton-body" class="divide-y divide-neutral-200 dark:divide-neutral-800 animate-pulse">
+                <!-- Skeleton Row 1 -->
+                <tr class="bg-white dark:bg-[#16171d]">
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-4 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-3.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-36 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-3.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-28 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-16 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-4 bg-neutral-200 dark:bg-neutral-700 rounded-full w-16 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-20 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="flex items-center justify-center gap-2">
+                      <div class="w-8 h-8 rounded bg-neutral-200 dark:bg-neutral-700"></div>
+                      <div class="w-8 h-8 rounded bg-neutral-200 dark:bg-neutral-700"></div>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Skeleton Row 2 -->
+                <tr class="bg-white dark:bg-[#16171d]">
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-4 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-3.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-36 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-3.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-14 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-4 bg-neutral-200 dark:bg-neutral-700 rounded-full w-14 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-20 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="flex items-center justify-center gap-2">
+                      <div class="w-8 h-8 rounded bg-neutral-200 dark:bg-neutral-700"></div>
+                      <div class="w-8 h-8 rounded bg-neutral-200 dark:bg-neutral-700"></div>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Skeleton Row 3 -->
+                <tr class="bg-white dark:bg-[#16171d]">
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-4 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-3.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-36 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-3.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-14 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-4 bg-neutral-200 dark:bg-neutral-700 rounded-full w-16 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-20 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="flex items-center justify-center gap-2">
+                      <div class="w-8 h-8 rounded bg-neutral-200 dark:bg-neutral-700"></div>
+                      <div class="w-8 h-8 rounded bg-neutral-200 dark:bg-neutral-700"></div>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Skeleton Row 4 -->
+                <tr class="bg-white dark:bg-[#16171d]">
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-4 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-3.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-36 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-3.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-28 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-14 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-4 bg-neutral-200 dark:bg-neutral-700 rounded-full w-16 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-20 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="flex items-center justify-center gap-2">
+                      <div class="w-8 h-8 rounded bg-neutral-200 dark:bg-neutral-700"></div>
+                      <div class="w-8 h-8 rounded bg-neutral-200 dark:bg-neutral-700"></div>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Skeleton Row 5 -->
+                <tr class="bg-white dark:bg-[#16171d]">
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-4 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-3.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-36 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-3.5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-24 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-14 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-4 bg-neutral-200 dark:bg-neutral-700 rounded-full w-14 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full w-20 mx-auto"></div>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <div class="flex items-center justify-center gap-2">
+                      <div class="w-8 h-8 rounded bg-neutral-200 dark:bg-neutral-700"></div>
+                      <div class="w-8 h-8 rounded bg-neutral-200 dark:bg-neutral-700"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody id="transactions-tbody" class="hidden divide-y divide-neutral-200 dark:divide-neutral-800 font-semibold">
                 <!-- Dynamically populated via transactions.js -->
               </tbody>
             </table>

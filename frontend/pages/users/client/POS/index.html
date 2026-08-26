@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="light">
 
 <head>
@@ -30,7 +30,7 @@
           <!-- Scan & Search Bar -->
           <div class="flex items-center gap-2 w-full md:w-auto">
             <!-- Scan Button -->
-            <button
+            <button id="btn-pos-scan-desktop" type="button"
               class="hidden md:block shrink-0 relative h-10 sm:h-11 px-3 sm:px-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-md transition-all cursor-pointer group focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 -skew-x-12 rounded-sm">
               <div class="skew-x-12 flex items-center justify-center w-full h-full gap-2">
                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-neutral-600 dark:text-neutral-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -807,7 +807,7 @@
 
   <!-- Floating Mobile Scan Button -->
   <div class="fixed bottom-6 inset-x-0 z-40 md:hidden flex justify-center pointer-events-none">
-    <button type="button"
+    <button id="btn-pos-scan-mobile" type="button"
       class="pointer-events-auto relative w-28 h-11 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white shadow-[0_4px_20px_rgba(16,185,129,0.4)] cursor-pointer -skew-x-12 rounded-sm active:scale-95 transition-all flex items-center justify-center opacity-95 hover:opacity-100 focus:outline-none focus:ring-4 focus:ring-emerald-500/30">
       <div class="skew-x-12 flex items-center justify-center gap-2">
         <svg class="w-5 h-5 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -835,7 +835,124 @@
     </button>
   </div>
 
+  <!-- Flowbite Barcode Scanner Modal (Desktop phone-like tall/wide container & full mobile responsive view) -->
+  <div id="barcode-scanner-modal" tabindex="-1" aria-hidden="true"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-sm p-0 sm:p-4 overflow-hidden">
+    
+    <!-- Phone-like tall/wide Scanner Viewport -->
+    <div class="relative w-full h-full sm:h-[88vh] sm:max-w-md bg-neutral-900 sm:rounded-3xl border border-neutral-800 shadow-2xl overflow-hidden flex flex-col justify-between select-none">
+      
+      <!-- Video Element Preview Stream -->
+      <div class="absolute inset-0 z-0 bg-neutral-950 overflow-hidden flex items-center justify-center">
+        <video id="barcode-scanner-video" autoplay playsinline muted class="w-full h-full object-cover"></video>
+      </div>
 
+      <!-- Header Controls Overlay -->
+      <div class="relative z-10 flex items-center justify-between p-4 bg-gradient-to-b from-black/80 via-black/40 to-transparent text-white">
+        <!-- Close 'X' Button on the Top Left -->
+        <button id="btn-close-scanner-modal" type="button" class="cursor-pointer p-2 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md text-white border border-white/10 active:scale-95 transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <!-- Right Side Controls: Torch & Info with Tooltip -->
+        <div class="flex items-center gap-2">
+          <!-- Torch Toggle Button (Hidden on desktop/laptops, visible on mobile, tablet, kiosks) -->
+          <button id="btn-scanner-torch" type="button" class="cursor-pointer hidden max-lg:inline-flex p-2 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md text-white border border-white/10 active:scale-95 transition-all" title="Toggle Flashlight">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </button>
+
+          <!-- Info / About Button with Tooltip -->
+          <div class="relative group">
+            <button id="btn-scanner-info" type="button" class="cursor-pointer p-2 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md text-white border border-white/10 active:scale-95 transition-all">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+              </svg>
+            </button>
+            <!-- Flowbite-style Tooltip -->
+            <div class="absolute right-0 top-full mt-2 hidden group-hover:block px-2.5 py-1 bg-neutral-900/90 backdrop-blur-md text-white text-[11px] font-bold rounded shadow-lg whitespace-nowrap z-30 border border-neutral-700">
+              About
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: High-Precision Barcode Target Frame -->
+      <div class="relative z-10 flex flex-col items-center justify-center p-4">
+        <!-- Detection Target Box (Wider, sleeker height with internal laser sweep) -->
+        <div class="relative w-[84%] sm:w-[88%] h-28 sm:h-32 rounded-2xl border-2 border-neutral-900/90 dark:border-black/90 shadow-[0_0_0_9999px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col items-center justify-center">
+          <!-- Internal Confined Scanner laser sweep animation overlay (high-visibility neon laser) -->
+          <div id="barcode-scanner-laser" class="absolute inset-x-0 h-1 bg-gradient-to-r from-emerald-500/20 via-emerald-400 via-white to-emerald-500/20 shadow-[0_0_15px_#10b981,0_0_8px_#34d399] animate-scanner-laser pointer-events-none"></div>
+
+          <!-- Crosshair Guide -->
+          <div class="w-full border-t border-dashed border-emerald-400/60 shadow-xs"></div>
+        </div>
+      </div>
+
+      <!-- Bottom Scanning Indicator Output Container -->
+      <div class="relative z-10 p-5 flex flex-col items-center justify-center bg-gradient-to-t from-black/85 via-black/40 to-transparent">
+        <div class="w-full max-w-xs py-3 px-4 bg-amber-400 text-neutral-950 font-black text-xs sm:text-sm rounded-lg shadow-lg text-center tracking-wide uppercase transition-all duration-200">
+          <span id="barcode-scan-output">Point your camera at a barcode</span>
+        </div>
+      </div>
+
+      <!-- Flowbite About Overlay (Contained directly inside the camera viewport) -->
+      <div id="barcode-about-modal" tabindex="-1" aria-hidden="true"
+        class="absolute inset-0 z-30 hidden flex-col justify-center items-center bg-black/60 backdrop-blur-md p-4 sm:p-6 transition-all duration-300">
+        <div class="relative w-full max-w-xs sm:max-w-sm bg-white dark:bg-[#1f2029] rounded-2xl shadow-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden flex flex-col p-5 sm:p-6 text-neutral-800 dark:text-neutral-100">
+          
+          <!-- Top Title -->
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-lg sm:text-xl font-black text-neutral-900 dark:text-white tracking-tight">Scan barcodes</h3>
+            <button id="btn-close-about-modal" type="button" class="cursor-pointer text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 p-1 active:scale-95 transition-transform">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Center Vector Graphic Diagram -->
+          <div class="w-full py-3 flex items-center justify-center">
+            <div class="relative w-36 h-28 border-2 border-neutral-900 dark:border-neutral-200 rounded-md bg-neutral-50 dark:bg-neutral-800 flex flex-col items-center justify-center">
+              <!-- Stand / Device illustration -->
+              <div class="absolute right-2 inset-y-2 w-2 border-l-2 border-neutral-900 dark:border-neutral-200"></div>
+              <!-- Phone overlay -->
+              <div class="relative w-16 h-22 border-2 border-neutral-900 dark:border-neutral-100 bg-white dark:bg-neutral-900 rounded-xl flex flex-col items-center justify-center shadow-md">
+                <!-- Mini Barcode viewfinder -->
+                <div class="px-1.5 py-0.5 rounded border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center">
+                  <svg class="w-6 h-3 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M2 4h2v16H2V4zm3 0h1v16H5V4zm2 0h2v16H7V4zm3 0h1v16h-1V4zm2 0h3v16h-3V4zm4 0h1v16h-1V4zm2 0h2v16h-2V4z"/>
+                  </svg>
+                </div>
+                <div class="w-2.5 h-0.5 bg-neutral-900 dark:bg-white mt-2 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description Paragraphs -->
+          <div class="text-xs text-neutral-600 dark:text-neutral-300 space-y-2 leading-relaxed mt-1">
+            <p>
+              Barcode Scanner lets you use your <span class="hidden sm:inline">desktop webcamera if there is any</span><span class="sm:hidden">mobile camera</span> to identify barcode for POS items and product models.
+            </p>
+            <p>
+              Make sure the code is clear and visible within the detection box that shows in your camera view.
+            </p>
+          </div>
+
+          <!-- Got It Action Button -->
+          <div class="mt-4 flex justify-end">
+            <button id="btn-scanner-about-gotit" type="button"
+              class="cursor-pointer px-5 py-2 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-extrabold text-xs uppercase tracking-wider rounded-lg shadow-sm active:scale-95 transition-all focus:outline-none">
+              GOT IT
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Drawer Backdrop -->
   <div id="cart-drawer-backdrop"

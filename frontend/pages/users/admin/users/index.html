@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform Users - Admin Control Center</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body
+  class="bg-neutral-100 dark:bg-[#16171d] text-neutral-800 dark:text-neutral-100 min-h-screen transition-colors duration-300">
+
+  <div id="app" class="min-h-screen">
+    <div id="sidebar-container"></div>
+
+    <main class="p-4 sm:ml-64 mt-14">
+      <!-- Header Row -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-black text-neutral-900 dark:text-white tracking-tight uppercase">Platform Users Directory</h1>
+            <span class="px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800">RBAC Identity</span>
+          </div>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400">All registered store owners, inventory managers, cashiers, and platform administrators.</p>
+        </div>
+      </div>
+
+      <!-- Users Statistics Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+        <div class="p-5 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 shadow-xs">
+          <span class="text-[10px] font-black uppercase tracking-wider text-neutral-400">Total Accounts</span>
+          <h3 id="stat-total-users" class="text-2xl font-black text-neutral-900 dark:text-white mt-0.5">--</h3>
+          <p class="text-[11px] text-neutral-500 mt-1">Platform-wide profiles</p>
+        </div>
+
+        <div class="p-5 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 shadow-xs">
+          <span class="text-[10px] font-black uppercase tracking-wider text-rose-500">Store Owners</span>
+          <h3 id="stat-owners-count" class="text-2xl font-black text-rose-600 dark:text-rose-400 mt-0.5">--</h3>
+          <p class="text-[11px] text-neutral-500 mt-1">OWN001 - OWN002</p>
+        </div>
+
+        <div class="p-5 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 shadow-xs">
+          <span class="text-[10px] font-black uppercase tracking-wider text-blue-500">Inv. Managers</span>
+          <h3 id="stat-managers-count" class="text-2xl font-black text-blue-600 dark:text-blue-400 mt-0.5">--</h3>
+          <p class="text-[11px] text-neutral-500 mt-1">INV001 Prefix</p>
+        </div>
+
+        <div class="p-5 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 shadow-xs">
+          <span class="text-[10px] font-black uppercase tracking-wider text-emerald-500">Cashiers</span>
+          <h3 id="stat-cashiers-count" class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5">--</h3>
+          <p class="text-[11px] text-neutral-500 mt-1">POS001 Prefix</p>
+        </div>
+      </div>
+
+      <!-- Controls & Search -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 p-4 shadow-xs mb-4">
+        <div class="flex items-center gap-2 flex-1 max-w-md">
+          <div class="relative w-full">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-neutral-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <input type="text" id="input-search-users" placeholder="Search staff name, custom ID, username, or email..."
+              class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white text-xs block w-full pl-9 p-2.5 rounded-none focus:ring-1 focus:ring-rose-500">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <select id="select-filter-user-role" class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white text-xs p-2.5 rounded-none focus:ring-1 focus:ring-rose-500">
+            <option value="all">All Roles</option>
+            <option value="owner">Store Owners</option>
+            <option value="inventory_manager">Inventory Managers</option>
+            <option value="cashier">Cashiers</option>
+            <option value="superadmin">Admins</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Users Table -->
+      <div class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 overflow-x-auto shadow-xs">
+        <table class="w-full text-xs text-left text-neutral-600 dark:text-neutral-300">
+          <thead class="text-[11px] font-black uppercase tracking-wider text-neutral-700 dark:text-neutral-300 bg-neutral-50 dark:bg-neutral-900/60 border-b border-neutral-200 dark:border-neutral-800">
+            <tr>
+              <th scope="col" class="px-4 py-3.5">Custom ID</th>
+              <th scope="col" class="px-4 py-3.5">Staff Identity</th>
+              <th scope="col" class="px-4 py-3.5">Role</th>
+              <th scope="col" class="px-4 py-3.5">Store Branch</th>
+              <th scope="col" class="px-4 py-3.5">Quick PIN</th>
+              <th scope="col" class="px-4 py-3.5">Status</th>
+            </tr>
+          </thead>
+          <tbody id="platform-users-tbody" class="divide-y divide-neutral-200 dark:divide-neutral-800/60 font-medium">
+            <!-- Dynamically populated via admin-dashboard.js -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

@@ -8,79 +8,89 @@
   <!-- Statistics Cards Grid -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
     
-    <!-- Card 1: Primary (Gold/Orange) -->
-    <div class="relative overflow-hidden p-5 bg-gradient-to-tr from-amber-600 to-amber-400 dark:from-amber-700 dark:to-amber-500 rounded-none flex items-center justify-between text-white">
-  <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
-  <div class="absolute right-10 -bottom-8 w-20 h-20 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
-
-      <div class="relative z-10">
-        <p class="text-[11px] font-medium text-amber-50 tracking-wide mb-1">Total Inv. Managers</p>
-        <div class="skeleton-data h-6 w-12 bg-white/30 rounded animate-pulse mt-1"></div>
-        <h3 class="actual-data text-2xl font-bold hidden">5</h3>
-      </div>
-      <div class="relative z-10 w-10 h-10 bg-white/20 flex items-center justify-center rounded-none shrink-0">
-        <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.583 8.445h.01M10.828 13.339h.01M18 9.778l-3.39-3.428a2 2 0 0 0-2.828 0l-7.172 7.254a2 2 0 0 0 0 2.828l3.39 3.428a2 2 0 0 0 2.828 0l7.172-7.254a2 2 0 0 0 0-2.828Z"/>
+    <!-- Card 1: Total Inv. Managers (Amber / Warm Orange Gradient with Watermark Icon) -->
+    <div
+      class="p-5 bg-gradient-to-br from-amber-500 to-orange-600 dark:from-amber-900/75 dark:to-orange-950/85 text-white rounded-3xl relative shadow-md shadow-amber-500/15 dark:shadow-black/40 border border-transparent dark:border-amber-800/30 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-lg group">
+      <!-- Watermark Icon Overlay on the Right -->
+      <div class="absolute -right-2 -bottom-2 pointer-events-none text-white opacity-15 group-hover:opacity-25 group-hover:scale-110 transition-all duration-300">
+        <svg class="w-20 h-20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15.583 8.445h.01M10.828 13.339h.01M18 9.778l-3.39-3.428a2 2 0 0 0-2.828 0l-7.172 7.254a2 2 0 0 0 0 2.828l3.39 3.428a2 2 0 0 0 2.828 0l7.172-7.254a2 2 0 0 0 0-2.828Z"/>
         </svg>
       </div>
-    </div>
-
-    <!-- Card 2: Blue -->
-    <div class="relative overflow-hidden p-5 bg-gradient-to-tr from-blue-600 to-blue-400 dark:from-blue-700 dark:to-blue-500 rounded-none flex items-center justify-between text-white">
-  <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
-  <div class="absolute right-10 -bottom-8 w-20 h-20 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
 
       <div class="relative z-10">
-        <p class="text-[11px] font-medium text-blue-50 tracking-wide mb-1">Active Now</p>
-        <div class="skeleton-data h-6 w-12 bg-white/30 rounded animate-pulse mt-1"></div>
-        <h3 class="actual-data text-2xl font-bold hidden">4</h3>
+        <div class="text-xs font-extrabold uppercase tracking-wider text-amber-100 dark:text-amber-200/90 mb-1">Total Inv. Managers</div>
       </div>
-      <div class="relative z-10 w-10 h-10 bg-white/20 flex items-center justify-center rounded-none shrink-0">
-        <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-width="2" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-        </svg>
+      <div class="relative z-10 mt-3">
+        <div class="skeleton-data h-7 w-12 bg-white/30 rounded animate-pulse" data-color="bg-white/90"></div>
+        <div class="actual-data text-2xl sm:text-3xl font-black text-white tracking-tight hidden font-mono">5</div>
+        <div class="text-[10px] font-semibold text-amber-100/80 dark:text-amber-200/70 mt-0.5">Registered managers</div>
       </div>
     </div>
 
-    <!-- Card 3: Purple -->
-    <div class="relative overflow-hidden p-5 bg-gradient-to-tr from-purple-600 to-purple-400 dark:from-purple-700 dark:to-purple-500 rounded-none flex items-center justify-between text-white">
-  <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
-  <div class="absolute right-10 -bottom-8 w-20 h-20 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+    <!-- Card 2: Active Now (Royal Blue Gradient with Watermark Icon) -->
+    <div
+      class="p-5 bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-900/80 dark:to-indigo-950/90 text-white rounded-3xl relative shadow-md shadow-blue-600/15 dark:shadow-black/40 border border-transparent dark:border-blue-800/30 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-lg group">
+      <!-- Watermark Icon Overlay on the Right -->
+      <div class="absolute -right-2 -bottom-2 pointer-events-none text-white opacity-15 group-hover:opacity-25 group-hover:scale-110 transition-all duration-300">
+        <svg class="w-20 h-20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-width="1.75" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+        </svg>
+      </div>
 
       <div class="relative z-10">
-        <p class="text-[11px] font-medium text-purple-50 tracking-wide mb-1">On Leave</p>
-        <div class="skeleton-data h-6 w-12 bg-white/30 rounded animate-pulse mt-1"></div>
-        <h3 class="actual-data text-2xl font-bold hidden">0</h3>
+        <div class="text-xs font-extrabold uppercase tracking-wider text-blue-100 dark:text-blue-200/90 mb-1">Active Now</div>
       </div>
-      <div class="relative z-10 w-10 h-10 bg-white/20 flex items-center justify-center rounded-none shrink-0">
-        <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16M8 14h8m-4-7V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"/>
-        </svg>
+      <div class="relative z-10 mt-3">
+        <div class="skeleton-data h-7 w-12 bg-white/30 rounded animate-pulse" data-color="bg-white/90"></div>
+        <div class="actual-data text-2xl sm:text-3xl font-black text-white tracking-tight hidden font-mono">4</div>
+        <div class="text-[10px] font-semibold text-blue-100/80 dark:text-blue-200/70 mt-0.5">On current duty</div>
       </div>
     </div>
 
-    <!-- Card 4: Red (Resigned) -->
-    <div class="relative overflow-hidden p-5 bg-gradient-to-tr from-red-600 to-red-400 dark:from-red-700 dark:to-red-500 rounded-none flex items-center justify-between text-white">
-  <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
-  <div class="absolute right-10 -bottom-8 w-20 h-20 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+    <!-- Card 3: On Leave (Purple Gradient with Watermark Icon) -->
+    <div
+      class="p-5 bg-gradient-to-br from-purple-600 to-indigo-700 dark:from-purple-900/80 dark:to-indigo-950/90 text-white rounded-3xl relative shadow-md shadow-purple-600/15 dark:shadow-black/40 border border-transparent dark:border-purple-800/30 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-lg group">
+      <!-- Watermark Icon Overlay on the Right -->
+      <div class="absolute -right-2 -bottom-2 pointer-events-none text-white opacity-15 group-hover:opacity-25 group-hover:scale-110 transition-all duration-300">
+        <svg class="w-20 h-20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4 10h16M8 14h8m-4-7V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"/>
+        </svg>
+      </div>
 
       <div class="relative z-10">
-        <p class="text-[11px] font-medium text-red-50 tracking-wide mb-1">Total Resigned</p>
-        <div class="skeleton-data h-6 w-12 bg-white/30 rounded animate-pulse mt-1"></div>
-        <h3 class="actual-data text-2xl font-bold hidden">1</h3>
+        <div class="text-xs font-extrabold uppercase tracking-wider text-purple-100 dark:text-purple-200/90 mb-1">On Leave</div>
       </div>
-      <div class="relative z-10 w-10 h-10 bg-white/20 flex items-center justify-center rounded-none shrink-0">
-        <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-        </svg>
+      <div class="relative z-10 mt-3">
+        <div class="skeleton-data h-7 w-12 bg-white/30 rounded animate-pulse" data-color="bg-white/90"></div>
+        <div class="actual-data text-2xl sm:text-3xl font-black text-white tracking-tight hidden font-mono">0</div>
+        <div class="text-[10px] font-semibold text-purple-100/80 dark:text-purple-200/70 mt-0.5">Scheduled leaves</div>
       </div>
-    </div>
     </div>
 
+    <!-- Card 4: Total Resigned (Rose/Red Gradient with Watermark Icon) -->
+    <div
+      class="p-5 bg-gradient-to-br from-rose-600 to-red-700 dark:from-rose-900/80 dark:to-red-950/90 text-white rounded-3xl relative shadow-md shadow-rose-600/15 dark:shadow-black/40 border border-transparent dark:border-rose-800/30 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-lg group">
+      <!-- Watermark Icon Overlay on the Right -->
+      <div class="absolute -right-2 -bottom-2 pointer-events-none text-white opacity-15 group-hover:opacity-25 group-hover:scale-110 transition-all duration-300">
+        <svg class="w-20 h-20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+        </svg>
+      </div>
+
+      <div class="relative z-10">
+        <div class="text-xs font-extrabold uppercase tracking-wider text-rose-100 dark:text-rose-200/90 mb-1">Total Resigned</div>
+      </div>
+      <div class="relative z-10 mt-3">
+        <div class="skeleton-data h-7 w-12 bg-white/30 rounded animate-pulse" data-color="bg-white/90"></div>
+        <div class="actual-data text-2xl sm:text-3xl font-black text-white tracking-tight hidden font-mono">1</div>
+        <div class="text-[10px] font-semibold text-rose-100/80 dark:text-rose-200/70 mt-0.5">Inactive accounts</div>
+      </div>
+    </div>
   </div>
 
   <!-- Directory Controls (Search & Category) -->
-  <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#1f2029] p-4 shadow-sm">
+  <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#16171d] p-4 shadow-sm">
     <!-- Search Bar -->
     <div class="relative flex-1 max-w-md">
       <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -96,7 +106,7 @@
     <!-- Action Buttons (Category Dropdown & Add) -->
     <div class="flex items-center gap-2">
       <!-- Category Dropdown Button -->
-      <button type="button" class="cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-black text-white bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 active:scale-95 transition-all duration-300 shadow-sm rounded-none">
+      <button type="button" class="cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-black text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 active:scale-95 transition-all duration-300 shadow-md rounded-none">
         <svg class="w-4 h-4 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .225.418l3.076 2.05a.5.5 0 0 0 .775-.418V12.38a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
         </svg>
@@ -104,8 +114,9 @@
       </button>
 
       <!-- Add Button -->
-      <button class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-black text-xs uppercase tracking-wider py-2.5 px-4 rounded-none transition-all shadow-sm">
-        + Add Inv. Manager
+      <button class="cursor-pointer inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 active:scale-95 text-white font-black text-xs uppercase tracking-wider py-2.5 px-4 rounded-none transition-all shadow-md">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        <span>Add Inv. Manager</span>
       </button>
     </div>
   </div>

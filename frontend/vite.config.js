@@ -169,33 +169,45 @@ function incrementVersionPlugin() {
 // END: incrementVersionPlugin
 // ==========================================
 
-export default defineConfig({
-  plugins: [
-    tailwindcss(),
-    incrementVersionPlugin(),
-    {
-      name: 'html-redirect',
-      configureServer(server) {
-        server.middlewares.use((req, res, next) => {
-          if (req.url === '/' || req.url === '/index.html') {
-            req.url = '/pages/index.html'
-          }
-          next()
-        })
-      },
-      configurePreviewServer(server) {
-        server.middlewares.use((req, res, next) => {
-          if (req.url === '/' || req.url === '/index.html') {
-            req.url = '/pages/index.html'
-          }
-          next()
-        })
+export default defineConfig(({ mode }) => {
+  const isDev = mode === 'development'
+
+  return {
+    resolve: {
+      alias: {
+        '@supabase/supabase-js': resolve(__dirname, 'node_modules/@supabase/supabase-js')
       }
-    }
-  ],
-  build: {
-    rollupOptions: {
-      input,
     },
-  },
+    esbuild: {
+      drop: isDev ? [] : ['console', 'debugger']
+    },
+    plugins: [
+      tailwindcss(),
+      incrementVersionPlugin(),
+      {
+        name: 'html-redirect',
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            if (req.url === '/' || req.url === '/index.html') {
+              req.url = '/pages/index.html'
+            }
+            next()
+          })
+        },
+        configurePreviewServer(server) {
+          server.middlewares.use((req, res, next) => {
+            if (req.url === '/' || req.url === '/index.html') {
+              req.url = '/pages/index.html'
+            }
+            next()
+          })
+        }
+      }
+    ],
+    build: {
+      rollupOptions: {
+        input,
+      },
+    },
+  }
 })

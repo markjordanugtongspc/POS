@@ -204,47 +204,80 @@ export function confirmDeleteProduct(productName, onConfirm) {
 /**
  * Show a form to add a product
  * @param {Function} onSave
+ * @param {string} nextSku
  * @returns {Promise}
  */
-export function showAddProductModal(onSave) {
+export function showAddProductModal(onSave, nextSku = 'SKU011') {
   const isDark = document.documentElement.classList.contains('dark');
-  const bg = isDark ? '#1f2029' : '#ffffff';
-  const color = isDark ? '#f3f4f6' : '#1f2937';
+  const bg = isDark ? '#16171d' : '#ffffff';
   const border = isDark ? 'border-neutral-800' : 'border-neutral-200';
 
   const html = `
     <div class="font-sans text-left text-neutral-800 dark:text-neutral-200 leading-normal">
-      <div class="pb-3 mb-4 border-b ${border}">
-        <h3 class="text-base font-extrabold uppercase tracking-wider text-neutral-900 dark:text-white">Add New Product</h3>
+      <div class="pb-3 mb-4 border-b ${border} flex items-center justify-between">
+        <h3 class="text-sm font-black uppercase tracking-wider text-neutral-900 dark:text-white flex items-center gap-2">
+          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          <span>Add New Product</span>
+        </h3>
+        <span class="text-[10px] font-mono font-bold text-neutral-400">Inventory Management</span>
       </div>
-      <form id="form-product-add" class="space-y-4 text-xs font-semibold" onsubmit="event.preventDefault();">
+
+      <form id="form-product-add" class="space-y-3.5 text-xs font-semibold" onsubmit="event.preventDefault();">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-neutral-600 dark:text-neutral-400 text-[11px] mb-1 font-bold">Auto SKU (System)</label>
+            <input type="text" id="swal-sku" disabled value="${nextSku}" class="w-full h-10 px-3 py-2 text-xs font-mono bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 border border-neutral-300 dark:border-neutral-700 cursor-not-allowed rounded-none">
+          </div>
+          <div>
+            <label class="block text-neutral-600 dark:text-neutral-400 text-[11px] mb-1 font-bold">EAN-13 Barcode</label>
+            <input type="text" id="swal-ean13" placeholder="4800361300018" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+        </div>
+
         <div>
-          <label class="block text-neutral-500 mb-1">SKU *</label>
-          <input type="text" id="swal-sku" required class="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 text-neutral-950 dark:text-white" placeholder="e.g. SKU026">
+          <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Product Name *</label>
+          <input type="text" id="swal-name" required placeholder="e.g. Milo 24g" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
         </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Category *</label>
+            <input type="text" id="swal-category" required placeholder="e.g. Beverage" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+          <div>
+            <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Brand *</label>
+            <input type="text" id="swal-brand" required placeholder="e.g. Nestle" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Cost Price (₱)</label>
+            <input type="number" step="0.01" id="swal-buying-price" placeholder="9.50" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+          <div>
+            <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Selling Price (₱) *</label>
+            <input type="number" step="0.01" id="swal-price" required placeholder="12.00" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+          <div>
+            <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Stock Qty *</label>
+            <input type="number" id="swal-qty" required placeholder="50" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+        </div>
+
         <div>
-          <label class="block text-neutral-500 mb-1">Product Name *</label>
-          <input type="text" id="swal-name" required class="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 text-neutral-950 dark:text-white" placeholder="e.g. Milo 24g">
+          <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Product Image</label>
+          <input type="file" id="swal-image-file" accept="image/*" class="w-full h-10 text-xs text-neutral-500 dark:text-neutral-400 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 rounded-none file:h-full file:mr-3 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-xs file:font-bold file:bg-neutral-100 file:dark:bg-neutral-800 file:text-neutral-700 file:dark:text-neutral-200 hover:file:bg-neutral-200 cursor-pointer">
         </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-neutral-500 mb-1">Category *</label>
-            <input type="text" id="swal-category" required class="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 text-neutral-950 dark:text-white" placeholder="e.g. Beverage">
-          </div>
-          <div>
-            <label class="block text-neutral-500 mb-1">Brand *</label>
-            <input type="text" id="swal-brand" required class="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 text-neutral-950 dark:text-white" placeholder="e.g. Nestle">
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-neutral-500 mb-1">Price (₱) *</label>
-            <input type="number" step="0.01" id="swal-price" required class="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 text-neutral-950 dark:text-white" placeholder="e.g. 15.00">
-          </div>
-          <div>
-            <label class="block text-neutral-500 mb-1">Quantity *</label>
-            <input type="number" id="swal-qty" required class="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 text-neutral-950 dark:text-white" placeholder="e.g. 100">
-          </div>
+
+        <!-- Custom Horizontal Action Buttons: SAVE on LEFT, CANCEL on RIGHT -->
+        <div class="grid grid-cols-2 gap-3 pt-4 border-t border-neutral-200 dark:border-neutral-800">
+          <button type="button" id="custom-modal-save" class="w-full h-10 cursor-pointer font-black text-xs uppercase tracking-wider text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 transition-all flex items-center justify-center rounded-none shadow-sm">
+            SAVE PRODUCT
+          </button>
+          <button type="button" id="custom-modal-cancel" class="w-full h-10 cursor-pointer font-black text-xs uppercase tracking-wider text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-600 hover:text-white border border-rose-300 dark:border-rose-800 active:scale-95 transition-all flex items-center justify-center rounded-none">
+            CANCEL
+          </button>
         </div>
       </form>
     </div>
@@ -252,33 +285,42 @@ export function showAddProductModal(onSave) {
 
   return Swal.fire({
     html: html,
-    showCancelButton: true,
-    confirmButtonText: 'Save Product',
-    cancelButtonText: 'Cancel',
-    customClass: {
-      confirmButton: 'cursor-pointer px-4 py-2.5 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl focus:outline-none transition mr-2',
-      cancelButton: 'cursor-pointer px-4 py-2.5 text-sm font-bold text-neutral-700 dark:text-neutral-300 bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-350 dark:hover:bg-neutral-700 rounded-xl focus:outline-none transition'
-    },
+    showConfirmButton: false,
+    showCancelButton: false,
     buttonsStyling: false,
     background: bg,
-    color: color,
-    preConfirm: () => {
-      const sku = document.getElementById('swal-sku').value.trim();
-      const name = document.getElementById('swal-name').value.trim();
-      const category = document.getElementById('swal-category').value.trim();
-      const brand = document.getElementById('swal-brand').value.trim();
-      const price = parseFloat(document.getElementById('swal-price').value);
-      const qty = parseInt(document.getElementById('swal-qty').value);
+    didOpen: () => {
+      const saveBtn = document.getElementById('custom-modal-save');
+      const cancelBtn = document.getElementById('custom-modal-cancel');
 
-      if (!sku || !name || !category || !brand || isNaN(price) || isNaN(qty)) {
-        Swal.showValidationMessage('Please fill out all required fields with valid values');
-        return false;
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+          Swal.close();
+        });
       }
-      return { sku, name, category, brand, price, qty, createdBy: 'Mark Jordan' };
-    }
-  }).then((result) => {
-    if (result.isConfirmed) {
-      onSave(result.value);
+
+      if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+          const sku = document.getElementById('swal-sku')?.value.trim();
+          const ean13 = document.getElementById('swal-ean13')?.value.trim();
+          const name = document.getElementById('swal-name')?.value.trim();
+          const category = document.getElementById('swal-category')?.value.trim();
+          const brand = document.getElementById('swal-brand')?.value.trim();
+          const buyingPrice = parseFloat(document.getElementById('swal-buying-price')?.value) || 0.00;
+          const price = parseFloat(document.getElementById('swal-price')?.value);
+          const qty = parseInt(document.getElementById('swal-qty')?.value, 10);
+          const fileInput = document.getElementById('swal-image-file');
+          const imageFile = fileInput?.files?.[0] || null;
+
+          if (!sku || !name || !category || !brand || isNaN(price) || isNaN(qty)) {
+            Swal.showValidationMessage('Please fill out all required fields with valid values');
+            return;
+          }
+
+          Swal.close();
+          onSave({ sku, barcodeEan13: ean13, name, category, brand, costPrice: buyingPrice, price, qty, imageFile, createdBy: 'Mark Jordan' });
+        });
+      }
     }
   });
 }
@@ -291,43 +333,77 @@ export function showAddProductModal(onSave) {
  */
 export function showEditProductModal(product, onSave) {
   const isDark = document.documentElement.classList.contains('dark');
-  const bg = isDark ? '#1f2029' : '#ffffff';
-  const color = isDark ? '#f3f4f6' : '#1f2937';
+  const bg = isDark ? '#16171d' : '#ffffff';
   const border = isDark ? 'border-neutral-800' : 'border-neutral-200';
 
   const html = `
     <div class="font-sans text-left text-neutral-800 dark:text-neutral-200 leading-normal">
-      <div class="pb-3 mb-4 border-b ${border}">
-        <h3 class="text-base font-extrabold uppercase tracking-wider text-neutral-900 dark:text-white">Edit Product</h3>
+      <div class="pb-3 mb-4 border-b ${border} flex items-center justify-between">
+        <h3 class="text-sm font-black uppercase tracking-wider text-neutral-900 dark:text-white flex items-center gap-2">
+          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+          <span>Edit Product</span>
+        </h3>
+        <span class="text-[10px] font-mono font-bold text-neutral-500">${product.sku}</span>
       </div>
-      <form id="form-product-edit" class="space-y-4 text-xs font-semibold" onsubmit="event.preventDefault();">
+
+      <form id="form-product-edit" class="space-y-3.5 text-xs font-semibold" onsubmit="event.preventDefault();">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-neutral-600 dark:text-neutral-400 text-[11px] mb-1 font-bold">SKU (Read-only)</label>
+            <input type="text" id="swal-sku" readonly value="${product.sku}" class="w-full h-10 px-3 py-2 text-xs font-mono bg-neutral-100 dark:bg-neutral-800 text-neutral-500 border border-neutral-300 dark:border-neutral-700 cursor-not-allowed rounded-none">
+          </div>
+          <div>
+            <label class="block text-neutral-600 dark:text-neutral-400 text-[11px] mb-1 font-bold">EAN-13 Barcode</label>
+            <input type="text" id="swal-ean13" value="${product.barcode_ean13 || product.ean_13_barcode || ''}" placeholder="4800361300018" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+        </div>
+
         <div>
-          <label class="block text-neutral-500 mb-1">SKU (Read-only)</label>
-          <input type="text" id="swal-sku" readonly value="${product.sku}" class="w-full px-3 py-2 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 rounded-xl text-neutral-500 cursor-not-allowed">
+          <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Product Name *</label>
+          <input type="text" id="swal-name" required value="${product.name}" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
         </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Category *</label>
+            <input type="text" id="swal-category" required value="${product.category}" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+          <div>
+            <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Brand *</label>
+            <input type="text" id="swal-brand" required value="${product.brand}" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Cost Price (₱)</label>
+            <input type="number" step="0.01" id="swal-buying-price" value="${product.cost_price || product.buying_price || 0}" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+          <div>
+            <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Selling Price (₱) *</label>
+            <input type="number" step="0.01" id="swal-price" required value="${product.price || product.selling_price}" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+          <div>
+            <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Stock Qty *</label>
+            <input type="number" id="swal-qty" required value="${product.qty}" class="w-full h-10 px-3 py-2 text-xs bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-none">
+          </div>
+        </div>
+
         <div>
-          <label class="block text-neutral-500 mb-1">Product Name *</label>
-          <input type="text" id="swal-name" required value="${product.name}" class="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 text-neutral-950 dark:text-white">
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-neutral-500 mb-1">Category *</label>
-            <input type="text" id="swal-category" required value="${product.category}" class="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 text-neutral-950 dark:text-white">
-          </div>
-          <div>
-            <label class="block text-neutral-500 mb-1">Brand *</label>
-            <input type="text" id="swal-brand" required value="${product.brand}" class="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 text-neutral-950 dark:text-white">
+          <label class="block text-neutral-700 dark:text-neutral-300 text-[11px] mb-1 font-bold">Product Image (Modify / Upload)</label>
+          <div class="flex items-center gap-3">
+            <input type="file" id="swal-image-file" accept="image/*" class="w-full h-10 text-xs text-neutral-500 dark:text-neutral-400 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 rounded-none file:h-full file:mr-3 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-xs file:font-bold file:bg-neutral-100 file:dark:bg-neutral-800 file:text-neutral-700 file:dark:text-neutral-200 hover:file:bg-neutral-200 cursor-pointer">
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-neutral-500 mb-1">Price (₱) *</label>
-            <input type="number" step="0.01" id="swal-price" required value="${product.price}" class="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 text-neutral-950 dark:text-white">
-          </div>
-          <div>
-            <label class="block text-neutral-500 mb-1">Quantity *</label>
-            <input type="number" id="swal-qty" required value="${product.qty}" class="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 text-neutral-950 dark:text-white">
-          </div>
+
+        <!-- Custom Horizontal Action Buttons: UPDATE on LEFT, CANCEL on RIGHT -->
+        <div class="grid grid-cols-2 gap-3 pt-4 border-t border-neutral-200 dark:border-neutral-800">
+          <button type="button" id="custom-modal-update" class="w-full h-10 cursor-pointer font-black text-xs uppercase tracking-wider text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 transition-all flex items-center justify-center rounded-none shadow-sm">
+            UPDATE PRODUCT
+          </button>
+          <button type="button" id="custom-modal-edit-cancel" class="w-full h-10 cursor-pointer font-black text-xs uppercase tracking-wider text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-600 hover:text-white border border-rose-300 dark:border-rose-800 active:scale-95 transition-all flex items-center justify-center rounded-none">
+            CANCEL
+          </button>
         </div>
       </form>
     </div>
@@ -335,33 +411,44 @@ export function showEditProductModal(product, onSave) {
 
   return Swal.fire({
     html: html,
-    showCancelButton: true,
-    confirmButtonText: 'Update Product',
-    cancelButtonText: 'Cancel',
-    customClass: {
-      confirmButton: 'cursor-pointer px-4 py-2.5 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl focus:outline-none transition mr-2',
-      cancelButton: 'cursor-pointer px-4 py-2.5 text-sm font-bold text-neutral-700 dark:text-neutral-300 bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-350 dark:hover:bg-neutral-700 rounded-xl focus:outline-none transition'
-    },
+    showConfirmButton: false,
+    showCancelButton: false,
     buttonsStyling: false,
     background: bg,
-    color: color,
-    preConfirm: () => {
-      const sku = document.getElementById('swal-sku').value.trim();
-      const name = document.getElementById('swal-name').value.trim();
-      const category = document.getElementById('swal-category').value.trim();
-      const brand = document.getElementById('swal-brand').value.trim();
-      const price = parseFloat(document.getElementById('swal-price').value);
-      const qty = parseInt(document.getElementById('swal-qty').value);
+    didOpen: () => {
+      const updateBtn = document.getElementById('custom-modal-update');
+      const cancelBtn = document.getElementById('custom-modal-edit-cancel');
 
-      if (!sku || !name || !category || !brand || isNaN(price) || isNaN(qty)) {
-        Swal.showValidationMessage('Please fill out all required fields with valid values');
-        return false;
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+          Swal.close();
+        });
       }
-      return { sku, name, category, brand, price, qty, createdBy: product.createdBy };
-    }
-  }).then((result) => {
-    if (result.isConfirmed) {
-      onSave(result.value);
+
+      if (updateBtn) {
+        updateBtn.addEventListener('click', () => {
+          const sku = document.getElementById('swal-sku')?.value.trim();
+          const ean13 = document.getElementById('swal-ean13')?.value.trim();
+          const name = document.getElementById('swal-name')?.value.trim();
+          const category = document.getElementById('swal-category')?.value.trim();
+          const brand = document.getElementById('swal-brand')?.value.trim();
+          const buyingPrice = parseFloat(document.getElementById('swal-buying-price')?.value) || 0.00;
+          const price = parseFloat(document.getElementById('swal-price')?.value);
+          const qty = parseInt(document.getElementById('swal-qty')?.value, 10);
+          const fileInput = document.getElementById('swal-image-file');
+          const imageFile = fileInput?.files?.[0] || null;
+
+          if (!sku || !name || !category || !brand || isNaN(price) || isNaN(qty)) {
+            Swal.showValidationMessage('Please fill out all required fields with valid values');
+            return;
+          }
+
+          Swal.close();
+          onSave({ sku, barcodeEan13: ean13, name, category, brand, costPrice: buyingPrice, price, qty, imageFile, createdBy: product.createdBy });
+        });
+      }
     }
   });
 }
+
+

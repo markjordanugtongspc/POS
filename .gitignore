@@ -33,3 +33,10 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Agent Skills & Workspace Configurations
+.agents/
+skills-lock.json
+
+# MD FILES
+*.md

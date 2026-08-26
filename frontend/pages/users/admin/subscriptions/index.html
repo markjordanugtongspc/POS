@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscriptions & Tiers - Admin Control Center</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body
+  class="bg-neutral-100 dark:bg-[#16171d] text-neutral-800 dark:text-neutral-100 min-h-screen transition-colors duration-300">
+
+  <div id="app" class="min-h-screen">
+    <div id="sidebar-container"></div>
+
+    <main class="p-4 sm:ml-64 mt-14">
+      <!-- Header Row -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-black text-neutral-900 dark:text-white tracking-tight uppercase">Subscriptions &
+              Plan Tiers</h1>
+            <span
+              class="px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800">Billing
+              Engine</span>
+          </div>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400">Manage duration validity cycles, custom expiration
+              schedules, and payment settlements.</p>
+        </div>
+      </div>
+
+      <!-- Feature Matrix Overview Cards (Anti-UI Slop Grounded) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <!-- Free Tier Card -->
+        <div
+          class="p-5 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 shadow-xs relative">
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="text-xs font-black uppercase tracking-wider px-2 py-0.5 bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">Free
+              Tier</span>
+            <span class="text-xs font-mono font-bold text-neutral-500">₱0 / mo</span>
+          </div>
+          <ul class="space-y-2 text-xs text-neutral-600 dark:text-neutral-400">
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> Up to 10 Products</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> 1 Store Owner</li>
+            <li class="flex items-center gap-2 text-neutral-400"><span class="text-rose-500 font-bold">✕</span> No Extra
+              Cashiers/Managers</li>
+            <li class="flex items-center gap-2 text-neutral-400"><span class="text-rose-500 font-bold">✕</span>
+              Transactions Ledger Locked</li>
+          </ul>
+        </div>
+
+        <!-- Starter Tier Card -->
+        <div class="p-5 bg-white dark:bg-[#16171d] border-2 border-blue-500/50 shadow-xs relative">
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="text-xs font-black uppercase tracking-wider px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300">Starter
+              Tier</span>
+            <span class="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">₱799 / mo</span>
+          </div>
+          <ul class="space-y-2 text-xs text-neutral-600 dark:text-neutral-400">
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> Up to 500 Products
+            </li>
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> Up to 2 Owners</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> 2 Managers &bull; 4
+              Cashiers</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> Full Transactions &
+              Export</li>
+          </ul>
+        </div>
+
+        <!-- Pro Tier Card -->
+        <div class="p-5 bg-white dark:bg-[#16171d] border-2 border-rose-500/60 shadow-xs relative">
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="text-xs font-black uppercase tracking-wider px-2 py-0.5 bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300">Pro
+              Enterprise</span>
+            <span class="text-xs font-mono font-bold text-rose-600 dark:text-rose-400">₱1,499 / mo</span>
+          </div>
+          <ul class="space-y-2 text-xs text-neutral-600 dark:text-neutral-400">
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> Unlimited Products
+            </li>
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> Up to 2 Owners</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> Unlimited Managers &
+              Cashiers</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> Priority Realtime
+              Channel</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SECTION: Subscriptions Table -->
+      <section id="section-stores" class="space-y-4">
+        <div
+          class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 p-4 shadow-xs">
+          <div class="flex items-center gap-2 flex-1 max-w-md">
+            <div class="relative w-full">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-neutral-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input type="text" id="input-search-stores" placeholder="Search store name or slug..."
+                class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white text-xs block w-full pl-9 p-2.5 rounded-none focus:ring-1 focus:ring-rose-500">
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <select id="select-filter-tier"
+              class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white text-xs p-2.5 rounded-none focus:ring-1 focus:ring-rose-500">
+              <option value="all">All Tiers</option>
+              <option value="free">Free (10 Products)</option>
+              <option value="starter">Starter (500 Products)</option>
+              <option value="pro">Pro (Unlimited)</option>
+            </select>
+          </div>
+        </div>
+
+        <div
+          class="bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 overflow-x-auto shadow-xs">
+          <table class="w-full text-xs text-left text-neutral-600 dark:text-neutral-300">
+            <thead
+              class="text-[11px] font-black uppercase tracking-wider text-neutral-700 dark:text-neutral-300 bg-neutral-50 dark:bg-neutral-900/60 border-b border-neutral-200 dark:border-neutral-800">
+              <tr>
+                <th scope="col" class="px-4 py-3.5">Store Details</th>
+                <th scope="col" class="px-4 py-3.5">Subscription Tier</th>
+                <th scope="col" class="px-4 py-3.5">Billing Cycle</th>
+                <th scope="col" class="px-4 py-3.5">Paid Status</th>
+                <th scope="col" class="px-4 py-3.5">Validity Expiry</th>
+                <th scope="col" class="px-4 py-3.5 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="stores-table-body" class="divide-y divide-neutral-200 dark:divide-neutral-800/60 font-medium">
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Flowbite Modal: Modify Store Subscription & Duration -->
+  <div id="modal-edit-subscription" tabindex="-1" aria-hidden="true"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
+    <div
+      class="relative w-full max-w-lg bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 shadow-2xl p-6">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-neutral-200 dark:border-neutral-800">
+        <h3
+          class="text-sm font-black uppercase tracking-wider text-neutral-900 dark:text-white flex items-center gap-2">
+          <svg class="w-4 h-4 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+          <span>Modify Store Subscription Tier & Validity</span>
+        </h3>
+        <button type="button" id="btn-close-edit-modal"
+          class="text-neutral-400 hover:text-neutral-900 dark:hover:text-white p-1 cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <form id="form-edit-subscription" class="space-y-4">
+        <input type="hidden" id="edit-store-id">
+
+        <div>
+          <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">Store Merchant Name</label>
+          <input type="text" id="edit-store-name" disabled
+            class="bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-xs font-bold block w-full p-2.5 rounded-none cursor-not-allowed border border-neutral-200 dark:border-neutral-700">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">Plan Tier</label>
+            <select id="edit-store-tier"
+              class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white text-xs block w-full p-2.5 rounded-none focus:ring-1 focus:ring-rose-500">
+              <option value="free">Free Tier (10 Products)</option>
+              <option value="starter">Starter Tier (500 Products)</option>
+              <option value="pro">Pro Tier (Unlimited Products)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">Duration Cycle
+              Preset</label>
+            <select id="edit-store-cycle"
+              class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white text-xs block w-full p-2.5 rounded-none focus:ring-1 focus:ring-rose-500">
+              <option value="15_days">15 Days (Trial)</option>
+              <option value="30_days">30 Days (1 Month)</option>
+              <option value="3_months">3 Months (Quarterly)</option>
+              <option value="6_months">6 Months (Semi-Annual)</option>
+              <option value="1_year">1 Year (Annual Enterprise)</option>
+              <option value="custom">Custom Date Pick</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300">Exact Expiration Date
+              (GMT+08)</label>
+            <div class="flex items-center gap-1.5">
+              <button type="button" id="btn-quick-add-30d"
+                class="text-[10px] font-black uppercase px-2 py-0.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-rose-100 hover:text-rose-700 dark:hover:bg-rose-950/60 dark:hover:text-rose-300 transition border border-neutral-200 dark:border-neutral-700 cursor-pointer">
+                +30 Days
+              </button>
+              <button type="button" id="btn-quick-add-1y"
+                class="text-[10px] font-black uppercase px-2 py-0.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-rose-100 hover:text-rose-700 dark:hover:bg-rose-950/60 dark:hover:text-rose-300 transition border border-neutral-200 dark:border-neutral-700 cursor-pointer">
+                +1 Year
+              </button>
+            </div>
+          </div>
+          <input type="datetime-local" id="edit-store-expiry"
+            class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white text-xs font-mono block w-full p-2.5 rounded-none focus:ring-1 focus:ring-rose-500">
+        </div>
+
+        <div
+          class="p-3 bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-neutral-900 dark:text-white block">Payment Settlement Status</span>
+            <span class="text-[10px] text-neutral-500 dark:text-neutral-400">Marking PAID allows full tier functionality
+              for the client.</span>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="edit-store-paid" class="sr-only peer">
+            <div
+              class="w-11 h-6 bg-neutral-200 peer-focus:outline-none rounded-full peer dark:bg-neutral-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-neutral-600 peer-checked:bg-emerald-600">
+            </div>
+          </label>
+        </div>
+
+        <div class="pt-3 flex gap-3">
+          <button type="submit"
+            class="flex-1 cursor-pointer py-3 px-4 bg-rose-600 hover:bg-rose-700 text-white font-black text-xs uppercase tracking-wider rounded-none transition shadow-xs active:scale-95">
+            Save & Update Database
+          </button>
+          <button type="button" id="btn-cancel-edit-sub"
+            class="cursor-pointer py-3 px-4 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-200 font-bold text-xs uppercase rounded-none transition">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

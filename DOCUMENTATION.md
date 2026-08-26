@@ -28,7 +28,7 @@ p, li, td { font-size: 15px; line-height: 1.5; }
 
 **Date:** June 23, 2026
 
-**Version:** Alpha v0.1.7
+**Version:** Alpha v0.1.80
 
 &nbsp;
 
@@ -593,4 +593,4 @@ No server rental. No subscription. The store owner does not pay anything to keep
 
 *Document prepared by Mark Jordan Ugtong — June 23, 2026*
 
-*Jorgy POS System — Version Alpha v0.1.7*
+*Jorgy POS System — Version Alpha v0.1.80*

@@ -1,5 +1,7 @@
 import { showSuccess, showError } from './modals.js';
 import { getCookie, setCookie, eraseCookie } from './client-storage.js';
+import { loginWithCredentials, loginWithPinCode } from '../../../backend/api/auth.api.js';
+import { logUserActivity } from './logger.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements
@@ -23,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // PIN authentication state
   let enteredPin = '';
-  const CORRECT_PIN = '1234';
 
   // ==========================================
   // START: showScreen
@@ -119,8 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updateUsernameLabel();
   }
 
-  // Toggle user-specific vs generic PIN headers based on login history cookie
+  // Toggle user-specific vs generic PIN headers based on login history and localStorage
   const hasLoggedInBefore = getCookie('has_logged_in') === 'true';
+  const savedUserName = localStorage.getItem('user_name') || getCookie('saved_username') || 'Mark Jordan';
+  const pinUserNameEl = document.getElementById('pin-user-name');
+  const pinUserAvatarEl = document.getElementById('pin-user-avatar');
+
   if (hasLoggedInBefore) {
     if (pinUserHeader) {
       pinUserHeader.classList.remove('hidden');
@@ -129,6 +134,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pinGenericHeader) {
       pinGenericHeader.classList.add('hidden');
       pinGenericHeader.classList.remove('flex');
+    }
+    if (pinUserNameEl) {
+      pinUserNameEl.textContent = savedUserName;
+    }
+    if (pinUserAvatarEl) {
+      const initials = savedUserName
+        .split(' ')
+        .filter(Boolean)
+        .map(n => n[0])
+        .join('')
+        .substring(0, 2)
+        .toUpperCase() || 'MJ';
+      pinUserAvatarEl.textContent = initials;
     }
   } else {
     if (pinUserHeader) {
@@ -180,15 +198,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ==========================================
   // START: handlePinSubmit
-  // Validates entered 4-digit PIN against stored passcode and redirects on success.
+  // Validates entered 4-digit PIN against backend Supabase DB and redirects according to role.
   // ==========================================
   async function handlePinSubmit() {
-    if (enteredPin === CORRECT_PIN) {
+    const authRes = await loginWithPinCode(enteredPin);
+
+    if (authRes.success) {
       setCookie('has_logged_in', 'true', 30);
-      await showSuccess('Access Granted', 'Welcome back, Mark Jordan!');
-      window.location.href = '/pages/users/client/dashboard/';
+      const user = authRes.user;
+      const role = authRes.role || user?.role || 'owner';
+
+      // Store session metadata for route guards and permissions
+      localStorage.setItem('user_role', role);
+      localStorage.setItem('user_plan', user?.stores?.plan_tier || (role === 'superadmin' ? 'pro' : 'free'));
+      localStorage.setItem('user_store_id', user?.store_id || '');
+      localStorage.setItem('user_name', user?.full_name || 'Staff');
+
+      // Sync theme preference
+      if (user && user.theme_preference) {
+        localStorage.setItem('theme', user.theme_preference);
+      }
+
+      await logUserActivity({
+        userId: user?.id,
+        storeId: user?.store_id,
+        actorRole: role,
+        actionType: 'LOGIN',
+        description: `PIN login verified for ${user?.full_name || 'Staff'}`
+      });
+
+      await showSuccess('Access Granted', `Welcome back, ${user?.full_name || 'Staff'}!`);
+
+      // Role-based redirection: SuperAdmin vs Client Store
+      if (role === 'superadmin') {
+        window.location.href = '/pages/users/admin/dashboard/';
+      } else {
+        window.location.href = '/pages/users/client/dashboard/';
+      }
     } else {
-      await showError('Access Denied', 'Invalid PIN passcode. Please try again.');
+      await showError('Access Denied', authRes.error || 'Invalid PIN passcode. Please try again.');
       resetPin();
     }
   }
@@ -232,7 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Trigger verification automatically when 4 digits are entered
         if (enteredPin.length === 4) {
-          // Add a very small delay so the dot fill animation completes before the popup
           setTimeout(handlePinSubmit, 150);
         }
       }
@@ -307,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Password Login Submission
+  // Password Login Submission (Accepts Username or Email with Password)
   passwordForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const usernameInput = document.getElementById('username').value.trim();
@@ -315,18 +362,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveUsernameCheckbox = document.getElementById('save-username');
 
     if (usernameInput && passwordInput) {
-      // Simulate database match
-      if (usernameInput.toLowerCase() === 'mark.jordan' && passwordInput === 'password') {
+      const authRes = await loginWithCredentials(usernameInput, passwordInput);
+
+      if (authRes.success) {
         setCookie('has_logged_in', 'true', 30);
         if (saveUsernameCheckbox && saveUsernameCheckbox.checked) {
           setCookie('saved_username', usernameInput, 30);
         } else {
           eraseCookie('saved_username');
         }
-        await showSuccess('Access Granted', `Welcome back, ${usernameInput}!`);
-        window.location.href = '/pages/users/client/dashboard/';
+
+        const user = authRes.user;
+        const role = authRes.role || (user ? user.role : 'owner');
+
+        // Store session metadata for route guards and permissions
+        localStorage.setItem('user_role', role);
+        localStorage.setItem('user_plan', user?.stores?.plan_tier || (role === 'superadmin' ? 'pro' : 'free'));
+        localStorage.setItem('user_store_id', user?.store_id || '');
+        localStorage.setItem('user_name', user?.full_name || usernameInput);
+
+        // Sync theme preference
+        if (user && user.theme_preference) {
+          localStorage.setItem('theme', user.theme_preference);
+        }
+
+        await logUserActivity({
+          userId: user?.id,
+          storeId: user?.store_id,
+          actorRole: role,
+          actionType: 'LOGIN',
+          description: `Credential login verified for ${user?.full_name || usernameInput}`
+        });
+
+        await showSuccess('Access Granted', `Welcome back, ${user?.full_name || usernameInput}!`);
+
+        // Role-based redirection: SuperAdmin vs Client Store
+        if (role === 'superadmin') {
+          window.location.href = '/pages/users/admin/dashboard/';
+        } else {
+          window.location.href = '/pages/users/client/dashboard/';
+        }
       } else {
-        await showError('Authentication Failed', 'Invalid username or password.');
+        await showError('Authentication Failed', authRes.error || 'Invalid credentials.');
       }
     }
   });
@@ -351,3 +428,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// ==========================================
+// START: Global Sign Out Handler
+// Intercepts any sign out action to purge authentication tokens and cache.
+// ==========================================
+document.addEventListener('click', (e) => {
+  const signoutLink = e.target.closest('a[href="/pages/"], a[href="/pages/index.html"], [data-action="logout"]');
+  if (signoutLink) {
+    e.preventDefault();
+    localStorage.removeItem('user_role');
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('user_plan');
+    localStorage.removeItem('user_store_id');
+    localStorage.removeItem('store_paid');
+    eraseCookie('has_logged_in');
+    window.location.href = '/pages/index.html';
+  }
+});
+// ==========================================
+// END: Global Sign Out Handler
+// ==========================================
+

@@ -31,45 +31,74 @@
           </svg>
         </button>
 
-        <!-- User profile dropdown trigger -->
-        <div class="flex items-center">
-          <button type="button"
+        <!-- User profile trigger -->
+        <div class="relative flex items-center">
+          <button id="user-drawer-toggle-btn" type="button"
             class="flex text-sm bg-neutral-200 dark:bg-neutral-800 rounded-none focus:ring-4 focus:ring-neutral-100 dark:focus:ring-neutral-700 cursor-pointer"
-            aria-expanded="false" data-dropdown-toggle="dropdown-user">
+            aria-expanded="false" aria-controls="drawer-top-user">
             <span class="sr-only">Open user menu</span>
             <div class="w-8 h-8 flex items-center justify-center bg-emerald-600 text-white font-bold text-xs">MJ</div>
           </button>
-          <div
-            class="z-50 hidden my-4 text-base list-none bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 rounded-none shadow-lg divide-y divide-neutral-100 dark:divide-neutral-800"
-            id="dropdown-user">
-            <div class="px-4 py-3" role="none">
-              <p class="text-sm font-semibold text-neutral-900 dark:text-white" role="none">
-                Mark Jordan
-              </p>
-              <p class="text-xs text-neutral-500 dark:text-neutral-400 truncate" role="none">
-                mark.jordan@jorgypos.com
-              </p>
+
+          <!-- Desktop User Dropdown Menu (Visible on sm:block and larger screens) -->
+          <div id="desktop-user-dropdown"
+            class="hidden absolute right-0 top-11 z-50 w-64 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 shadow-xl py-2 transition-all">
+            <!-- Dropdown User Header -->
+            <div class="px-4 py-3 border-b border-neutral-200 dark:border-neutral-800 flex items-center space-x-3">
+              <div
+                class="w-9 h-9 flex items-center justify-center bg-emerald-600 text-white font-bold text-sm shadow-inner shrink-0">
+                MJ
+              </div>
+              <div class="overflow-hidden">
+                <p class="text-sm font-extrabold text-neutral-900 dark:text-white truncate">Mark Jordan</p>
+                <p class="text-xs text-neutral-500 dark:text-neutral-400 truncate">mark.jordan@jorgypos.com</p>
+                <span
+                  class="inline-block mt-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded-none">Store
+                  Manager</span>
+              </div>
             </div>
-            <ul class="py-1" role="none">
+
+            <!-- Dropdown Navigation Links -->
+            <ul class="py-1 text-xs font-bold text-neutral-700 dark:text-neutral-200"
+              aria-labelledby="user-drawer-toggle-btn">
               <li>
-                <a href="/pages/users/client/dashboard/"
-                  class="block px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-emerald-600 dark:hover:text-emerald-400 cursor-pointer"
-                  role="menuitem">Dashboard</a>
+                <a href="/pages/users/client/POS/"
+                  class="flex items-center gap-2.5 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-emerald-600 dark:hover:text-emerald-400 transition cursor-pointer">
+                  <svg class="w-4 h-4 text-neutral-400 dark:text-neutral-500" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                  </svg>
+                  <span>New Sale</span>
+                </a>
               </li>
               <li>
                 <a href="/pages/users/client/settings/"
-                  class="block px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-emerald-600 dark:hover:text-emerald-400 cursor-pointer"
-                  role="menuitem">Settings</a>
-              </li>
-              <li>
-                <hr class="border-neutral-100 dark:border-neutral-800">
-              </li>
-              <li>
-                <a href="/pages/"
-                  class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 cursor-pointer"
-                  role="menuitem">Sign out</a>
+                  class="flex items-center gap-2.5 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-emerald-600 dark:hover:text-emerald-400 transition cursor-pointer">
+                  <svg class="w-4 h-4 text-neutral-400 dark:text-neutral-500" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M21 13v-2a1 1 0 0 0-1-1h-.768a7.027 7.027 0 0 0-.74-1.785l.544-.543a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.543.543A7.027 7.027 0 0 0 13.882 4.77V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.768a7.027 7.027 0 0 0-1.785.74l-.543-.544a1 1 0 0 0-1.414 0l-1.414 1.414a1 1 0 0 0 0 1.414l.543.543A7.027 7.027 0 0 0 4.77 10.118H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.768a7.027 7.027 0 0 0 .74 1.785l-.544.543a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.543-.543a7.027 7.027 0 0 0 1.785.74V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.768a7.027 7.027 0 0 0 1.785-.74l.543.544a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.543-.543a7.027 7.027 0 0 0 .74-1.785H20a1 1 0 0 0 1-1Z" />
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                  </svg>
+                  <span>Account Settings</span>
+                </a>
               </li>
             </ul>
+
+            <!-- Dropdown Sign Out -->
+            <div class="pt-1 mt-1 border-t border-neutral-200 dark:border-neutral-800">
+              <a href="/pages/"
+                class="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition cursor-pointer">
+                <svg class="w-4 h-4 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                  viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2" />
+                </svg>
+                <span>Sign out</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -77,18 +106,143 @@
   </div>
 </nav>
 
+<!-- Top Drawer Backdrop with Blur (Under Top Navbar - Mobile View Only) -->
+<div id="user-drawer-backdrop"
+  class="sm:hidden fixed top-14 inset-x-0 bottom-0 z-30 bg-neutral-900/50 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none hidden"
+  aria-hidden="true"></div>
+
+<!-- Top Drawer Component for User Profile / Quick Navigation (Positioned Under Top Header - Mobile View Only) -->
+<div id="drawer-top-user"
+  class="sm:hidden fixed top-14 left-0 right-0 z-40 w-full p-4 sm:p-5 transition-transform duration-300 -translate-y-full bg-white dark:bg-[#16171d] border-b border-neutral-200 dark:border-neutral-800 shadow-2xl hidden"
+  tabindex="-1" aria-labelledby="drawer-top-user-label">
+  <div class="max-w-2xl mx-auto">
+    <!-- Top Drawer Header -->
+    <div class="border-b border-neutral-200 dark:border-neutral-800 pb-3 mb-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 flex items-center justify-center bg-emerald-600 text-white font-bold text-sm shadow-inner">
+          MJ
+        </div>
+        <div>
+          <h5 id="drawer-top-user-label"
+            class="inline-flex items-center text-sm font-extrabold text-neutral-900 dark:text-white">
+            Mark Jordan
+          </h5>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400">mark.jordan@jorgypos.com &bull; <span
+              class="text-emerald-600 dark:text-emerald-400 font-semibold">Store Manager</span></p>
+        </div>
+      </div>
+      <button id="user-drawer-close-btn" type="button" aria-controls="drawer-top-user"
+        class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white bg-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800 p-1.5 inline-flex items-center justify-center transition cursor-pointer">
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+          viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M6 18 17.94 6M18 18 6.06 6" />
+        </svg>
+        <span class="sr-only">Close menu</span>
+      </button>
+    </div>
+
+    <!-- List Group Navigation Items (List Layout) -->
+    <ul class="space-y-1.5 font-semibold text-sm">
+      <li>
+        <a href="/pages/users/client/POS/"
+          class="flex items-center justify-between px-3 py-2.5 rounded-lg text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800/60 hover:text-emerald-600 dark:hover:text-emerald-400 transition cursor-pointer group">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+              </svg>
+            </div>
+            <div>
+              <span class="text-xs font-bold block">New Sale</span>
+              <span class="text-[11px] text-neutral-400 font-normal">Quick checkout & barcode cashier</span>
+            </div>
+          </div>
+          <svg
+            class="w-4 h-4 text-neutral-400 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-transform"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a href="/pages/users/client/settings/"
+          class="flex items-center justify-between px-3 py-2.5 rounded-lg text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800/60 hover:text-emerald-600 dark:hover:text-emerald-400 transition cursor-pointer group">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 13v-2a1 1 0 0 0-1-1h-.768a7.027 7.027 0 0 0-.74-1.785l.544-.543a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.543.543A7.027 7.027 0 0 0 13.882 4.77V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.768a7.027 7.027 0 0 0-1.785.74l-.543-.544a1 1 0 0 0-1.414 0l-1.414 1.414a1 1 0 0 0 0 1.414l.543.543A7.027 7.027 0 0 0 4.77 10.118H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.768a7.027 7.027 0 0 0 .74 1.785l-.544.543a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.543-.543a7.027 7.027 0 0 0 1.785.74V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.768a7.027 7.027 0 0 0 1.785-.74l.543.544a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.543-.543a7.027 7.027 0 0 0 .74-1.785H20a1 1 0 0 0 1-1Z" />
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+              </svg>
+            </div>
+            <div>
+              <span class="text-xs font-bold block">Account Settings</span>
+              <span class="text-[11px] text-neutral-400 font-normal">Terminal preferences & receipt options</span>
+            </div>
+          </div>
+          <svg
+            class="w-4 h-4 text-neutral-400 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-transform"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <hr class="border-neutral-100 dark:border-neutral-800 my-1">
+      </li>
+      <li>
+        <a href="/pages/"
+          class="flex items-center justify-between px-3 py-2.5 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition cursor-pointer group">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 flex items-center justify-center">
+              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2" />
+              </svg>
+            </div>
+            <div>
+              <span class="text-xs font-bold block">Sign out</span>
+              <span class="text-[11px] text-red-400/80 font-normal">Log out of this POS station</span>
+            </div>
+          </div>
+          <svg class="w-4 h-4 text-red-400 group-hover:text-red-600 group-hover:translate-x-0.5 transition-transform"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+
 <!-- Flowbite Right Drawer Component (Right Off-Canvas on Mobile, Docked Left on Desktop) -->
+<!-- Mobile Drawer Backdrop with Blur -->
+<div id="sidebar-drawer-backdrop"
+  class="fixed inset-0 z-30 bg-neutral-900/50 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none sm:hidden"
+  aria-hidden="true"></div>
+
 <aside id="top-bar-sidebar"
   class="fixed top-0 right-0 sm:right-auto sm:left-0 z-40 w-64 h-screen pt-16 transition-transform duration-300 translate-x-full sm:translate-x-0 bg-white dark:bg-[#16171d] border-s sm:border-s-0 sm:border-e border-neutral-200 dark:border-neutral-800 transition-colors duration-300"
-  tabindex="-1"
-  data-drawer-placement="right"
-  aria-labelledby="top-bar-sidebar-label"
-  aria-label="Sidebar">
+  tabindex="-1" data-drawer-placement="right" aria-labelledby="top-bar-sidebar-label" aria-label="Sidebar">
 
-  <!-- Mobile Drawer Toggle Tab (70% protruding tab when closed, 50% when open) -->
-  <button id="sidebar-drawer-toggle-tab" data-drawer-target="top-bar-sidebar" data-drawer-toggle="top-bar-sidebar" data-drawer-placement="right"
-    aria-controls="top-bar-sidebar" type="button"
-    class="sm:hidden absolute top-20 -left-8 w-11 h-10 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 rounded-l-xl shadow-lg flex items-center justify-center text-neutral-700 dark:text-neutral-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none cursor-pointer z-50 transition-all duration-300"
+  <!-- Mobile Drawer Toggle Tab (Protruding tab with 4px border-radius) -->
+  <!-- Option A: 4px Border Radius (Active) -->
+  <button id="sidebar-drawer-toggle-tab" data-drawer-target="top-bar-sidebar" data-drawer-toggle="top-bar-sidebar"
+    data-drawer-placement="right" aria-controls="top-bar-sidebar" type="button"
+    class="sm:hidden absolute top-20 -left-8 w-11 h-10 bg-white dark:bg-[#16171d] border border-neutral-200 dark:border-neutral-800 rounded-[4px] shadow-lg flex items-center justify-center text-neutral-700 dark:text-neutral-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none cursor-pointer z-50 transition-all duration-300"
     aria-label="Toggle Sidebar">
     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
       viewBox="0 0 24 24">
@@ -96,8 +250,43 @@
     </svg>
   </button>
 
+  <!-- Option B: Borderless / Backgroundless Hamburger SVG only (Uncomment if preferred):
+  <button id="sidebar-drawer-toggle-tab-borderless" data-drawer-target="top-bar-sidebar" data-drawer-toggle="top-bar-sidebar" data-drawer-placement="right"
+    aria-controls="top-bar-sidebar" type="button"
+    class="sm:hidden absolute top-20 -left-7 w-8 h-8 flex items-center justify-center text-neutral-700 dark:text-neutral-200 hover:text-emerald-600 dark:hover:text-emerald-400 focus:outline-none cursor-pointer z-50 transition-all duration-300"
+    aria-label="Toggle Sidebar">
+    <svg class="w-6 h-6 drop-shadow-md" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+      viewBox="0 0 24 24">
+      <path stroke="currentColor" stroke-linecap="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+  -->
+
   <div class="h-full px-3 py-4 overflow-y-auto flex flex-col justify-between">
     <ul class="space-y-1.5 font-semibold text-sm">
+      <!-- Admin Live Inspector Mode Banner (Dynamically shown when user_role === 'superadmin') -->
+      <li id="admin-inspector-banner" class="hidden mb-2 px-1">
+        <div
+          class="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-950 dark:text-rose-200 shadow-2xs">
+          <div class="flex items-center justify-between mb-1">
+            <span
+              class="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider text-rose-700 dark:text-rose-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span> Admin Inspector
+            </span>
+          </div>
+          <p id="admin-inspector-store-name"
+            class="text-[11px] font-mono font-bold text-neutral-900 dark:text-white truncate mb-2">Merchant Store Mode
+          </p>
+          <a href="/pages/users/admin/stores-portal/"
+            class="flex items-center justify-center gap-1.5 w-full py-1.5 px-2 text-[10px] font-black uppercase tracking-wider text-white bg-rose-600 hover:bg-rose-700 transition cursor-pointer shadow-xs">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            <span>Exit to Admin Hub</span>
+          </a>
+        </div>
+      </li>
+
       <li class="px-3 pt-2 pb-1 text-xs font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
         MENU
       </li>
@@ -170,7 +359,8 @@
               d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
           </svg>
           <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Staffs</span>
-          <svg class="w-5 h-5 text-neutral-400 group-hover:text-emerald-500 dark:group-hover:text-emerald-400"
+          <svg
+            class="w-5 h-5 text-neutral-400 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-transform duration-200"
             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
             viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -179,18 +369,20 @@
         </button>
 
         <!-- Dropdown menu -->
-        <ul id="dropdown-staffs"
-          class="hidden ml-[22px] my-1 pl-4 space-y-1">
-          <li class="relative before:content-[''] before:absolute before:-left-4 before:top-0 before:w-[1px] before:h-[calc(100%+4px)] before:bg-neutral-200 dark:before:bg-neutral-800">
+        <ul id="dropdown-staffs" class="hidden ml-[22px] my-1 pl-4 space-y-1">
+          <li
+            class="relative before:content-[''] before:absolute before:-left-4 before:top-0 before:w-[1px] before:h-[calc(100%+4px)] before:bg-neutral-200 dark:before:bg-neutral-800">
             <a href="/pages/users/client/staffs/#owner"
               class="flex items-center px-3 py-1.5 text-neutral-600 dark:text-neutral-300 rounded-none hover:bg-neutral-50 dark:hover:bg-neutral-800/50 hover:text-emerald-600 dark:hover:text-emerald-400 group transition cursor-pointer text-xs before:content-[''] before:absolute before:-left-4 before:top-1/2 before:-translate-y-1/2 before:w-3 before:h-[1px] before:bg-neutral-200 dark:before:bg-neutral-800">Owner</a>
           </li>
-          <li class="relative before:content-[''] before:absolute before:-left-4 before:top-0 before:w-[1px] before:h-[calc(100%+4px)] before:bg-neutral-200 dark:before:bg-neutral-800">
+          <li
+            class="relative before:content-[''] before:absolute before:-left-4 before:top-0 before:w-[1px] before:h-[calc(100%+4px)] before:bg-neutral-200 dark:before:bg-neutral-800">
             <a href="/pages/users/client/staffs/#inventorym"
               class="flex items-center px-3 py-1.5 text-neutral-600 dark:text-neutral-300 rounded-none hover:bg-neutral-50 dark:hover:bg-neutral-800/50 hover:text-emerald-600 dark:hover:text-emerald-400 group transition cursor-pointer text-xs before:content-[''] before:absolute before:-left-4 before:top-1/2 before:-translate-y-1/2 before:w-3 before:h-[1px] before:bg-neutral-200 dark:before:bg-neutral-800">Inventory
               Manager</a>
           </li>
-          <li class="relative before:content-[''] before:absolute before:-left-4 before:top-0 before:w-[1px] before:h-1/2 before:bg-neutral-200 dark:before:bg-neutral-800">
+          <li
+            class="relative before:content-[''] before:absolute before:-left-4 before:top-0 before:w-[1px] before:h-1/2 before:bg-neutral-200 dark:before:bg-neutral-800">
             <a href="/pages/users/client/staffs/#cashiers"
               class="flex items-center px-3 py-1.5 text-neutral-600 dark:text-neutral-300 rounded-none hover:bg-neutral-50 dark:hover:bg-neutral-800/50 hover:text-emerald-600 dark:hover:text-emerald-400 group transition cursor-pointer text-xs before:content-[''] before:absolute before:-left-4 before:top-1/2 before:-translate-y-1/2 before:w-3 before:h-[1px] before:bg-neutral-200 dark:before:bg-neutral-800">Cashier</a>
           </li>
@@ -277,9 +469,9 @@
       </li>
     </ul>
 
-    <!-- Bottom Promo Alert in Sidebar -->
-    <div id="alert-additional-content-1"
-      class="p-3.5 mb-2 text-xs text-emerald-800 dark:text-emerald-300 rounded-none bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900 transition-colors"
+    <!-- Dynamic System Announcement Alert in Sidebar -->
+    <div id="sidebar-announcement-card"
+      class="hidden p-3.5 mb-2 text-xs text-emerald-800 dark:text-emerald-300 rounded-none bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900 transition-colors"
       role="alert">
       <div class="flex items-center justify-between">
         <div class="flex items-center">
@@ -288,9 +480,9 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
           </svg>
-          <span class="font-bold">Beta version</span>
+          <span id="sidebar-announcement-badge" class="font-bold">Notice</span>
         </div>
-        <button type="button" data-dismiss-target="#alert-additional-content-1" aria-label="Close"
+        <button type="button" id="btn-dismiss-sidebar-announcement" aria-label="Close"
           class="ms-auto -mx-1.5 -my-1.5 rounded-none text-emerald-500 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 inline-flex items-center justify-center h-6 w-6 cursor-pointer">
           <span class="sr-only">Close</span>
           <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -300,12 +492,11 @@
           </svg>
         </button>
       </div>
-      <div class="mt-1.5 mb-3 leading-relaxed opacity-90">
-        Preview the new Flowbite navigation! You can turn the new navigation off in your profile.
+      <div id="sidebar-announcement-message" class="mt-1.5 mb-3 leading-relaxed opacity-90">
       </div>
-      <button type="button"
+      <button type="button" id="sidebar-announcement-btn"
         class="inline-flex items-center text-white bg-emerald-600 hover:bg-emerald-700 font-bold rounded-none text-[10px] px-2.5 py-1.5 focus:outline-none transition cursor-pointer">
-        Turn off now
+        Dismiss
       </button>
     </div>
   </div>

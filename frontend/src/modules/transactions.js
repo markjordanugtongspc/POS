@@ -1,4 +1,7 @@
 import { confirmRefund, showSuccess } from './modals.js';
+import { animateNumber, formatCounterNumber } from './animations.js';
+import { fetchTransactions } from '../../../backend/api/transactions.api.js';
+import { subscribeToTransactions } from '../../../backend/api/realtime.api.js';
 import DateRangePicker from 'flowbite-datepicker/DateRangePicker';
 
 let selectedStartDate = null;
@@ -10,185 +13,81 @@ let selectedPaymentMethod = null;
 let selectedStatus = null;
 let dateRangePickerInstance = null;
 
-let transactions = [
-  {
-    id: "TXN-100293",
-    dateTime: "2026-06-17T11:30:15.000Z",
-    cashier: "Darling Ugtong",
-    paymentMethod: "G-Cash",
-    subtotal: 88.00,
-    discount: 5.00,
-    total: 83.00,
-    status: "Completed",
-    items: [
-      { name: "Milo 24g", quantity: 5, price: 12.00 },
-      { name: "Nescafe Classic Twin Pack", quantity: 2, price: 14.00 }
-    ]
-  },
-  {
-    id: "TXN-100292",
-    dateTime: "2026-06-17T10:15:42.000Z",
-    cashier: "Blessel Ugtong",
-    paymentMethod: "Cash",
-    subtotal: 72.00,
-    discount: 0.00,
-    total: 72.00,
-    status: "Completed",
-    items: [
-      { name: "Lucky Me Pancit Canton", quantity: 3, price: 18.00 },
-      { name: "Datu Puti Vinegar 200ml", quantity: 1, price: 18.00 }
-    ]
-  },
-  {
-    id: "TXN-100291",
-    dateTime: "2026-06-16T16:45:00.000Z",
-    cashier: "Mark Jordan",
-    paymentMethod: "Card",
-    subtotal: 150.00,
-    discount: 15.00,
-    total: 135.00,
-    status: "Refunded",
-    items: [
-      { name: "Surf Powder Cherry Blossom", quantity: 10, price: 15.00 }
-    ]
-  },
-  {
-    id: "TXN-100290",
-    dateTime: "2026-06-16T14:22:10.000Z",
-    cashier: "Darling Ugtong",
-    paymentMethod: "Cash",
-    subtotal: 140.00,
-    discount: 10.00,
-    total: 130.00,
-    status: "Completed",
-    items: [
-      { name: "Milo 24g", quantity: 4, price: 12.00 },
-      { name: "Nescafe Classic Twin Pack", quantity: 4, price: 14.00 },
-      { name: "Lucky Me Pancit Canton", quantity: 2, price: 18.00 }
-    ]
-  },
-  {
-    id: "TXN-100289",
-    dateTime: "2026-06-16T09:05:33.000Z",
-    cashier: "Blessel Ugtong",
-    paymentMethod: "G-Cash",
-    subtotal: 18.00,
-    discount: 0.00,
-    total: 18.00,
-    status: "Completed",
-    items: [
-      { name: "Datu Puti Vinegar 200ml", quantity: 1, price: 18.00 }
-    ]
-  },
-  {
-    id: "TXN-100288",
-    dateTime: "2026-06-15T19:12:00.000Z",
-    cashier: "Mark Jordan",
-    paymentMethod: "Cash",
-    subtotal: 144.00,
-    discount: 10.00,
-    total: 134.00,
-    status: "Completed",
-    items: [
-      { name: "Lucky Me Pancit Canton", quantity: 8, price: 18.00 }
-    ]
-  },
-  {
-    id: "TXN-100287",
-    dateTime: "2026-06-15T11:30:00.000Z",
-    cashier: "Darling Ugtong",
-    paymentMethod: "Card",
-    subtotal: 168.00,
-    discount: 18.00,
-    total: 150.00,
-    status: "Completed",
-    items: [
-      { name: "Nescafe Classic Twin Pack", quantity: 12, price: 14.00 }
-    ]
-  },
-  {
-    id: "TXN-100286",
-    dateTime: "2026-06-14T15:00:22.000Z",
-    cashier: "Blessel Ugtong",
-    paymentMethod: "G-Cash",
-    subtotal: 90.00,
-    discount: 5.00,
-    total: 85.00,
-    status: "Cancelled",
-    items: [
-      { name: "Surf Powder Cherry Blossom", quantity: 6, price: 15.00 }
-    ]
-  },
-  {
-    id: "TXN-100285",
-    dateTime: "2026-06-14T10:12:00.000Z",
-    cashier: "Darling Ugtong",
-    paymentMethod: "Cash",
-    subtotal: 120.00,
-    discount: 0.00,
-    total: 120.00,
-    status: "Completed",
-    items: [
-      { name: "Milo 24g", quantity: 10, price: 12.00 }
-    ]
-  },
-  {
-    id: "TXN-100284",
-    dateTime: "2026-06-13T17:40:11.000Z",
-    cashier: "Mark Jordan",
-    paymentMethod: "G-Cash",
-    subtotal: 36.00,
-    discount: 2.00,
-    total: 34.00,
-    status: "Completed",
-    items: [
-      { name: "Lucky Me Pancit Canton", quantity: 2, price: 18.00 }
-    ]
-  },
-  {
-    id: "TXN-100283",
-    dateTime: "2026-06-13T13:20:55.000Z",
-    cashier: "Blessel Ugtong",
-    paymentMethod: "Cash",
-    subtotal: 210.00,
-    discount: 20.00,
-    total: 190.00,
-    status: "Completed",
-    items: [
-      { name: "Surf Powder Cherry Blossom", quantity: 14, price: 15.00 }
-    ]
-  },
-  {
-    id: "TXN-100282",
-    dateTime: "2026-06-12T11:05:40.000Z",
-    cashier: "Darling Ugtong",
-    paymentMethod: "Card",
-    subtotal: 84.00,
-    discount: 5.00,
-    total: 79.00,
-    status: "Completed",
-    items: [
-      { name: "Nescafe Classic Twin Pack", quantity: 6, price: 14.00 }
-    ]
-  }
-];
-
-let filteredTransactions = [...transactions];
+let transactions = [];
+let filteredTransactions = [];
 let currentPage = 1;
 const itemsPerPage = 5;
 let currentSort = 'latest'; // 'latest' or 'oldest' (Sort by Complete Date & Time)
 let searchQuery = '';
 
-export function initTransactions() {
+export async function initTransactions() {
   const container = document.getElementById('transactions-container');
   if (!container) return; // Only execute if on the transactions page
 
+  // Fetch live transactions from Supabase API
+  const res = await fetchTransactions();
+  if (res.success && res.data.length > 0) {
+    transactions = res.data.map(t => ({
+      id: t.receipt_number || `TXN-${t.id}`,
+      dateTime: t.created_at,
+      cashier: t.users?.full_name || 'Mark Jordan',
+      paymentMethod: t.payment_method ? (t.payment_method.toUpperCase()) : 'Cash',
+      subtotal: parseFloat(t.subtotal || t.total_amount) || 0.00,
+      discount: parseFloat(t.discount_amount || t.discount || 0) || 0.00,
+      total: parseFloat(t.total_amount) || 0.00,
+      status: t.status ? (t.status.charAt(0).toUpperCase() + t.status.slice(1)) : 'Completed',
+      items: []
+    }));
+  }
+
+  // Attach Realtime listener for incoming sales
+  subscribeToTransactions(async () => {
+    const fetchRes = await fetchTransactions();
+    if (fetchRes.success && fetchRes.data.length > 0) {
+      transactions = fetchRes.data.map(t => ({
+        id: t.receipt_number || `TXN-${t.id}`,
+        dateTime: t.created_at,
+        cashier: t.users?.full_name || 'Mark Jordan',
+        paymentMethod: t.payment_method ? (t.payment_method.toUpperCase()) : 'Cash',
+        subtotal: parseFloat(t.subtotal || t.total_amount) || 0.00,
+        discount: parseFloat(t.discount_amount || t.discount || 0) || 0.00,
+        total: parseFloat(t.total_amount) || 0.00,
+        status: t.status ? (t.status.charAt(0).toUpperCase() + t.status.slice(1)) : 'Completed',
+        items: []
+      }));
+      filteredTransactions = [...transactions];
+      renderTable();
+    }
+  });
+
+  filteredTransactions = [...transactions];
   bindEvents();
   initDateRangePicker();
   bindFilterMenuEvents();
   updateStats();
   applyFiltersAndRender();
+  initTransactionsSkeletonLoader();
 }
+
+/* =========================================
+   START: TRANSACTIONS SKELETON LOADER
+   Handles Flowbite animated skeleton loading on the transactions table
+   and reveals the actual table body with populated records after loading.
+   ========================================= */
+export function initTransactionsSkeletonLoader() {
+  const skeletonBody = document.getElementById('transactions-skeleton-body');
+  const actualBody = document.getElementById('transactions-tbody');
+
+  if (!skeletonBody || !actualBody) return;
+
+  setTimeout(() => {
+    skeletonBody.remove();
+    actualBody.classList.remove('hidden');
+  }, 1000); // 1-second simulated network load
+}
+/* =========================================
+   END: TRANSACTIONS SKELETON LOADER
+   ========================================= */
 
 function bindEvents() {
   const searchInput = document.getElementById('transactions-search');
@@ -760,7 +659,7 @@ function showReceiptDrawer(transaction) {
   }
 }
 
-function updateStats() {
+function updateStats(animate = true) {
   // Only completed transactions count toward active metrics
   const activeTxns = transactions.filter(t => t.status === 'Completed');
   
@@ -774,10 +673,45 @@ function updateStats() {
   const netSalesEl = document.getElementById('net-sales-value');
   const transactionsCountEl = document.getElementById('transactions-count-value');
 
-  if (grossSalesEl) grossSalesEl.textContent = `₱${grossSales.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  if (totalDiscountsEl) totalDiscountsEl.textContent = `₱${totalDiscounts.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  if (netSalesEl) netSalesEl.textContent = `₱${netSales.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  if (transactionsCountEl) transactionsCountEl.textContent = transactionsCount.toLocaleString('en-US');
+  if (grossSalesEl) {
+    const prev = parseFloat(grossSalesEl.getAttribute('data-target') || '0');
+    grossSalesEl.setAttribute('data-target', grossSales);
+    if (animate) {
+      animateNumber(grossSalesEl, prev, grossSales, 1000, { prefix: '₱', decimals: 2 });
+    } else {
+      grossSalesEl.textContent = formatCounterNumber(grossSales, { prefix: '₱', decimals: 2 });
+    }
+  }
+
+  if (totalDiscountsEl) {
+    const prev = parseFloat(totalDiscountsEl.getAttribute('data-target') || '0');
+    totalDiscountsEl.setAttribute('data-target', totalDiscounts);
+    if (animate) {
+      animateNumber(totalDiscountsEl, prev, totalDiscounts, 1000, { prefix: '₱', decimals: 2 });
+    } else {
+      totalDiscountsEl.textContent = formatCounterNumber(totalDiscounts, { prefix: '₱', decimals: 2 });
+    }
+  }
+
+  if (netSalesEl) {
+    const prev = parseFloat(netSalesEl.getAttribute('data-target') || '0');
+    netSalesEl.setAttribute('data-target', netSales);
+    if (animate) {
+      animateNumber(netSalesEl, prev, netSales, 1000, { prefix: '₱', decimals: 2 });
+    } else {
+      netSalesEl.textContent = formatCounterNumber(netSales, { prefix: '₱', decimals: 2 });
+    }
+  }
+
+  if (transactionsCountEl) {
+    const prev = parseFloat(transactionsCountEl.getAttribute('data-target') || '0');
+    transactionsCountEl.setAttribute('data-target', transactionsCount);
+    if (animate) {
+      animateNumber(transactionsCountEl, prev, transactionsCount, 1000, { decimals: 0 });
+    } else {
+      transactionsCountEl.textContent = formatCounterNumber(transactionsCount, { decimals: 0 });
+    }
+  }
 }
 
 function applyFiltersAndRender() {

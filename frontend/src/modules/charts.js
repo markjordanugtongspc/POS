@@ -224,10 +224,16 @@ export class WeeklySalesChart extends BaseChart {
         tickAmount: 5,
         labels: {
           formatter: (val) => {
-            if (val === 0) return '0';
-            if (val >= 1000000) return (val / 1000000) + 'M';
-            if (val >= 1000) return (val / 1000) + 'K';
-            return val;
+            if (val === 0 || isNaN(val)) return '0';
+            if (val >= 1000000) {
+              const formattedM = val / 1000000;
+              return `${Number.isInteger(formattedM) ? formattedM.toLocaleString() : formattedM.toFixed(1)}M`;
+            }
+            if (val >= 1000) {
+              const formattedK = val / 1000;
+              return `${Number.isInteger(formattedK) ? formattedK.toLocaleString() : formattedK.toFixed(1)}k`;
+            }
+            return Number(val).toLocaleString();
           },
           style: {
             colors: isDark ? '#a3a3a3' : '#737373',
@@ -270,7 +276,7 @@ export class WeeklySalesChart extends BaseChart {
                   bottom: 3
                 }
               },
-              text: '3,500',
+              text: '200k',
               offsetY: -16
             }
           }
@@ -321,4 +327,230 @@ export function initWeeklySalesChart() {
 }
 // ==========================================
 // END: initWeeklySalesChart
+// ==========================================
+
+/* =========================================
+   START COMMENT: ADMIN DOUBLE LINE CHART CLASS
+   Flowbite & ApexCharts double line chart displaying platform gross revenue
+   and subscription trends across all 12 calendar months with dark mode sync.
+   ========================================= */
+export class AdminDoubleLineChart extends BaseChart {
+  constructor(elementId = 'admin-double-line-chart', customOptions = {}) {
+    super(elementId, customOptions);
+  }
+
+  // ==========================================
+  // START: getOptions
+  // Generates complete configuration object for the Admin Double Line chart.
+  // ==========================================
+  getOptions() {
+    const isDark = this.isDarkMode();
+
+    const defaultOptions = {
+      series: [
+        {
+          name: 'Gross Platform Revenue',
+          data: [185000, 240000, 310000, 290000, 420000, 480000, 560000, 610000, 720000, 850000, 930000, 1150000]
+        },
+        {
+          name: 'Active Merchant Settlements',
+          data: [110000, 155000, 195000, 210000, 280000, 340000, 390000, 440000, 520000, 610000, 710000, 890000]
+        }
+      ],
+      chart: {
+        type: 'line',
+        height: 280,
+        parentHeightOffset: 0,
+        toolbar: {
+          show: false
+        },
+        zoom: {
+          enabled: false
+        },
+        fontFamily: 'Urbanist, system-ui, sans-serif'
+      },
+      colors: ['#e11d48', '#059669'],
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'smooth',
+        width: [3.5, 3.5]
+      },
+      grid: {
+        show: true,
+        borderColor: isDark ? '#262626' : '#f3f4f6',
+        strokeDashArray: 4,
+        padding: {
+          top: -10,
+          right: 15,
+          bottom: 0,
+          left: 10
+        }
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        labels: {
+          style: {
+            colors: isDark ? '#a3a3a3' : '#737373',
+            fontSize: '11px',
+            fontWeight: 700
+          }
+        }
+      },
+      yaxis: {
+        labels: {
+          formatter: (val) => {
+            if (val === 0 || isNaN(val)) return '₱0';
+            if (val >= 1000000) {
+              const formattedM = val / 1000000;
+              return `₱${Number.isInteger(formattedM) ? formattedM.toLocaleString() : formattedM.toFixed(1)}M`;
+            }
+            if (val >= 1000) {
+              const formattedK = val / 1000;
+              return `₱${Number.isInteger(formattedK) ? formattedK.toLocaleString() : formattedK.toFixed(0)}k`;
+            }
+            return '₱' + Number(val).toLocaleString();
+          },
+          style: {
+            colors: isDark ? '#a3a3a3' : '#737373',
+            fontSize: '11px',
+            fontWeight: 700
+          }
+        }
+      },
+      legend: {
+        show: true,
+        position: 'top',
+        horizontalAlign: 'right',
+        labels: {
+          colors: isDark ? '#d4d4d4' : '#404040'
+        },
+        markers: {
+          radius: 2
+        }
+      },
+      markers: {
+        size: 3.5,
+        strokeWidth: 2,
+        hover: {
+          size: 6,
+          sizeOffset: 3
+        }
+      },
+      tooltip: {
+        enabled: true,
+        theme: isDark ? 'dark' : 'light',
+        x: {
+          show: true
+        },
+        y: {
+          formatter: (val) => '₱' + Number(val).toLocaleString(),
+          title: {
+            formatter: (seriesName) => `${seriesName}:`
+          }
+        }
+      }
+    };
+
+    return { ...defaultOptions, ...this.customOptions };
+  }
+  // ==========================================
+  // END: getOptions
+  // ==========================================
+}
+/* =========================================
+   END COMMENT: ADMIN DOUBLE LINE CHART CLASS
+   ========================================= */
+
+// ==========================================
+// START: initAdminDoubleLineChart
+// Factory function to initialize the AdminDoubleLineChart instance if container exists.
+// ==========================================
+export function initAdminDoubleLineChart() {
+  const chartEl = document.getElementById('admin-double-line-chart');
+  if (!chartEl) return null;
+
+  const adminChart = new AdminDoubleLineChart('admin-double-line-chart');
+  return adminChart.render();
+}
+// ==========================================
+// END: initAdminDoubleLineChart
+// ==========================================
+
+/* =========================================
+   START COMMENT: ADMIN MINI CHARTS FOR TICKETS
+   Flowbite ApexCharts sparkline widgets for Open and Resolved Ticket metrics.
+   ========================================= */
+export function initAdminTicketMiniCharts() {
+  const isDark = document.documentElement.classList.contains('dark');
+
+  // Mini Chart 1: Open Tickets
+  const openChartEl = document.getElementById('mini-chart-open-tickets');
+  if (openChartEl && !openChartEl.dataset.rendered) {
+    openChartEl.dataset.rendered = 'true';
+    const openOptions = {
+      series: [{ name: 'Open Inquiries', data: [8, 12, 10, 15, 14, 18, 16] }],
+      chart: {
+        type: 'area',
+        height: 85,
+        sparkline: { enabled: true },
+        fontFamily: 'Urbanist, sans-serif'
+      },
+      colors: ['#f59e0b'],
+      stroke: { curve: 'smooth', width: 2.5 },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.45,
+          opacityTo: 0.05
+        }
+      },
+      tooltip: {
+        theme: isDark ? 'dark' : 'light',
+        y: { formatter: (val) => `${val} Tickets` }
+      }
+    };
+    new ApexCharts(openChartEl, openOptions).render();
+  }
+
+  // Mini Chart 2: Resolved Tickets
+  const resolvedChartEl = document.getElementById('mini-chart-resolved-tickets');
+  if (resolvedChartEl && !resolvedChartEl.dataset.rendered) {
+    resolvedChartEl.dataset.rendered = 'true';
+    const resolvedOptions = {
+      series: [{ name: 'Resolved Tickets', data: [22, 28, 35, 30, 42, 48, 56] }],
+      chart: {
+        type: 'area',
+        height: 85,
+        sparkline: { enabled: true },
+        fontFamily: 'Urbanist, sans-serif'
+      },
+      colors: ['#10b981'],
+      stroke: { curve: 'smooth', width: 2.5 },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.45,
+          opacityTo: 0.05
+        }
+      },
+      tooltip: {
+        theme: isDark ? 'dark' : 'light',
+        y: { formatter: (val) => `${val} Resolved` }
+      }
+    };
+    new ApexCharts(resolvedChartEl, resolvedOptions).render();
+  }
+}
+// ==========================================
+// END: initAdminTicketMiniCharts
 // ==========================================
