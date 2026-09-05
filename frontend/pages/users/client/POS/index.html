@@ -723,42 +723,113 @@
 
           <!-- Payment Options Wrapper -->
           <div class="pt-4 border-t border-neutral-100 dark:border-neutral-800/80">
-            <div class="flex justify-between items-center gap-1">
+            <div class="grid grid-cols-4 gap-1">
               <!-- Cash Radio Option -->
-              <label class="flex items-center gap-2 cursor-pointer group">
+              <label class="flex items-center gap-1.5 cursor-pointer group">
                 <input type="radio" name="payment_method" id="pay-cash" checked
-                  onclick="document.getElementById('ecash-providers').classList.add('hidden')" class="peer hidden" />
+                  onclick="document.getElementById('cash-tender-wrapper').classList.remove('hidden'); document.getElementById('ecash-providers').classList.add('hidden'); document.getElementById('utang-tender-wrapper').classList.add('hidden')" class="peer hidden" />
                 <div
-                  class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 flex items-center justify-center transition-all shrink-0 bg-white dark:bg-neutral-900 peer-checked:[&>div]:scale-100">
-                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 scale-0 transition-transform"></div>
+                  class="w-4 h-4 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 flex items-center justify-center transition-all shrink-0 bg-white dark:bg-neutral-900 peer-checked:[&>div]:scale-100">
+                  <div class="w-2 h-2 rounded-full bg-emerald-500 scale-0 transition-transform"></div>
                 </div>
                 <span
-                  class="text-sm font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Cash</span>
+                  class="text-xs font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Cash</span>
               </label>
 
               <!-- Card Radio Option -->
-              <label class="flex items-center gap-2 cursor-pointer group">
+              <label class="flex items-center gap-1.5 cursor-pointer group">
                 <input type="radio" name="payment_method" id="pay-card"
-                  onclick="document.getElementById('ecash-providers').classList.add('hidden')" class="peer hidden" />
+                  onclick="document.getElementById('cash-tender-wrapper').classList.add('hidden'); document.getElementById('ecash-providers').classList.add('hidden'); document.getElementById('utang-tender-wrapper').classList.add('hidden')" class="peer hidden" />
                 <div
-                  class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 flex items-center justify-center transition-all shrink-0 bg-white dark:bg-neutral-900 peer-checked:[&>div]:scale-100">
-                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 scale-0 transition-transform"></div>
+                  class="w-4 h-4 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 flex items-center justify-center transition-all shrink-0 bg-white dark:bg-neutral-900 peer-checked:[&>div]:scale-100">
+                  <div class="w-2 h-2 rounded-full bg-emerald-500 scale-0 transition-transform"></div>
                 </div>
                 <span
-                  class="text-sm font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Card</span>
+                  class="text-xs font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Card</span>
               </label>
 
               <!-- E-Cash Radio Option -->
-              <label class="flex items-center gap-2 cursor-pointer group">
+              <label class="flex items-center gap-1.5 cursor-pointer group">
                 <input type="radio" name="payment_method" id="pay-ecash"
-                  onclick="document.getElementById('ecash-providers').classList.remove('hidden')" class="peer hidden" />
+                  onclick="document.getElementById('cash-tender-wrapper').classList.add('hidden'); document.getElementById('ecash-providers').classList.remove('hidden'); document.getElementById('utang-tender-wrapper').classList.add('hidden')" class="peer hidden" />
                 <div
-                  class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 flex items-center justify-center transition-all shrink-0 bg-white dark:bg-neutral-900 peer-checked:[&>div]:scale-100">
-                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 scale-0 transition-transform"></div>
+                  class="w-4 h-4 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 flex items-center justify-center transition-all shrink-0 bg-white dark:bg-neutral-900 peer-checked:[&>div]:scale-100">
+                  <div class="w-2 h-2 rounded-full bg-emerald-500 scale-0 transition-transform"></div>
                 </div>
                 <span
-                  class="text-sm font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">E-Cash</span>
+                  class="text-xs font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">E-Cash</span>
               </label>
+
+              <!-- Utang (Credit) Radio Option matching [IMAGE 5] -->
+              <label class="flex items-center gap-1.5 cursor-pointer group">
+                <input type="radio" name="payment_method" id="pay-utang"
+                  onclick="document.getElementById('cash-tender-wrapper').classList.add('hidden'); document.getElementById('ecash-providers').classList.add('hidden'); document.getElementById('utang-tender-wrapper').classList.remove('hidden')" class="peer hidden" />
+                <div
+                  class="w-4 h-4 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 flex items-center justify-center transition-all shrink-0 bg-white dark:bg-neutral-900 peer-checked:[&>div]:scale-100">
+                  <div class="w-2 h-2 rounded-full bg-emerald-500 scale-0 transition-transform"></div>
+                </div>
+                <span
+                  class="text-xs font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Utang</span>
+              </label>
+            </div>
+
+            <!-- Cash Tender Amount Input Field (Visible by default when Cash is selected) -->
+            <div id="cash-tender-wrapper" class="mt-3.5 space-y-2 animate-fade-in">
+              <label for="cash-amount-input" class="block text-xs font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-wider">
+                Cash Tendered Amount
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-600 dark:text-emerald-400 font-black text-sm">
+                  ₱
+                </div>
+                <input type="number" id="cash-amount-input" step="any" min="0" placeholder="0.00"
+                  class="w-full pl-8 pr-3 py-2.5 bg-neutral-50 dark:bg-neutral-900/80 border border-neutral-200 dark:border-neutral-800 rounded-xl text-neutral-900 dark:text-white font-black text-base font-mono focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 block transition-all shadow-xs" />
+              </div>
+
+              <!-- Quick Tender Preset Bill Buttons -->
+              <div class="flex items-center gap-1.5 pt-1">
+                <button type="button" class="btn-quick-cash flex-1 py-1 px-1.5 bg-neutral-100 hover:bg-emerald-100 dark:bg-neutral-800 dark:hover:bg-emerald-950/40 text-neutral-700 dark:text-neutral-300 hover:text-emerald-700 dark:hover:text-emerald-300 border border-neutral-200/80 dark:border-neutral-700/60 rounded-lg text-xs font-bold font-mono transition-colors text-center cursor-pointer" data-amount="100">
+                  ₱100
+                </button>
+                <button type="button" class="btn-quick-cash flex-1 py-1 px-1.5 bg-neutral-100 hover:bg-emerald-100 dark:bg-neutral-800 dark:hover:bg-emerald-950/40 text-neutral-700 dark:text-neutral-300 hover:text-emerald-700 dark:hover:text-emerald-300 border border-neutral-200/80 dark:border-neutral-700/60 rounded-lg text-xs font-bold font-mono transition-colors text-center cursor-pointer" data-amount="200">
+                  ₱200
+                </button>
+                <button type="button" class="btn-quick-cash flex-1 py-1 px-1.5 bg-neutral-100 hover:bg-emerald-100 dark:bg-neutral-800 dark:hover:bg-emerald-950/40 text-neutral-700 dark:text-neutral-300 hover:text-emerald-700 dark:hover:text-emerald-300 border border-neutral-200/80 dark:border-neutral-700/60 rounded-lg text-xs font-bold font-mono transition-colors text-center cursor-pointer" data-amount="500">
+                  ₱500
+                </button>
+                <button type="button" class="btn-quick-cash flex-1 py-1 px-1.5 bg-neutral-100 hover:bg-emerald-100 dark:bg-neutral-800 dark:hover:bg-emerald-950/40 text-neutral-700 dark:text-neutral-300 hover:text-emerald-700 dark:hover:text-emerald-300 border border-neutral-200/80 dark:border-neutral-700/60 rounded-lg text-xs font-bold font-mono transition-colors text-center cursor-pointer" data-amount="1000">
+                  ₱1,000
+                </button>
+              </div>
+
+              <!-- Change Output Display Row -->
+              <div class="flex justify-between items-center px-3 py-2 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-200/60 dark:border-emerald-800/40 text-xs">
+                <span class="font-extrabold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider text-[11px]">Change Due:</span>
+                <span id="cash-change-display" class="font-black text-emerald-700 dark:text-emerald-400 font-mono text-sm">₱0.00</span>
+              </div>
+            </div>
+
+            <!-- Utang (Credit) Tender Wrapper (Visible when Utang is selected) -->
+            <div id="utang-tender-wrapper" class="hidden mt-3 space-y-2.5 animate-fade-in p-3 bg-neutral-50 dark:bg-neutral-900/60 rounded-xl border border-neutral-200 dark:border-neutral-800 text-xs">
+              <label class="block text-[11px] font-bold text-neutral-600 dark:text-neutral-300 uppercase tracking-wider">
+                Select Customer Account
+              </label>
+              <select id="pos-utang-customer-select" class="w-full px-3 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg text-xs font-bold text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <option value="NEW" selected>Register new customer</option>
+              </select>
+
+              <div id="pos-utang-new-customer-fields" class="space-y-2">
+                <input type="text" id="pos-utang-customer-name" placeholder="Customer full name *"
+                  class="w-full px-3 py-1.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg text-xs text-neutral-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <input type="text" id="pos-utang-customer-phone" placeholder="Phone number (e.g. 0917-123-4567)"
+                  class="w-full px-3 py-1.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg text-xs text-neutral-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+              </div>
+
+              <div>
+                <label for="pos-utang-due-date" class="block text-[11px] font-bold text-neutral-500 mb-0.5">Due Date (Kailan babayaran)</label>
+                <input type="date" id="pos-utang-due-date"
+                  class="w-full px-3 py-1.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg text-xs text-neutral-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+              </div>
             </div>
 
             <!-- E-Cash Provider Selection List (Inline 2x2 grid, hidden by default) -->

@@ -19,6 +19,31 @@
     <!-- Main Content Area -->
     <div class="p-4 sm:ml-64 mt-14">
 
+      <!-- Branch Performance Switcher Toolbar -->
+      <div class="mb-4 p-3 bg-white dark:bg-[#1f2029] border border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold shrink-0 border border-emerald-200 dark:border-emerald-800/40">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4"/></svg>
+          </div>
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Dashboard Scope</span>
+            <div class="flex items-center gap-2">
+              <span id="dashboard-scope-label" class="text-xs font-black text-neutral-900 dark:text-white uppercase tracking-wider">Global Overview (All Branches)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <label for="dashboard-branch-select" class="text-xs font-bold text-neutral-500 dark:text-neutral-400 shrink-0">Branch Scope:</label>
+          <select id="dashboard-branch-select" class="w-full sm:w-64 h-9 px-3 text-xs font-extrabold bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-emerald-500 rounded-none cursor-pointer">
+            <option value="all">🌟 All Branches (Total & General Sales)</option>
+          </select>
+          <a href="/pages/users/client/branches/" class="shrink-0 px-3 py-2 text-[11px] font-bold uppercase tracking-wider bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 border border-neutral-300 dark:border-neutral-700 transition">
+            Manage
+          </a>
+        </div>
+      </div>
+
       <!-- Header Row -->
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div class="w-full sm:w-auto flex items-center justify-between sm:block gap-4">

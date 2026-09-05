@@ -4,7 +4,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import { initTheme, toggleTheme } from './modules/theme-toggle.js';
 import { initSidebar } from './modules/sidebar.js';
 import { initDrawer } from './modules/drawer.js';
-import { initDashboardPagination, initLiveClock, initDashboardTableSkeleton, initQuickActionsCarousel } from './modules/dashboard.js';
+import { initDashboardPagination, initLiveClock, initDashboardTableSkeleton, initQuickActionsCarousel, initDashboardBranchFilter } from './modules/dashboard.js';
 import { initTransactions } from './modules/transactions.js';
 import { initProductsPage } from './modules/products.js';
 import { initInbox } from './modules/inbox.js';
@@ -17,6 +17,11 @@ import { initPOS } from './modules/pos.js';
 import { initAdminDashboard } from './modules/admin-dashboard.js';
 import { subscriptionManager } from './modules/permissions.js';
 import { subscribeToStoreTier, subscribeToAnnouncements } from '../../backend/api/realtime.api.js';
+import { initBranchesPage } from './modules/branches.js';
+import { initSuppliers } from './modules/suppliers.js';
+import { initUtang } from './modules/utang.js';
+import { initPayroll } from './modules/payroll.js';
+import { getActiveBranchName } from '../../backend/api/branches.api.js';
 import './modules/auth.js';
 
 // ==========================================
@@ -249,6 +254,11 @@ async function injectSidebar() {
             inspectorBanner.classList.add('hidden');
           }
         }
+
+        const topBarBranch = container.querySelector('#nav-active-branch-name');
+        if (topBarBranch) {
+          topBarBranch.textContent = getActiveBranchName();
+        }
       }
     }
   } catch (error) {
@@ -305,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   traceFlow('3.3', 'Initializing Client Core Modules (Dashboard, Products, POS, Transactions, Support)');
   initDashboardPagination();
+  initDashboardBranchFilter();
   initDashboardTableSkeleton();
   initQuickActionsCarousel();
   initWeeklySalesChart();
@@ -316,6 +327,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initKnowledgePages();
   initNumberCounters();
   initPOS();
+  initBranchesPage();
+  initSuppliers();
+  initUtang();
+  initPayroll();
+
+  // Reactive listener for active branch switches
+  window.addEventListener('branch:changed', (e) => {
+    const topBarBranch = document.getElementById('nav-active-branch-name');
+    if (topBarBranch) {
+      topBarBranch.textContent = e.detail?.branchName || 'All Branches';
+    }
+  });
 
   // ==========================================
   // START: Realtime Subscriptions

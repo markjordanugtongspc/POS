@@ -49,10 +49,10 @@
             <h1 id="product-header-title" class="text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight">Product List</h1>
             <p id="product-header-desc" class="text-sm font-medium text-neutral-500 dark:text-neutral-400 mt-1">Manage your products</p>
           </div>
-          <!-- Right side actions -->
+          <!-- Right side actions for Product List -->
           <div id="product-header-actions" class="flex items-center gap-3 w-full md:w-auto">
             <!-- Add Product Button -->
-            <button type="button" id="btn-add-product"
+            <button type="button" id="btn-add-product" data-drawer-open="product-drawer"
               class="cursor-pointer w-full md:w-auto px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-extrabold text-sm rounded-none shadow-md transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 dark:focus:ring-offset-[#16171d]">
               <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14m-7-7v14"/>
@@ -67,6 +67,17 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4"/>
               </svg>
               Export Products
+            </button>
+          </div>
+
+          <!-- Right side actions for Product Details (Medium Back Button) -->
+          <div id="product-detail-actions" class="hidden flex items-center gap-3 w-full md:w-auto">
+            <button type="button" id="btn-back-to-products"
+              class="cursor-pointer w-full md:w-auto px-4 py-2 bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 active:scale-95 text-white font-bold text-xs uppercase tracking-wider rounded-none shadow-sm transition-all flex items-center justify-center gap-2 border border-neutral-700 dark:border-neutral-600 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <svg class="w-4 h-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m15 19-7-7 7-7"/>
+              </svg>
+              <span>Back to Products</span>
             </button>
           </div>
         </div>
@@ -390,9 +401,101 @@
 
       <!-- Hidden Version Metadata for auto-increments -->
       <div class="hidden text-neutral-400 text-[10px] select-none pointer-events-none" aria-hidden="true">
-        <!-- VERSION_START -->Alpha v0.1.80<!-- VERSION_END -->
+        <!-- VERSION_START -->Alpha v0.1.95<!-- VERSION_END -->
       </div>
 
+    </div>
+  </div>
+
+  <!-- Add/Edit Product Drawer (Right Off-Canvas matching Cart and Receipt Drawers) -->
+  <div id="product-drawer" tabindex="-1" aria-labelledby="product-drawer-title"
+    class="fixed inset-y-0 right-0 z-[60] w-full sm:w-96 md:w-[420px] max-w-full p-6 overflow-y-auto transition-transform duration-300 translate-x-full bg-white dark:bg-[#16171d] border-l border-neutral-200 dark:border-neutral-800 shadow-2xl flex flex-col justify-between font-sans">
+    
+    <div>
+      <!-- Drawer Header -->
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-neutral-200 dark:border-neutral-800">
+        <h3 id="product-drawer-title" class="text-base font-extrabold text-neutral-900 dark:text-white">Add New Product</h3>
+        <button type="button" id="btn-close-product-drawer" data-drawer-close="product-drawer" aria-controls="product-drawer"
+          class="cursor-pointer text-neutral-400 hover:text-neutral-700 dark:hover:text-white p-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Drawer Form -->
+      <form id="product-form" class="space-y-3.5 text-xs font-semibold" onsubmit="event.preventDefault();">
+        <input type="hidden" id="product-form-id" value="">
+
+        <!-- Name -->
+        <div>
+          <label for="product-form-name" class="block text-neutral-700 dark:text-neutral-300 font-bold mb-1">Product Name *</label>
+          <input type="text" id="product-form-name" required placeholder="e.g. Milo 24g"
+            class="w-full px-3.5 py-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-neutral-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition">
+        </div>
+
+        <!-- SKU / Barcode -->
+        <div>
+          <label for="product-form-sku" class="block text-neutral-700 dark:text-neutral-300 font-bold mb-1">SKU / Barcode *</label>
+          <div class="flex gap-2">
+            <input type="text" id="product-form-sku" required placeholder="e.g. SKU001 or Barcode"
+              class="flex-1 px-3.5 py-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-neutral-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none transition">
+            <button type="button" id="btn-product-scan-barcode"
+              class="cursor-pointer px-3 py-2 bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 font-bold text-xs rounded-xl transition flex items-center gap-1 shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z"/></svg>
+              <span>Scan</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category & Brand -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="product-form-category" class="block text-neutral-700 dark:text-neutral-300 font-bold mb-1">Category</label>
+            <input type="text" id="product-form-category" placeholder="e.g. Beverage"
+              class="w-full px-3.5 py-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-neutral-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition">
+          </div>
+          <div>
+            <label for="product-form-brand" class="block text-neutral-700 dark:text-neutral-300 font-bold mb-1">Brand</label>
+            <input type="text" id="product-form-brand" placeholder="e.g. Nestle"
+              class="w-full px-3.5 py-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-neutral-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition">
+          </div>
+        </div>
+
+        <!-- Price (₱) & Quantity -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="product-form-price" class="block text-neutral-700 dark:text-neutral-300 font-bold mb-1">Price (₱) *</label>
+            <input type="number" step="0.01" min="0" id="product-form-price" required placeholder="0.00"
+              class="w-full px-3.5 py-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-neutral-900 dark:text-white font-mono font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none transition">
+          </div>
+          <div>
+            <label for="product-form-qty" class="block text-neutral-700 dark:text-neutral-300 font-bold mb-1">Quantity *</label>
+            <input type="number" min="0" id="product-form-qty" required placeholder="0"
+              class="w-full px-3.5 py-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-neutral-900 dark:text-white font-mono font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none transition">
+          </div>
+        </div>
+
+        <!-- Image URL -->
+        <div>
+          <label for="product-form-image" class="block text-neutral-700 dark:text-neutral-300 font-bold mb-1">Image URL (optional)</label>
+          <input type="text" id="product-form-image" placeholder="https://..."
+            class="w-full px-3.5 py-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-neutral-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition">
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label for="product-form-desc" class="block text-neutral-700 dark:text-neutral-300 font-bold mb-1">Description</label>
+          <textarea id="product-form-desc" rows="2" placeholder="Brief product description..."
+            class="w-full px-3.5 py-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-neutral-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition"></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="btn-submit-product"
+          class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold text-sm rounded-xl shadow-md transition-all flex items-center justify-center cursor-pointer mt-3">
+          Save Product
+        </button>
+      </form>
     </div>
   </div>
 

@@ -4,7 +4,7 @@
 import { supabase } from './client.api.js';
 
 // --- START fetchTransactions ---
-export async function fetchTransactions(storeId = null, limit = 100) {
+export async function fetchTransactions(storeId = null, branchId = null, limit = 100) {
   try {
     let query = supabase
       .from('transactions')
@@ -14,6 +14,10 @@ export async function fetchTransactions(storeId = null, limit = 100) {
 
     if (storeId) {
       query = query.eq('store_id', storeId);
+    }
+
+    if (branchId) {
+      query = query.eq('branch_id', branchId);
     }
 
     const { data, error } = await query;
@@ -29,6 +33,7 @@ export async function fetchTransactions(storeId = null, limit = 100) {
 // --- START createTransaction ---
 export async function createTransaction({
   storeId = 1,
+  branchId = null,
   cashierId,
   receiptNumber,
   customerName = 'Walk-in Customer',
@@ -47,22 +52,28 @@ export async function createTransaction({
       ? paymentMethod.toLowerCase()
       : (paymentMethod.toLowerCase().includes('cash') ? 'cash' : 'e-wallet');
 
+    const insertPayload = {
+      store_id: storeId,
+      cashier_id: cashierId,
+      receipt_number: receiptNumber,
+      customer_name: customerName,
+      subtotal: subtotal,
+      discount_amount: discount,
+      tax_amount: tax,
+      total_amount: totalAmount,
+      payment_method: validMethod,
+      amount_paid: amountPaid,
+      change_amount: changeGiven,
+      status: 'completed'
+    };
+
+    if (branchId) {
+      insertPayload.branch_id = branchId;
+    }
+
     const { data: trx, error: trxErr } = await supabase
       .from('transactions')
-      .insert({
-        store_id: storeId,
-        cashier_id: cashierId,
-        receipt_number: receiptNumber,
-        customer_name: customerName,
-        subtotal: subtotal,
-        discount_amount: discount,
-        tax_amount: tax,
-        total_amount: totalAmount,
-        payment_method: validMethod,
-        amount_paid: amountPaid,
-        change_amount: changeGiven,
-        status: 'completed'
-      })
+      .insert(insertPayload)
       .select()
       .single();
 

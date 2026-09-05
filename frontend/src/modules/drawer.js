@@ -54,7 +54,7 @@ function injectDrawerHTML() {
 
   const drawerHTML = `  <!-- Cart Drawer Component (Visible on mobile/portrait screen toggle) -->
   <div id="cart-drawer"
-    class="fixed top-16 bottom-0 right-0 z-[45] p-6 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-[#16171d] w-full max-w-md border-l border-neutral-200 dark:border-neutral-800 shadow-2xl flex flex-col"
+    class="fixed inset-y-0 right-0 z-[60] p-6 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-[#16171d] w-full max-w-md border-l border-neutral-200 dark:border-neutral-800 shadow-2xl flex flex-col"
     tabindex="-1">
     <!-- Header inside Drawer -->
     <div class="flex justify-between items-center pb-4 mb-4 border-b border-neutral-200 dark:border-neutral-800">
@@ -392,43 +392,92 @@ function injectDrawerHTML() {
 
       <!-- Payment Options Wrapper (Drawer) -->
       <div class="pt-4 border-t border-neutral-100 dark:border-neutral-800/80">
-        <div class="flex justify-between items-center gap-1">
+        <div class="grid grid-cols-4 gap-1">
           <!-- Cash Radio Option -->
-          <label class="flex items-center gap-2 cursor-pointer group">
+          <label class="flex items-center gap-1 cursor-pointer group">
             <input type="radio" name="payment_method_drawer" id="pay-cash-drawer" checked
-              onclick="document.getElementById('ecash-providers-drawer').classList.add('hidden')" class="peer hidden" />
+              onclick="document.getElementById('cash-tender-wrapper-drawer').classList.remove('hidden'); document.getElementById('ecash-providers-drawer').classList.add('hidden')" class="peer hidden" />
             <div
-              class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center transition-all shrink-0">
+              class="w-4 h-4 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center transition-all shrink-0">
               <div class="w-1.5 h-1.5 rounded-full bg-white scale-0 peer-checked:scale-100 transition-transform"></div>
             </div>
             <span
-              class="text-sm font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Cash</span>
+              class="text-xs font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Cash</span>
           </label>
 
           <!-- Card Radio Option -->
-          <label class="flex items-center gap-2 cursor-pointer group">
+          <label class="flex items-center gap-1 cursor-pointer group">
             <input type="radio" name="payment_method_drawer" id="pay-card-drawer"
-              onclick="document.getElementById('ecash-providers-drawer').classList.add('hidden')" class="peer hidden" />
+              onclick="document.getElementById('cash-tender-wrapper-drawer').classList.add('hidden'); document.getElementById('ecash-providers-drawer').classList.add('hidden')" class="peer hidden" />
             <div
-              class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center transition-all shrink-0">
+              class="w-4 h-4 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center transition-all shrink-0">
               <div class="w-1.5 h-1.5 rounded-full bg-white scale-0 peer-checked:scale-100 transition-transform"></div>
             </div>
             <span
-              class="text-sm font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Card</span>
+              class="text-xs font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Card</span>
           </label>
 
           <!-- E-Cash Radio Option -->
-          <label class="flex items-center gap-2 cursor-pointer group">
+          <label class="flex items-center gap-1 cursor-pointer group">
             <input type="radio" name="payment_method_drawer" id="pay-ecash-drawer"
-              onclick="document.getElementById('ecash-providers-drawer').classList.remove('hidden')"
+              onclick="document.getElementById('cash-tender-wrapper-drawer').classList.add('hidden'); document.getElementById('ecash-providers-drawer').classList.remove('hidden')"
               class="peer hidden" />
             <div
-              class="w-5 h-5 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center transition-all shrink-0">
+              class="w-4 h-4 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center transition-all shrink-0">
               <div class="w-1.5 h-1.5 rounded-full bg-white scale-0 peer-checked:scale-100 transition-transform"></div>
             </div>
             <span
-              class="text-sm font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">E-Cash</span>
+              class="text-xs font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">E-Cash</span>
           </label>
+
+          <!-- Utang Radio Option -->
+          <label class="flex items-center gap-1 cursor-pointer group">
+            <input type="radio" name="payment_method_drawer" id="pay-utang-drawer"
+              onclick="document.getElementById('cash-tender-wrapper-drawer').classList.add('hidden'); document.getElementById('ecash-providers-drawer').classList.add('hidden')"
+              class="peer hidden" />
+            <div
+              class="w-4 h-4 rounded-full border-2 border-neutral-300 dark:border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center transition-all shrink-0">
+              <div class="w-1.5 h-1.5 rounded-full bg-white scale-0 peer-checked:scale-100 transition-transform"></div>
+            </div>
+            <span
+              class="text-xs font-extrabold text-neutral-500 dark:text-neutral-400 peer-checked:text-neutral-900 dark:peer-checked:text-white transition-colors group-hover:text-neutral-700 dark:group-hover:text-neutral-300 font-sans">Utang</span>
+          </label>
+        </div>
+
+        <!-- Cash Tender Amount Input Field in Drawer -->
+        <div id="cash-tender-wrapper-drawer" class="mt-3.5 space-y-2 animate-fade-in">
+          <label for="cash-amount-input-drawer" class="block text-xs font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-wider">
+            Cash Tendered Amount
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-600 dark:text-emerald-400 font-black text-sm">
+              ₱
+            </div>
+            <input type="number" id="cash-amount-input-drawer" step="any" min="0" placeholder="0.00"
+              class="w-full pl-8 pr-3 py-2.5 bg-neutral-50 dark:bg-neutral-900/80 border border-neutral-200 dark:border-neutral-800 rounded-xl text-neutral-900 dark:text-white font-black text-base font-mono focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 block transition-all shadow-xs" />
+          </div>
+
+          <!-- Quick Tender Preset Bill Buttons in Drawer -->
+          <div class="flex items-center gap-1.5 pt-1">
+            <button type="button" class="btn-quick-cash-drawer flex-1 py-1 px-1.5 bg-neutral-100 hover:bg-emerald-100 dark:bg-neutral-800 dark:hover:bg-emerald-950/40 text-neutral-700 dark:text-neutral-300 hover:text-emerald-700 dark:hover:text-emerald-300 border border-neutral-200/80 dark:border-neutral-700/60 rounded-lg text-xs font-bold font-mono transition-colors text-center cursor-pointer" data-amount="100">
+              ₱100
+            </button>
+            <button type="button" class="btn-quick-cash-drawer flex-1 py-1 px-1.5 bg-neutral-100 hover:bg-emerald-100 dark:bg-neutral-800 dark:hover:bg-emerald-950/40 text-neutral-700 dark:text-neutral-300 hover:text-emerald-700 dark:hover:text-emerald-300 border border-neutral-200/80 dark:border-neutral-700/60 rounded-lg text-xs font-bold font-mono transition-colors text-center cursor-pointer" data-amount="200">
+              ₱200
+            </button>
+            <button type="button" class="btn-quick-cash-drawer flex-1 py-1 px-1.5 bg-neutral-100 hover:bg-emerald-100 dark:bg-neutral-800 dark:hover:bg-emerald-950/40 text-neutral-700 dark:text-neutral-300 hover:text-emerald-700 dark:hover:text-emerald-300 border border-neutral-200/80 dark:border-neutral-700/60 rounded-lg text-xs font-bold font-mono transition-colors text-center cursor-pointer" data-amount="500">
+              ₱500
+            </button>
+            <button type="button" class="btn-quick-cash-drawer flex-1 py-1 px-1.5 bg-neutral-100 hover:bg-emerald-100 dark:bg-neutral-800 dark:hover:bg-emerald-950/40 text-neutral-700 dark:text-neutral-300 hover:text-emerald-700 dark:hover:text-emerald-300 border border-neutral-200/80 dark:border-neutral-700/60 rounded-lg text-xs font-bold font-mono transition-colors text-center cursor-pointer" data-amount="1000">
+              ₱1,000
+            </button>
+          </div>
+
+          <!-- Change Output Display Row in Drawer -->
+          <div class="flex justify-between items-center px-3 py-2 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-200/60 dark:border-emerald-800/40 text-xs">
+            <span class="font-extrabold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider text-[11px]">Change Due:</span>
+            <span id="cash-change-display-drawer" class="font-black text-emerald-700 dark:text-emerald-400 font-mono text-sm">₱0.00</span>
+          </div>
         </div>
 
         <!-- E-Cash Provider Selection List in Drawer -->
@@ -488,3 +537,172 @@ function injectDrawerHTML() {
 // ==========================================
 // END: OFF-CANVAS CART DRAWER MODULE
 // ==========================================
+
+// ==========================================
+// START: GENERIC FLOWBITE DRAWER & BOTTOM SHEET CONTROLLER
+// Handles both Flowbite Right Off-Canvas and Mobile Bottom-to-Top Drawers
+// ==========================================
+
+/**
+ * Open an off-canvas right drawer (matching existing cart-drawer and receipt-drawer styling & height/width)
+ */
+export function openDrawer(drawerId, backdropId = 'global-drawer-backdrop') {
+  const drawer = document.getElementById(drawerId);
+  if (!drawer) return;
+
+  let backdrop = document.getElementById(backdropId);
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.id = backdropId;
+    backdrop.className = 'fixed inset-0 z-[55] bg-neutral-900/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 pointer-events-none hidden';
+    document.body.appendChild(backdrop);
+  }
+
+  drawer.classList.remove('translate-x-full', 'translate-y-full');
+  drawer.classList.add('translate-x-0');
+  drawer.classList.remove('hidden');
+
+  // Reveal backdrop
+  backdrop.classList.remove('hidden', 'pointer-events-none');
+  backdrop.offsetHeight; // force reflow
+  backdrop.classList.remove('opacity-0');
+  backdrop.classList.add('opacity-100');
+
+  // Dismiss on backdrop click
+  backdrop.onclick = () => closeDrawer(drawerId, backdropId);
+
+  // Dismiss on ESC key
+  const handleEsc = (e) => {
+    if (e.key === 'Escape') {
+      closeDrawer(drawerId, backdropId);
+      window.removeEventListener('keydown', handleEsc);
+    }
+  };
+  window.addEventListener('keydown', handleEsc);
+}
+
+/**
+ * Close an off-canvas right drawer
+ */
+export function closeDrawer(drawerId, backdropId = 'global-drawer-backdrop') {
+  const drawer = document.getElementById(drawerId);
+  const backdrop = document.getElementById(backdropId);
+
+  if (drawer) {
+    drawer.classList.remove('translate-x-0', 'translate-y-0');
+    drawer.classList.add('translate-x-full');
+  }
+
+  if (backdrop) {
+    backdrop.classList.remove('opacity-100');
+    backdrop.classList.add('opacity-0', 'pointer-events-none');
+    setTimeout(() => {
+      backdrop.classList.add('hidden');
+    }, 300);
+  }
+}
+
+/**
+ * Binds drawer show, open, hide, close, and target triggers automatically
+ */
+export function bindDrawerTriggers(drawerId, backdropId = 'global-drawer-backdrop') {
+  const showSelectors = `[data-drawer-show="${drawerId}"], [data-drawer-open="${drawerId}"]`;
+  const hideSelectors = `[data-drawer-hide="${drawerId}"], [data-drawer-close="${drawerId}"], [data-drawer-dismiss="${drawerId}"]`;
+
+  document.querySelectorAll(showSelectors).forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDrawer(drawerId, backdropId);
+    });
+  });
+
+  document.querySelectorAll(hideSelectors).forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeDrawer(drawerId, backdropId);
+    });
+  });
+}
+// ==========================================
+// END: GENERIC FLOWBITE DRAWER & BOTTOM SHEET CONTROLLER
+// ==========================================
+
+// ==========================================
+// START: HTML5 E-SIGNATURE PAD CONTROLLER
+// Interactive touch & mouse digital signature canvas
+// ==========================================
+export function initSignaturePad(canvasId, clearBtnId) {
+  const canvas = document.getElementById(canvasId);
+  const clearBtn = clearBtnId ? document.getElementById(clearBtnId) : null;
+  if (!canvas) return null;
+
+  const ctx = canvas.getContext('2d');
+  let isDrawing = false;
+  let hasSigned = false;
+
+  // Set line styling
+  ctx.strokeStyle = document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a';
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  const getPos = (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: (clientX - rect.left) * (canvas.width / rect.width),
+      y: (clientY - rect.top) * (canvas.height / rect.height)
+    };
+  };
+
+  const startDraw = (e) => {
+    isDrawing = true;
+    hasSigned = true;
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+  };
+
+  const draw = (e) => {
+    if (!isDrawing) return;
+    e.preventDefault();
+    const pos = getPos(e);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+  };
+
+  const stopDraw = () => {
+    isDrawing = false;
+  };
+
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('mousemove', draw);
+  window.addEventListener('mouseup', stopDraw);
+
+  canvas.addEventListener('touchstart', startDraw, { passive: false });
+  canvas.addEventListener('touchmove', draw, { passive: false });
+  window.addEventListener('touchend', stopDraw);
+
+  const clear = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    hasSigned = false;
+  };
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      clear();
+    });
+  }
+
+  return {
+    getSignatureData: () => (hasSigned ? canvas.toDataURL('image/png') : null),
+    hasSignature: () => hasSigned,
+    clear: clear
+  };
+}
+// ==========================================
+// END: HTML5 E-SIGNATURE PAD CONTROLLER
+// ==========================================
+

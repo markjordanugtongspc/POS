@@ -821,6 +821,8 @@ export class AdminDashboard {
         localStorage.setItem('store_name', storeName || 'Merchant POS');
         localStorage.setItem('user_plan', storePlan || 'free');
         localStorage.setItem('store_paid', String(storePaid));
+        localStorage.removeItem('active_branch_id');
+        localStorage.setItem('active_branch_name', 'All Branches');
 
         window.location.href = '/pages/users/client/dashboard/';
       });

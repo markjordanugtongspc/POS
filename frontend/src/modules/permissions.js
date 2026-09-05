@@ -7,6 +7,7 @@ export class SubscriptionManager {
   constructor() {
     this.planLimits = {
       free: {
+        maxBranches: 2,
         maxProducts: 10,
         canAccessTransactions: false,
         canAccessInventoryManagers: false,
@@ -19,6 +20,7 @@ export class SubscriptionManager {
         exportReports: false // Disabled
       },
       starter: {
+        maxBranches: 5,
         maxProducts: 500,
         canAccessTransactions: true,
         canAccessInventoryManagers: true,
@@ -31,6 +33,7 @@ export class SubscriptionManager {
         exportReports: true
       },
       pro: {
+        maxBranches: Infinity,
         maxProducts: Infinity,
         canAccessTransactions: true,
         canAccessInventoryManagers: true,
@@ -50,6 +53,13 @@ export class SubscriptionManager {
     return this.planLimits[tier] || this.planLimits.free;
   }
   // --- END getLimits ---
+
+  // --- START canAddBranch ---
+  canAddBranch(currentBranchCount, tier = 'free') {
+    const limit = this.getLimits(tier).maxBranches;
+    return currentBranchCount < limit;
+  }
+  // --- END canAddBranch ---
 
   // --- START canAddProduct ---
   canAddProduct(currentProductCount, tier = 'free') {

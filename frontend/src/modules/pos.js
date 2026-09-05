@@ -247,6 +247,245 @@ class BarcodeScannerModal {
 }
 // --- END BarcodeScannerModal Class ---
 
+// --- START CashPaymentController Class ---
+class CashPaymentController {
+  constructor(totalAmount = 97.00) {
+    this.totalAmount = totalAmount;
+    this._bindElements();
+    this._attachEventListeners();
+  }
+
+  _bindElements() {
+    this.cashInputDesktop = document.getElementById('cash-amount-input');
+    this.changeDisplayDesktop = document.getElementById('cash-change-display');
+    this.quickCashButtonsDesktop = document.querySelectorAll('.btn-quick-cash');
+
+    this.cashInputDrawer = document.getElementById('cash-amount-input-drawer');
+    this.changeDisplayDrawer = document.getElementById('cash-change-display-drawer');
+    this.quickCashButtonsDrawer = document.querySelectorAll('.btn-quick-cash-drawer');
+  }
+
+  _attachEventListeners() {
+    // Desktop cash input listener
+    if (this.cashInputDesktop) {
+      this.cashInputDesktop.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value) || 0;
+        this._updateChange(val, this.changeDisplayDesktop);
+        if (this.cashInputDrawer) {
+          this.cashInputDrawer.value = e.target.value;
+          this._updateChange(val, this.changeDisplayDrawer);
+        }
+      });
+    }
+
+    // Drawer cash input listener
+    if (this.cashInputDrawer) {
+      this.cashInputDrawer.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value) || 0;
+        this._updateChange(val, this.changeDisplayDrawer);
+        if (this.cashInputDesktop) {
+          this.cashInputDesktop.value = e.target.value;
+          this._updateChange(val, this.changeDisplayDesktop);
+        }
+      });
+    }
+
+    // Desktop quick bill buttons
+    this.quickCashButtonsDesktop.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const amount = parseFloat(btn.dataset.amount) || 0;
+        if (this.cashInputDesktop) {
+          this.cashInputDesktop.value = amount.toFixed(2);
+          this._updateChange(amount, this.changeDisplayDesktop);
+        }
+        if (this.cashInputDrawer) {
+          this.cashInputDrawer.value = amount.toFixed(2);
+          this._updateChange(amount, this.changeDisplayDrawer);
+        }
+      });
+    });
+
+    // Drawer quick bill buttons
+    this.quickCashButtonsDrawer.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const amount = parseFloat(btn.dataset.amount) || 0;
+        if (this.cashInputDrawer) {
+          this.cashInputDrawer.value = amount.toFixed(2);
+          this._updateChange(amount, this.changeDisplayDrawer);
+        }
+        if (this.cashInputDesktop) {
+          this.cashInputDesktop.value = amount.toFixed(2);
+          this._updateChange(amount, this.changeDisplayDesktop);
+        }
+      });
+    });
+  }
+
+  _updateChange(tendered, displayElement) {
+    if (!displayElement) return;
+    const change = tendered - this.totalAmount;
+    if (change >= 0) {
+      displayElement.textContent = `₱${change.toFixed(2)}`;
+      displayElement.classList.remove('text-red-500', 'dark:text-red-400');
+      displayElement.classList.add('text-emerald-700', 'dark:text-emerald-400');
+    } else {
+      displayElement.textContent = `-₱${Math.abs(change).toFixed(2)}`;
+      displayElement.classList.remove('text-emerald-700', 'dark:text-emerald-400');
+      displayElement.classList.add('text-red-500', 'dark:text-red-400');
+    }
+  }
+}
+// --- END CashPaymentController Class ---
+
+import { fetchCustomers, createCustomer, createUtangRecord } from '../../../backend/api/utang.api.js';
+
+// --- START UtangPOSController Class ---
+class UtangPOSController {
+  constructor() {
+    this.storeId = parseInt(localStorage.getItem('user_store_id') || localStorage.getItem('store_id') || '1', 10);
+    this.branchId = localStorage.getItem('user_branch_id') ? parseInt(localStorage.getItem('user_branch_id'), 10) : null;
+    this.customerSelect = document.getElementById('pos-utang-customer-select');
+    this.newCustomerFields = document.getElementById('pos-utang-new-customer-fields');
+    this.nameInput = document.getElementById('pos-utang-customer-name');
+    this.phoneInput = document.getElementById('pos-utang-customer-phone');
+    this.dueDateInput = document.getElementById('pos-utang-due-date');
+    this.checkoutButtons = document.querySelectorAll('.btn-pos-checkout, button:has(svg:last-child)');
+
+    this._init();
+  }
+
+  async _init() {
+    if (!this.customerSelect) return;
+    await this.loadCustomers();
+
+    this.customerSelect.addEventListener('change', (e) => {
+      if (e.target.value === 'NEW') {
+        if (this.newCustomerFields) this.newCustomerFields.classList.remove('hidden');
+        if (this.nameInput) this.nameInput.value = '';
+        if (this.phoneInput) this.phoneInput.value = '';
+      } else {
+        if (this.newCustomerFields) this.newCustomerFields.classList.add('hidden');
+        const selectedOpt = e.target.selectedOptions[0];
+        if (selectedOpt) {
+          if (this.phoneInput) this.phoneInput.value = selectedOpt.dataset.phone || '';
+        }
+      }
+    });
+
+    this._bindCheckout();
+  }
+
+  async loadCustomers() {
+    const res = await fetchCustomers(this.storeId, this.branchId);
+    if (res.success && res.data.length > 0) {
+      this.customerSelect.innerHTML = `<option value="NEW">Register new customer</option>` +
+        res.data.map(c => `<option value="${c.id}" data-name="${c.name}" data-phone="${c.phone || ''}">${c.name} (${c.phone || 'No phone'}) - Current Utang: ₱${parseFloat(c.total_utang || 0).toFixed(2)}</option>`).join('');
+    }
+  }
+
+  _bindCheckout() {
+    // Find continue/checkout button
+    const checkoutBtns = document.querySelectorAll('button:has(svg)');
+    checkoutBtns.forEach(btn => {
+      if (btn.textContent.includes('Continue')) {
+        btn.addEventListener('click', () => this.handleCheckout());
+      }
+    });
+  }
+
+  async handleCheckout() {
+    const payUtangRadio = document.getElementById('pay-utang');
+    const isUtang = payUtangRadio && payUtangRadio.checked;
+
+    if (!isUtang) {
+      // Regular Cash / Card / E-cash notification
+      const activeMethod = document.querySelector('input[name="payment_method"]:checked')?.id || 'pay-cash';
+      const methodName = activeMethod.replace('pay-', '').toUpperCase();
+      this.showTransactionAlert(`Payment processed successfully via ${methodName}! (₱97.00)`);
+      return;
+    }
+
+    // Process Utang Sale
+    let customerId = null;
+    let customerName = '';
+    let customerPhone = '';
+    const dueDate = this.dueDateInput?.value || null;
+
+    if (this.customerSelect.value === 'NEW') {
+      customerName = this.nameInput?.value.trim() || '';
+      customerPhone = this.phoneInput?.value.trim() || '';
+      if (!customerName) {
+        alert('Please enter customer name for Utang (Credit) transaction.');
+        if (this.nameInput) this.nameInput.focus();
+        return;
+      }
+      // Create new customer account
+      const custRes = await createCustomer({
+        storeId: this.storeId,
+        branchId: this.branchId,
+        name: customerName,
+        phone: customerPhone
+      });
+      if (custRes.success) {
+        customerId = custRes.data.id;
+      }
+    } else {
+      const selectedOpt = this.customerSelect.selectedOptions[0];
+      customerId = parseInt(this.customerSelect.value, 10);
+      customerName = selectedOpt?.dataset.name || 'Valued Customer';
+      customerPhone = selectedOpt?.dataset.phone || '';
+    }
+
+    const itemsSummary = 'Rice (1x), Surf Cherry Blossom (1x), Lucky Me Canton (1x), Milo 24g (2x)';
+    const totalAmount = 97.00;
+
+    const res = await createUtangRecord({
+      storeId: this.storeId,
+      branchId: this.branchId,
+      customerId: customerId,
+      customerName: customerName,
+      customerPhone: customerPhone,
+      itemsSummary: itemsSummary,
+      amount: totalAmount,
+      dueDate: dueDate
+    });
+
+    if (res.success) {
+      this.showTransactionAlert(`Utang (Credit) transaction of ₱${totalAmount.toFixed(2)} recorded for ${customerName}!`, true);
+      await this.loadCustomers();
+      if (this.nameInput) this.nameInput.value = '';
+      if (this.phoneInput) this.phoneInput.value = '';
+      if (this.dueDateInput) this.dueDateInput.value = '';
+    } else {
+      alert('Error recording Utang transaction: ' + res.error);
+    }
+  }
+
+  showTransactionAlert(message, isUtang = false) {
+    const banner = document.createElement('div');
+    banner.className = `fixed bottom-5 right-5 z-50 flex items-center p-4 mb-4 text-emerald-800 rounded-2xl bg-emerald-50 dark:bg-neutral-850 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 shadow-2xl transition-all duration-300 transform translate-y-0`;
+    banner.innerHTML = `
+      <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-emerald-500 bg-emerald-100 rounded-lg dark:bg-emerald-900/40 dark:text-emerald-300 mr-3">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div class="text-xs font-bold mr-4">
+        <div>${message}</div>
+        ${isUtang ? `<a href="/pages/users/client/utang/" class="text-emerald-600 dark:text-emerald-300 underline font-black text-[11px] mt-1 inline-block">View in Utang & Credit Ledger →</a>` : ''}
+      </div>
+      <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-emerald-50 text-emerald-500 rounded-lg p-1.5 hover:bg-emerald-200 inline-flex items-center justify-center h-7 w-7 dark:bg-neutral-800 dark:text-emerald-400 dark:hover:bg-neutral-700 cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    `;
+
+    document.body.appendChild(banner);
+    banner.querySelector('button').addEventListener('click', () => banner.remove());
+    setTimeout(() => {
+      banner.style.opacity = '0';
+      setTimeout(() => banner.remove(), 300);
+    }, 5000);
+  }
+}
+// --- END UtangPOSController Class ---
 
 // ==========================================
 // START: initPOS
@@ -258,6 +497,12 @@ export function initPOS() {
 
   // Instantiate OOP Barcode Scanner Modal Controller
   new BarcodeScannerModal();
+
+  // Instantiate OOP Cash Payment & Tender Controller
+  new CashPaymentController();
+
+  // Instantiate OOP Utang (Credit) POS Controller
+  new UtangPOSController();
 }
 // ==========================================
 // END: initPOS

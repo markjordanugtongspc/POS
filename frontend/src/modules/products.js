@@ -1,6 +1,8 @@
 // products.js - Products page management module
-import { showSuccess, showError, confirmDeleteProduct, showAddProductModal, showEditProductModal } from './modals.js';
+import { showSuccess, showError, confirmDeleteProduct, openBarcodeCameraScanner } from './modals.js';
+import { openDrawer, closeDrawer, bindDrawerTriggers } from './drawer.js';
 import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchCategories, uploadProductImage, getProductImageUrl } from '../../../backend/api/products.api.js';
+import { getActiveBranchId, getActiveBranchName } from '../../../backend/api/branches.api.js';
 import { subscribeToProducts } from '../../../backend/api/realtime.api.js';
 import { getPendingAction, clearPendingAction } from './client-storage.js';
 import { subscriptionManager } from './permissions.js';
@@ -29,8 +31,10 @@ export async function initProductsPage() {
     </tr>
   `).join('');
 
-  // Fetch live products
-  const productRes = await fetchProducts();
+  // Fetch live products for current store and active branch context
+  const activeBranchId = getActiveBranchId();
+  const currentStoreId = parseInt(localStorage.getItem('store_id') || '1', 10);
+  const productRes = await fetchProducts(currentStoreId, activeBranchId);
   if (productRes.success && productRes.data.length > 0) {
     products = productRes.data;
   } else {
@@ -218,8 +222,8 @@ export async function initProductsPage() {
               </div>
             </td>
             <td class="px-6 py-4 font-bold text-neutral-900 dark:text-white">${p.sku}</td>
-            <td class="px-6 py-4 font-semibold text-neutral-800 dark:text-neutral-200 hover:text-emerald-500 bg-neutral-50/80 dark:bg-neutral-800/30 transition-colors">
-              <div class="flex items-center gap-3">
+            <td class="btn-view-product cursor-pointer px-6 py-4 font-semibold text-neutral-800 dark:text-neutral-200 hover:text-emerald-500 bg-neutral-50/80 dark:bg-neutral-800/30 transition-colors" data-sku="${p.sku}" title="Click to view product details">
+              <div class="flex items-center gap-3 pointer-events-none">
                 <div class="w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900">
                   <img src="${(p.image_path ? getProductImageUrl(p.image_path) : null) || `https://placehold.co/100x100/transparent/9ca3af.png?text=${encodeURIComponent(p.name.split(' ')[0])}`}" alt="${p.name}" class="w-full h-full object-cover">
                 </div>
@@ -232,7 +236,7 @@ export async function initProductsPage() {
             <td class="px-6 py-4 font-medium hover:text-emerald-500 bg-neutral-50/80 dark:bg-neutral-800/30 transition-colors">${p.brand}</td>
             <td class="px-6 py-4 font-bold text-neutral-950 dark:text-white">₱${p.price.toFixed(2)}</td>
             <td class="px-6 py-4 font-bold ${p.qty === 0 ? 'text-red-500' : 'text-neutral-900 dark:text-white'}">${p.qty}</td>
-            <td class="px-6 py-4 text-xs font-semibold text-neutral-500 dark:text-neutral-400 bg-neutral-50/80 dark:bg-neutral-800/30">${p.createdBy}</td>
+            <td class="px-6 py-4 text-xs font-semibold text-neutral-500 dark:text-neutral-400 bg-neutral-50/80 dark:bg-neutral-800/30">${p.createdBy || 'Mark Jordan'}</td>
             <td class="px-6 py-4">
               <div class="flex items-center justify-center gap-3">
                 
@@ -301,7 +305,10 @@ export async function initProductsPage() {
           e.preventDefault();
           const p = products.find(prod => prod.sku === el.dataset.sku);
           if (p) {
-            window.location.hash = p.sku.toLowerCase();
+            showProductDetailInline(p);
+            if (window.location.hash !== '#' + p.sku.toLowerCase()) {
+              window.location.hash = p.sku.toLowerCase();
+            }
           }
         });
       });
@@ -310,37 +317,7 @@ export async function initProductsPage() {
         el.addEventListener('click', () => {
           const p = products.find(prod => prod.sku === el.dataset.sku);
           if (p) {
-            showEditProductModal(p, async (updated) => {
-              let imagePath = p.image_path;
-              if (updated.imageFile) {
-                const uploadRes = await uploadProductImage(updated.imageFile, updated.sku);
-                if (uploadRes.success) {
-                  imagePath = uploadRes.imagePath;
-                }
-              }
-
-              if (p.id) {
-                await updateProduct(p.id, {
-                  name: updated.name,
-                  selling_price: updated.price,
-                  buying_price: updated.costPrice,
-                  qty: updated.qty,
-                  ean_13_barcode: updated.barcodeEan13,
-                  image_path: imagePath
-                });
-              }
-
-              const idx = products.findIndex(prod => prod.sku === p.sku);
-              if (idx !== -1) {
-                products[idx] = {
-                  ...products[idx],
-                  ...updated,
-                  image_path: imagePath
-                };
-                showSuccess('Success', `Product ${updated.name} updated successfully!`);
-                renderTableWithSkeleton(400);
-              }
-            });
+            openProductDrawer(p);
           }
         });
       });
@@ -598,10 +575,12 @@ export async function initProductsPage() {
       }
 
       // Swap headers
+      const detailActions = document.getElementById('product-detail-actions');
       if (headerTitle) headerTitle.textContent = "Product Details";
       if (headerDesc) headerDesc.textContent = "Full details of a product";
       if (breadcrumbNav) breadcrumbNav.classList.remove('hidden');
       if (headerActions) headerActions.classList.add('hidden');
+      if (detailActions) detailActions.classList.remove('hidden');
 
       // Toggle sections
       listSection.classList.add('hidden');
@@ -618,6 +597,7 @@ export async function initProductsPage() {
     const headerDesc = document.getElementById('product-header-desc');
     const breadcrumbNav = document.getElementById('product-breadcrumb-nav');
     const headerActions = document.getElementById('product-header-actions');
+    const detailActions = document.getElementById('product-detail-actions');
 
     if (!listSection || !detailSection) return;
 
@@ -626,10 +606,24 @@ export async function initProductsPage() {
     if (headerDesc) headerDesc.textContent = "Manage your products";
     if (breadcrumbNav) breadcrumbNav.classList.add('hidden');
     if (headerActions) headerActions.classList.remove('hidden');
+    if (detailActions) detailActions.classList.add('hidden');
 
     // Toggle sections
     detailSection.classList.add('hidden');
     listSection.classList.remove('hidden');
+  }
+
+  // Bind Back to Products button
+  const btnBackToProducts = document.getElementById('btn-back-to-products');
+  if (btnBackToProducts) {
+    btnBackToProducts.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (window.location.hash) {
+        window.location.hash = '';
+      } else {
+        showProductListInline();
+      }
+    });
   }
 
   // Bind breadcrumbs events
@@ -697,63 +691,154 @@ export async function initProductsPage() {
     });
   });
 
+  // --- START Product Drawer Controller ---
+  bindDrawerTriggers('product-drawer');
+
+  function openProductDrawer(prod = null) {
+    const titleEl = document.getElementById('product-drawer-title');
+    const formEl = document.getElementById('product-form');
+    if (!formEl) return;
+
+    formEl.reset();
+
+    if (prod) {
+      // Edit mode
+      if (titleEl) titleEl.textContent = `Edit Product: ${prod.name}`;
+      document.getElementById('product-form-id').value = prod.id || '';
+      document.getElementById('product-form-name').value = prod.name || '';
+      document.getElementById('product-form-sku').value = prod.sku || '';
+      document.getElementById('product-form-category').value = prod.category || '';
+      document.getElementById('product-form-brand').value = prod.brand || '';
+      document.getElementById('product-form-price').value = prod.price || '';
+      document.getElementById('product-form-qty').value = prod.qty || 0;
+      document.getElementById('product-form-image').value = prod.image_path || '';
+      document.getElementById('product-form-desc').value = prod.description || '';
+    } else {
+      // Add mode
+      if (titleEl) titleEl.textContent = 'Add New Product';
+      document.getElementById('product-form-id').value = '';
+      const nextSkuNum = products.length + 1;
+      const nextSku = 'SKU' + String(nextSkuNum).padStart(3, '0');
+      document.getElementById('product-form-sku').value = nextSku;
+    }
+
+    openDrawer('product-drawer');
+  }
+
   // Top Action Buttons
   const btnAddProduct = document.getElementById('btn-add-product');
   if (btnAddProduct) {
     btnAddProduct.addEventListener('click', () => {
-      const nextSkuNum = products.length + 1;
-      const nextSku = 'SKU' + String(nextSkuNum).padStart(3, '0');
+      openProductDrawer(null);
+    });
+  }
 
-      showAddProductModal(async (newProduct) => {
-        // Validate uniqueness of SKU
-        const exists = products.some(p => p.sku.toLowerCase() === newProduct.sku.toLowerCase());
+  // Barcode Scanner button inside Product Drawer
+  const btnProductScanBarcode = document.getElementById('btn-product-scan-barcode');
+  if (btnProductScanBarcode) {
+    btnProductScanBarcode.addEventListener('click', () => {
+      openBarcodeCameraScanner({
+        onDetected: (barcode) => {
+          const skuInput = document.getElementById('product-form-sku');
+          if (skuInput) skuInput.value = barcode;
+          showSuccess('Barcode Scanned', `Detected code: ${barcode}`);
+        }
+      });
+    });
+  }
+
+  // Product Form Submission
+  const productForm = document.getElementById('product-form');
+  if (productForm) {
+    productForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const editId = document.getElementById('product-form-id').value;
+      const name = document.getElementById('product-form-name').value.trim();
+      const sku = document.getElementById('product-form-sku').value.trim();
+      const category = document.getElementById('product-form-category').value.trim() || 'General';
+      const brand = document.getElementById('product-form-brand').value.trim() || 'General';
+      const price = parseFloat(document.getElementById('product-form-price').value) || 0;
+      const qty = parseInt(document.getElementById('product-form-qty').value, 10) || 0;
+      const imagePath = document.getElementById('product-form-image').value.trim() || null;
+      const desc = document.getElementById('product-form-desc').value.trim();
+
+      const storeId = parseInt(localStorage.getItem('store_id') || '1', 10);
+      const activeBranchId = getActiveBranchId();
+      const currentUserId = parseInt(localStorage.getItem('user_id') || '1', 10);
+      const currentUserName = localStorage.getItem('user_full_name') || localStorage.getItem('user_name') || 'Mark Jordan';
+
+      if (editId) {
+        // Update existing product
+        const idNum = parseInt(editId, 10);
+        await updateProduct(idNum, {
+          name: name,
+          selling_price: price,
+          qty: qty,
+          image_path: imagePath,
+          brand: brand
+        });
+
+        const idx = products.findIndex(p => p.id === idNum || p.sku === sku);
+        if (idx !== -1) {
+          products[idx] = {
+            ...products[idx],
+            name,
+            sku,
+            category,
+            brand,
+            price,
+            qty,
+            image_path: imagePath,
+            description: desc
+          };
+        }
+        closeDrawer('product-drawer');
+        showSuccess('Updated', `Product ${name} updated successfully!`);
+        populateFilters();
+        renderTableWithSkeleton(400);
+      } else {
+        // Add new product
+        const exists = products.some(p => p.sku.toLowerCase() === sku.toLowerCase());
         if (exists) {
-          showError('Duplicate SKU', `A product with SKU "${newProduct.sku}" already exists!`);
+          showError('Duplicate SKU', `A product with SKU "${sku}" already exists!`);
           return;
         }
 
-        let imagePath = null;
-        if (newProduct.imageFile) {
-          const uploadRes = await uploadProductImage(newProduct.imageFile, newProduct.sku);
-          if (uploadRes.success) {
-            imagePath = uploadRes.imagePath;
-          }
-        }
-
         const saveRes = await createProduct({
-          storeId: 1,
-          sku: newProduct.sku,
-          barcodeEan13: newProduct.barcodeEan13,
-          productName: newProduct.name,
-          brand: newProduct.brand,
-          price: newProduct.price,
-          costPrice: newProduct.costPrice,
-          stockQuantity: newProduct.qty,
-          imagePath: imagePath
+          storeId: storeId,
+          branchId: activeBranchId,
+          sku: sku,
+          productName: name,
+          brand: brand,
+          price: price,
+          stockQuantity: qty,
+          imagePath: imagePath,
+          createdBy: currentUserId
         });
 
-        if (saveRes.success) {
-          products.unshift({
-            id: saveRes.data?.id || Date.now(),
-            sku: newProduct.sku,
-            name: newProduct.name,
-            category: newProduct.category,
-            brand: newProduct.brand,
-            price: newProduct.price,
-            cost_price: newProduct.costPrice,
-            qty: newProduct.qty,
-            image_path: imagePath,
-            createdBy: 'Mark Jordan'
-          });
+        const newId = saveRes.success && saveRes.data?.id ? saveRes.data.id : Date.now();
+        products.unshift({
+          id: newId,
+          sku,
+          name,
+          category,
+          brand,
+          price,
+          qty,
+          image_path: imagePath,
+          createdBy: currentUserName,
+          description: desc
+        });
 
-          showSuccess('Success', `Product ${newProduct.name} added successfully!`);
-          renderTableWithSkeleton(500);
-        } else {
-          showError('Error', saveRes.error || 'Failed to save product to database');
-        }
-      }, nextSku);
+        closeDrawer('product-drawer');
+        showSuccess('Created', `Product ${name} added successfully!`);
+        populateFilters();
+        renderTableWithSkeleton(400);
+      }
     });
   }
+  // --- END Product Drawer Controller ---
 
   // Cross-page Pending Action or URL Query Trigger
   const urlParams = new URLSearchParams(window.location.search);

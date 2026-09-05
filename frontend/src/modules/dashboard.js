@@ -306,3 +306,57 @@ export function initQuickActionsCarousel() {
    END COMMENT: DASHBOARD QUICK ACTIONS CAROUSEL
    ========================================= */
 
+/* =========================================
+   START COMMENT: DASHBOARD BRANCH SCOPE FILTER
+   Controls the active branch filter dropdown on the client dashboard
+   ========================================= */
+export async function initDashboardBranchFilter() {
+  const branchSelect = document.getElementById('dashboard-branch-select');
+  const scopeLabel = document.getElementById('dashboard-scope-label');
+  if (!branchSelect) return;
+
+  try {
+    const { fetchBranches, getActiveBranchId, setActiveBranch } = await import('../../../backend/api/branches.api.js');
+    const res = await fetchBranches();
+
+    if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+      const activeId = getActiveBranchId();
+
+      branchSelect.innerHTML = `<option value="all">🌟 All Branches (Total & General Sales)</option>` +
+        res.data.map(b => `<option value="${b.id}">📍 ${b.branch_name}</option>`).join('');
+
+      if (activeId && res.data.some(b => b.id === activeId)) {
+        branchSelect.value = String(activeId);
+        const activeBranch = res.data.find(b => b.id === activeId);
+        if (scopeLabel && activeBranch) {
+          scopeLabel.textContent = `Branch: ${activeBranch.branch_name}`;
+        }
+      } else {
+        branchSelect.value = 'all';
+        if (scopeLabel) {
+          scopeLabel.textContent = 'Global Overview (All Branches)';
+        }
+      }
+
+      branchSelect.addEventListener('change', (e) => {
+        const val = e.target.value;
+        if (val === 'all') {
+          setActiveBranch(null, 'All Branches');
+          if (scopeLabel) scopeLabel.textContent = 'Global Overview (All Branches)';
+        } else {
+          const selectedBranch = res.data.find(b => b.id === parseInt(val, 10));
+          const name = selectedBranch ? selectedBranch.branch_name : 'Selected Branch';
+          setActiveBranch(parseInt(val, 10), name);
+          if (scopeLabel) scopeLabel.textContent = `Branch: ${name}`;
+        }
+      });
+    }
+  } catch (err) {
+    console.warn('[Dashboard Branch Filter Error]:', err);
+  }
+}
+/* =========================================
+   END COMMENT: DASHBOARD BRANCH SCOPE FILTER
+   ========================================= */
+
+

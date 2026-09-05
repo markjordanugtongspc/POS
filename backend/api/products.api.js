@@ -5,9 +5,9 @@ import { supabase } from './client.api.js';
 
 // --- START fetchProducts ---
 /**
- * Fetches products for a specific store from Supabase.
+ * Fetches products for a specific store and optional branch from Supabase.
  */
-export async function fetchProducts(storeId = null) {
+export async function fetchProducts(storeId = null, branchId = null) {
   try {
     let query = supabase
       .from('products')
@@ -18,24 +18,47 @@ export async function fetchProducts(storeId = null) {
       query = query.eq('store_id', storeId);
     }
 
+    if (branchId) {
+      query = query.eq('branch_id', branchId);
+    }
+
     const { data, error } = await query;
     if (error) throw error;
 
+    // Fetch users directory to reliably resolve created_by -> full_name
+    let userMap = new Map();
+    try {
+      const { data: usersData } = await supabase.from('users').select('id, full_name, username');
+      if (usersData && usersData.length > 0) {
+        usersData.forEach(u => {
+          userMap.set(u.id, u.full_name || u.username);
+        });
+      }
+    } catch (e) {
+      console.warn('[Products API] Users map fetch skipped:', e);
+    }
+
     // Normalize format for frontend table & POS
-    const formatted = (data || []).map(p => ({
-      id: p.id,
-      sku: p.sku || `SKU${String(p.id).padStart(3, '0')}`,
-      custom_id: p.sku,
-      barcode_ean13: p.ean_13_barcode || p.barcode_ean13,
-      name: p.name,
-      category: p.categories?.name || 'General',
-      brand: p.brands?.name || 'General',
-      price: parseFloat(p.selling_price ?? p.price) || 0.00,
-      cost_price: parseFloat(p.buying_price ?? p.cost_price) || 0.00,
-      qty: parseInt(p.qty ?? p.stock_quantity, 10) || 0,
-      image_path: p.image_path,
-      created_at: p.created_at
-    }));
+    const formatted = (data || []).map(p => {
+      const creatorName = userMap.get(p.created_by) || (p.created_by ? `User #${p.created_by}` : 'Mark Jordan');
+      return {
+        id: p.id,
+        sku: p.sku || `SKU${String(p.id).padStart(3, '0')}`,
+        custom_id: p.sku,
+        barcode_ean13: p.ean_13_barcode || p.barcode_ean13,
+        name: p.name,
+        category: p.categories?.name || 'General',
+        brand: p.brands?.name || 'General',
+        price: parseFloat(p.selling_price ?? p.price) || 0.00,
+        cost_price: parseFloat(p.buying_price ?? p.cost_price) || 0.00,
+        qty: parseInt(p.qty ?? p.stock_quantity, 10) || 0,
+        image_path: p.image_path,
+        branch_id: p.branch_id || null,
+        createdBy: creatorName,
+        created_by: p.created_by,
+        created_at: p.created_at
+      };
+    });
 
     return { success: true, data: formatted };
   } catch (err) {
@@ -65,6 +88,7 @@ export async function fetchCategories(storeId = null) {
 // --- START createProduct ---
 export async function createProduct({
   storeId = 1,
+  branchId = null,
   sku,
   barcodeEan13,
   productName,
@@ -77,21 +101,27 @@ export async function createProduct({
   createdBy = 1
 }) {
   try {
+    const insertPayload = {
+      store_id: storeId,
+      sku: sku,
+      ean_13_barcode: barcodeEan13,
+      name: productName,
+      category_id: categoryId,
+      brand_id: brandId || null,
+      selling_price: price,
+      buying_price: costPrice,
+      qty: stockQuantity,
+      image_path: imagePath,
+      created_by: createdBy
+    };
+
+    if (branchId) {
+      insertPayload.branch_id = branchId;
+    }
+
     const { data, error } = await supabase
       .from('products')
-      .insert({
-        store_id: storeId,
-        sku: sku,
-        ean_13_barcode: barcodeEan13,
-        name: productName,
-        category_id: categoryId,
-        brand_id: brandId || null,
-        selling_price: price,
-        buying_price: costPrice,
-        qty: stockQuantity,
-        image_path: imagePath,
-        created_by: createdBy
-      })
+      .insert(insertPayload)
       .select()
       .single();
 

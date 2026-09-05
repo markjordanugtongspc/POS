@@ -1,6 +1,7 @@
 import { confirmRefund, showSuccess } from './modals.js';
 import { animateNumber, formatCounterNumber } from './animations.js';
 import { fetchTransactions } from '../../../backend/api/transactions.api.js';
+import { getActiveBranchId } from '../../../backend/api/branches.api.js';
 import { subscribeToTransactions } from '../../../backend/api/realtime.api.js';
 import DateRangePicker from 'flowbite-datepicker/DateRangePicker';
 
@@ -24,8 +25,10 @@ export async function initTransactions() {
   const container = document.getElementById('transactions-container');
   if (!container) return; // Only execute if on the transactions page
 
-  // Fetch live transactions from Supabase API
-  const res = await fetchTransactions();
+  // Fetch live transactions for current store and active branch from Supabase API
+  const activeBranchId = getActiveBranchId();
+  const currentStoreId = parseInt(localStorage.getItem('store_id') || '1', 10);
+  const res = await fetchTransactions(currentStoreId, activeBranchId);
   if (res.success && res.data.length > 0) {
     transactions = res.data.map(t => ({
       id: t.receipt_number || `TXN-${t.id}`,
@@ -42,7 +45,7 @@ export async function initTransactions() {
 
   // Attach Realtime listener for incoming sales
   subscribeToTransactions(async () => {
-    const fetchRes = await fetchTransactions();
+    const fetchRes = await fetchTransactions(currentStoreId, activeBranchId);
     if (fetchRes.success && fetchRes.data.length > 0) {
       transactions = fetchRes.data.map(t => ({
         id: t.receipt_number || `TXN-${t.id}`,
